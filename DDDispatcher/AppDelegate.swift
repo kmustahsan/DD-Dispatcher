@@ -53,6 +53,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
             
             guard let uid = user?.uid else { return }
             print("Successfully logged into Firebase with Google: ", uid)
+            let controller = HubViewController()
+            controller.uid = uid
+            
         })
     }
     
@@ -88,6 +91,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
+    
+    
     
     
 }
