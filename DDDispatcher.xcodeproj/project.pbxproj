@@ -95,6 +95,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		31580A6F1E5B600B00851FDD /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				B8CFE6FD1E58BE2200F2E10F /* HomeViewController.swift */,
+				B8CFE7011E590BB700F2E10F /* ExtraInfoViewController.swift */,
+				B8B0E09F1E59206800A7339B /* HubViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		31580A701E5B602A00851FDD /* PList */ = {
+			isa = PBXGroup;
+			children = (
+				3F3832DF1E563C6D005E1B3D /* Info.plist */,
+				3F3833021E563E73005E1B3D /* GoogleService-Info.plist */,
+			);
+			name = PList;
+			sourceTree = "<group>";
+		};
 		3E99EC84DDAE0D913FAF7F18 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -134,14 +153,11 @@
 			isa = PBXGroup;
 			children = (
 				3F3832D31E563C6D005E1B3D /* AppDelegate.swift */,
+				31580A6F1E5B600B00851FDD /* ViewControllers */,
 				3F3832D71E563C6D005E1B3D /* Main.storyboard */,
-				3F3832DA1E563C6D005E1B3D /* Assets.xcassets */,
 				3F3832DC1E563C6D005E1B3D /* LaunchScreen.storyboard */,
-				3F3832DF1E563C6D005E1B3D /* Info.plist */,
-				3F3833021E563E73005E1B3D /* GoogleService-Info.plist */,
-				B8CFE6FD1E58BE2200F2E10F /* HomeViewController.swift */,
-				B8CFE7011E590BB700F2E10F /* ExtraInfoViewController.swift */,
-				B8B0E09F1E59206800A7339B /* HubViewController.swift */,
+				31580A701E5B602A00851FDD /* PList */,
+				3F3832DA1E563C6D005E1B3D /* Assets.xcassets */,
 			);
 			path = DDDispatcher;
 			sourceTree = "<group>";
