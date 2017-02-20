@@ -20,7 +20,8 @@ import TwitterKit
                   provide error handling (incorrect password, already used email, etc.)
                   connect to firebase for email users
                   infoSegue must also be done for Twitter users
-                  Fix data passing for Google users
+                  grab personal user data from Google
+                  store personal user data to DB
  
  */
 class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
@@ -45,7 +46,7 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         setupTwitterButton()
         
     }
-    
+//================== UI Setup =================================
     func setTextField(textField: UITextField) {
         let border = CALayer()
         let width = CGFloat(2.0)
@@ -61,6 +62,9 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         loginButton.setTitleColor(UIColor(red: 250/255, green: 244/255, blue: 227/255, alpha: 1), for: .normal)
         loginButton.layer.cornerRadius = 15
     }
+//================== End of UI Setup ===========================
+    
+//================== OAuth Setup ===============================
     
     // Facebook button setup
     fileprivate func setupFacebookButton() {
@@ -103,10 +107,18 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
             })
            
         })
+        
+        FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email"]).start { (connection, result, error) in
+            if let err = error {
+                print("Failed to start graph request:", err)
+                    return
+            }
+            //TODO:This is where we can store user's personal data from Facebook to Firebase
+            print(result ?? "")
+        }
     }
     
     // End of Facebook button setup
-    
     
     //Google button setup
     fileprivate func setupGoogleButton() {
@@ -149,10 +161,7 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
             })
         })
     }
-    
-    
-    
-    
+
     // End of Google button setup
     
     //Twitter button setup
