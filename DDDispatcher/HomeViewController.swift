@@ -23,7 +23,7 @@ import TwitterKit
                   Fix data passing for Google users
  
  */
-class HomeScreenViewController: UIViewController, GIDSignInUIDelegate {
+class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
@@ -116,12 +116,43 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate {
         googleButton.layer.cornerRadius = 15
         googleButton.addTarget(self, action: #selector(handleGoogleLogin), for: .touchUpInside)
         GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().delegate = self
     }
     
     func handleGoogleLogin() {
         GIDSignIn.sharedInstance().signIn()
-        self.performSegue(withIdentifier: "hubSegue", sender: self)
     }
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        if let err = error {
+            print("Failed to login via Google: ", err)
+            return
+        }
+        
+        print("Successfully logged into Google", user)
+        
+        guard let idToken = user.authentication.idToken else { return }
+        guard let accessToken = user.authentication.accessToken else { return }
+        let credentials = FIRGoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
+        
+        FIRAuth.auth()?.signIn(with: credentials, completion: { (user, error) in
+            if let err = error {
+                print("Failed to log into Firebase with Google: ", err)
+                return
+            }
+            
+            guard let uid = user?.uid else { return }
+            print("Successfully logged into Firebase with Google: ", uid)
+            self.uid = uid
+            DispatchQueue.main.async(execute: {
+                self.performSegue(withIdentifier: "hubSegue", sender: self)
+            })
+        })
+    }
+    
+    
+    
+    
     // End of Google button setup
     
     //Twitter button setup
