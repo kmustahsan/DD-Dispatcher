@@ -184,6 +184,8 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                 return
             }
             print("Successfully logged into Twitter")
+            //Access Twitter userName
+            //print(session?.userName)
             
             
             guard let token = session?.authToken else { return }
