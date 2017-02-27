@@ -142,6 +142,11 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         }
         
         print("Successfully logged into Google", user)
+        /* We can store user information to Firebase here.. 
+            user.profile.name
+            user.profile.email
+         
+         */
         
         guard let idToken = user.authentication.idToken else { return }
         guard let accessToken = user.authentication.accessToken else { return }
