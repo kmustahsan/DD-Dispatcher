@@ -214,26 +214,36 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     @IBAction func loginOnClick(_ sender: Any) {
         guard let inputEmail = emailTextField.text else { return }
         guard let inputPassword = passwordTextField.text else { return }
-        
-        if isValidEmail(inputEmail: inputEmail) && isValidPassword(inputPassword: inputPassword) {
+        if isValidPassword(inputPassword: inputPassword) {
+            FIRAuth.auth()!.signIn(withEmail: inputEmail, password: inputPassword, completion: { (user, error) in
+                if error != nil  {
+                    if let errCode = FIRAuthErrorCode(rawValue: error!._code) {
+                        switch errCode {
+                        case .errorCodeInvalidEmail:
+                            print("invalid email")
+                        case .errorCodeEmailAlreadyInUse:
+                            print("in use")
+                        case .errorCodeUserNotFound:
+                            FIRAuth.auth()!.createUser(withEmail: inputEmail, password: inputPassword, completion: { (user, error) in
+                                if let err = error {
+                                    print("Error with email user", err)
+                                }
+                                print("Created user")
+                            })
+                        default:
+                            print("Create User Error: \(error!)")
+                        }
+                    }
+                    return
+                }
+            })
             segueTo()
         }
         
     }
-    //TODO: need a unique email validator
-    func isValidEmail(inputEmail: String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
-        
-        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailTest.evaluate(with: inputEmail)
-    }
     
     func isValidPassword(inputPassword :String) -> Bool {
         return inputPassword.characters.count > 6
-    }
-    
-    func segueFromOAuth(data: String) {
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
