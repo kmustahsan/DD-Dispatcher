@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FBSDKLoginKit
 import GoogleSignIn
+import TextFieldEffects //TODO
 /*
     TODOS: UI -   constraints
                   icons next to Ouath buttons
@@ -23,18 +24,19 @@ import GoogleSignIn
                   store personal user data to DB
  
  */
-class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
+class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var facebookButton: UIButton!
     @IBOutlet weak var googleButton: UIButton!
-    @IBOutlet weak var twitterButton: UIButton!
     var uid = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //UI
+        self.emailTextField.delegate = self
+        self.passwordTextField.delegate = self
         setTextField(textField: emailTextField)
         setTextField(textField: passwordTextField)
         customizeLoginButton()
@@ -42,23 +44,46 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         //OAuth
         setupFacebookButton()
         setupGoogleButton()
-        setupTwitterButton()
         
     }
 //================== UI Setup =================================
     func setTextField(textField: UITextField) {
         let border = CALayer()
         let width = CGFloat(2.0)
-        border.borderColor = UIColor(red: 240/255, green: 125/255, blue: 101/255, alpha: 1).cgColor
+        border.borderColor = UIColor.lightGray.cgColor
+        border.frame = CGRect(x: 0, y: textField.frame.size.height - width, width:  textField.frame.size.width, height: textField.frame.size.height)
+        border.borderWidth = width
+        textField.layer.addSublayer(border)
+        textField.layer.masksToBounds = true
+        
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        let border = CALayer()
+        let width = CGFloat(2.0)
+        border.borderColor = UIColor(red: 109/255, green: 209/255, blue: 43/255, alpha: 1).cgColor
+        border.frame = CGRect(x: 0, y: textField.frame.size.height - width, width:  textField.frame.size.width, height: textField.frame.size.height)
+        border.borderWidth = width
+        textField.layer.addSublayer(border)
+        textField.layer.masksToBounds = true
+        textField.textColor = UIColor(red: 109/255, green: 209/255, blue: 43/255, alpha: 1)
+        textField.placeholder = ""
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.layer.borderColor = UIColor.lightGray.cgColor
+        let border = CALayer()
+        let width = CGFloat(2.0)
+        border.borderColor = UIColor.lightGray.cgColor
         border.frame = CGRect(x: 0, y: textField.frame.size.height - width, width:  textField.frame.size.width, height: textField.frame.size.height)
         border.borderWidth = width
         textField.layer.addSublayer(border)
         textField.layer.masksToBounds = true
     }
     
+    
     func customizeLoginButton() {
-        loginButton.layer.backgroundColor = UIColor(red: 240/255, green: 125/255, blue: 101/255, alpha: 1).cgColor
-        loginButton.setTitleColor(UIColor(red: 250/255, green: 244/255, blue: 227/255, alpha: 1), for: .normal)
+        loginButton.layer.backgroundColor = UIColor(red: 109/255, green: 209/255, blue: 43/255, alpha: 1).cgColor
         loginButton.layer.cornerRadius = 15
     }
 //================== End of UI Setup ===========================
@@ -73,8 +98,6 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         facebookButton.setTitle("Facebook", for: .normal)
         facebookButton.layer.backgroundColor = UIColor(red: 54/255, green: 97/255, blue: 150/255, alpha: 1).cgColor
         facebookButton.setTitleColor(.white, for: .normal)
-        facebookButton.layer.cornerRadius = 15
-        
         
         facebookButton.addTarget(self, action: #selector(handleFacebookLogin), for: .touchUpInside)
     }
@@ -124,7 +147,6 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         googleButton.setTitle("Google", for: .normal)
         googleButton.layer.backgroundColor = UIColor(red: 217/255, green: 55/255, blue: 44/255, alpha: 1).cgColor
         googleButton.setTitleColor(.white, for: .normal)
-        googleButton.layer.cornerRadius = 15
         googleButton.addTarget(self, action: #selector(handleGoogleLogin), for: .touchUpInside)
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance().delegate = self
@@ -168,47 +190,6 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
 
     // End of Google button setup
     
-    //Twitter button setup
-    fileprivate func setupTwitterButton() {
-        twitterButton.setTitle("Twitter", for: .normal)
-        twitterButton.layer.backgroundColor = UIColor(red: 29/255, green: 161/255, blue: 244/255, alpha: 1).cgColor
-        twitterButton.setTitleColor(.white, for: .normal)
-        twitterButton.layer.cornerRadius = 15
-        twitterButton.addTarget(self, action: #selector(handleTwitterLogin), for: .touchUpInside)
-    }
-    func handleTwitterLogin() {
-        Twitter.sharedInstance().logIn { (session, error) in
-            if let err = error {
-                print("Failed to login via Twitter: ", err)
-                return
-            }
-            print("Successfully logged into Twitter")
-            //Access Twitter userName
-            //print(session?.userName)
-            
-            
-            guard let token = session?.authToken else { return }
-            guard let secret = session?.authTokenSecret else { return }
-            let credentials = FIRTwitterAuthProvider.credential(withToken: token, secret: secret)
-            
-            FIRAuth.auth()?.signIn(with: credentials, completion: { (user, error) in
-                
-                if let err = error {
-                    print("Failed to login to Firebase with Twitter: ", err)
-                    return
-                }
-                
-                print("Successfully logged into Firebase with Twitter: ", user?.uid ?? "")
-                self.uid = (user?.uid)!
-                DispatchQueue.main.async(execute: {
-                    self.performSegue(withIdentifier: "hubSegue", sender: self)
-                })
-                
-            })
-            
-        }
-    }
-    //End of Twitter button setup
     
     @IBAction func loginOnClick(_ sender: Any) {
         guard let inputEmail = emailTextField.text else { return }

@@ -11,6 +11,7 @@ target 'DDDispatcher' do
 	pod 'FBSDKLoginKit'
 	pod 'Firebase/Auth'
 	pod 'GoogleSignIn'
+	pod "TextFieldEffects"
 
   target 'DDDispatcherTests' do
     inherit! :search_paths
