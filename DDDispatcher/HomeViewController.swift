@@ -10,7 +10,6 @@ import UIKit
 import Firebase
 import FBSDKLoginKit
 import GoogleSignIn
-import TwitterKit
 /*
     TODOS: UI -   constraints
                   icons next to Ouath buttons
