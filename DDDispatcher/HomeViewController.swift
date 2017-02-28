@@ -10,7 +10,8 @@ import UIKit
 import Firebase
 import FBSDKLoginKit
 import GoogleSignIn
-import TextFieldEffects //TODO
+import TextFieldEffects
+
 /*
     TODOS: UI -   constraints
                   icons next to Ouath buttons
@@ -30,16 +31,25 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var facebookButton: UIButton!
     @IBOutlet weak var googleButton: UIButton!
+    @IBOutlet weak var mailView: UIView!
+    @IBOutlet weak var mailButton: UIButton!
+    var emailProcessActive = false
+    
+    
     var uid = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //UI
+        mailView.isHidden = true
         self.emailTextField.delegate = self
         self.passwordTextField.delegate = self
+        emailTextField.keyboardType = .emailAddress
         setTextField(textField: emailTextField)
         setTextField(textField: passwordTextField)
         customizeLoginButton()
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+        view.addGestureRecognizer(tap)
         
         //OAuth
         setupFacebookButton()
@@ -47,27 +57,29 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         
     }
 //================== UI Setup =================================
+    
+    
     func setTextField(textField: UITextField) {
-        let border = CALayer()
-        let width = CGFloat(2.0)
-        border.borderColor = UIColor.lightGray.cgColor
-        border.frame = CGRect(x: 0, y: textField.frame.size.height - width, width:  textField.frame.size.width, height: textField.frame.size.height)
-        border.borderWidth = width
-        textField.layer.addSublayer(border)
-        textField.layer.masksToBounds = true
+        textField.borderStyle = .none
+        textField.layer.backgroundColor = UIColor.white.cgColor
+        textField.layer.masksToBounds = false
+        textField.layer.shadowColor = UIColor.gray.cgColor
+        textField.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        textField.layer.shadowOpacity = 1.0
+        textField.layer.shadowRadius = 0.0
+        textField.layer.borderColor = UIColor(red: 107/255, green: 107/255, blue: 107/255, alpha: 1).cgColor
         
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        let border = CALayer()
-        let width = CGFloat(2.0)
-        border.borderColor = UIColor(red: 109/255, green: 209/255, blue: 43/255, alpha: 1).cgColor
-        border.frame = CGRect(x: 0, y: textField.frame.size.height - width, width:  textField.frame.size.width, height: textField.frame.size.height)
-        border.borderWidth = width
-        textField.layer.addSublayer(border)
-        textField.layer.masksToBounds = true
-        textField.textColor = UIColor(red: 109/255, green: 209/255, blue: 43/255, alpha: 1)
-        textField.placeholder = ""
+        textField.borderStyle = .none
+        textField.layer.backgroundColor = UIColor.white.cgColor
+        textField.layer.masksToBounds = false
+        textField.layer.shadowColor = UIColor.gray.cgColor
+        textField.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+        textField.layer.shadowOpacity = 1.0
+        textField.layer.shadowRadius = 0.0
+        textField.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -83,10 +95,16 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     
     
     func customizeLoginButton() {
-        loginButton.layer.backgroundColor = UIColor(red: 109/255, green: 209/255, blue: 43/255, alpha: 1).cgColor
         loginButton.layer.cornerRadius = 15
     }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
 //================== End of UI Setup ===========================
+   
+   
+    
     
 //================== OAuth Setup ===============================
     
@@ -189,6 +207,29 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     }
 
     // End of Google button setup
+    
+    @IBAction func beginMailTransition(_ sender: Any) {
+        if !self.emailProcessActive {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.mailButton.frame = CGRect(x: self.mailButton.frame.origin.x, y: self.mailButton.frame.origin.y - 200, width: self.mailButton.frame.size.width, height: self.mailButton.frame.size.height)
+            }) { (true) in
+                self.mailView.isHidden = false
+                self.emailProcessActive = true
+            }
+        } else {
+                self.mailView.isHidden = true
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.mailButton.frame = CGRect(x: self.mailButton.frame.origin.x, y: self.mailButton.frame.origin.y + 200, width: self.mailButton.frame.size.width, height: self.mailButton.frame.size.height)
+                }) { (true) in
+                    self.emailProcessActive = false
+            }
+        }
+        
+       
+    }
+    
+    
+    
     
     
     @IBAction func loginOnClick(_ sender: Any) {
