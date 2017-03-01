@@ -11,8 +11,7 @@ target 'DDDispatcher' do
 	pod 'FBSDKLoginKit'
 	pod 'Firebase/Auth'
 	pod 'GoogleSignIn'
-	pod 'Fabric'
-	pod 'TwitterKit'
+	pod 'TextFieldEffects', :git => 'https://github.com/raulriera/TextFieldEffects.git', :tag => '1.3.0'
 
   target 'DDDispatcherTests' do
     inherit! :search_paths
