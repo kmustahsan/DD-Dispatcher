@@ -33,23 +33,21 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     @IBOutlet weak var googleButton: UIButton!
     @IBOutlet weak var mailView: UIView!
     @IBOutlet weak var mailButton: UIButton!
-    var emailProcessActive = false
-    
-    
-    var uid = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //UI
-        mailView.isHidden = true
+        
+        //setup
+        emailTextField.keyboardType = .emailAddress
         self.emailTextField.delegate = self
         self.passwordTextField.delegate = self
-        emailTextField.keyboardType = .emailAddress
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(HomeScreenViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        
+        //UI
         setTextField(textField: emailTextField)
         setTextField(textField: passwordTextField)
         customizeLoginButton()
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
-        view.addGestureRecognizer(tap)
         
         //OAuth
         setupFacebookButton()
@@ -67,32 +65,20 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         textField.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
         textField.layer.shadowOpacity = 1.0
         textField.layer.shadowRadius = 0.0
-        textField.layer.borderColor = UIColor(red: 107/255, green: 107/255, blue: 107/255, alpha: 1).cgColor
+        textField.layer.borderColor = UIColor(red: 126/255, green: 127/255, blue: 137/255, alpha: 1).cgColor
         
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.borderStyle = .none
-        textField.layer.backgroundColor = UIColor.white.cgColor
-        textField.layer.masksToBounds = false
-        textField.layer.shadowColor = UIColor.gray.cgColor
-        textField.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
-        textField.layer.shadowOpacity = 1.0
-        textField.layer.shadowRadius = 0.0
+        
+        textField.layer.borderColor = UIColor(red: 74/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
         textField.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        textField.layer.borderColor = UIColor.lightGray.cgColor
-        let border = CALayer()
-        let width = CGFloat(2.0)
-        border.borderColor = UIColor.lightGray.cgColor
-        border.frame = CGRect(x: 0, y: textField.frame.size.height - width, width:  textField.frame.size.width, height: textField.frame.size.height)
-        border.borderWidth = width
-        textField.layer.addSublayer(border)
-        textField.layer.masksToBounds = true
+        textField.textColor = UIColor.lightGray
+        textField.layer.borderColor = UIColor(red: 126/255, green: 127/255, blue: 137/255, alpha: 1).cgColor
     }
-    
     
     func customizeLoginButton() {
         loginButton.layer.cornerRadius = 15
@@ -102,20 +88,17 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         view.endEditing(true)
     }
 //================== End of UI Setup ===========================
-   
-   
-    
-    
 //================== OAuth Setup ===============================
     
     // Facebook button setup
     fileprivate func setupFacebookButton() {
-        facebookButton.backgroundColor = .blue
-        //This is temporary. Better to use constraints
         
+        
+//        facebookButton.setImage(UIImage(named:"logo_facebook2.png"), for: UIControlState.normal)
+        facebookButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 250)
         facebookButton.setTitle("Facebook", for: .normal)
-        facebookButton.layer.backgroundColor = UIColor(red: 54/255, green: 97/255, blue: 150/255, alpha: 1).cgColor
-        facebookButton.setTitleColor(.white, for: .normal)
+        //facebookButton.addTarget(self, action: Selector("showSortTbl"), forControlEvents: UIControlEvents.TouchUpInside)
+        
         
         facebookButton.addTarget(self, action: #selector(handleFacebookLogin), for: .touchUpInside)
     }
@@ -141,7 +124,6 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                 return
             }
             print("Successfully logged into Firebase with Facebook: ", user ?? "")
-            self.uid = (user?.uid)!
             DispatchQueue.main.async(execute: {
                 self.performSegue(withIdentifier: "hubSegue", sender: self)
             })
@@ -163,7 +145,6 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     //Google button setup
     fileprivate func setupGoogleButton() {
         googleButton.setTitle("Google", for: .normal)
-        googleButton.layer.backgroundColor = UIColor(red: 217/255, green: 55/255, blue: 44/255, alpha: 1).cgColor
         googleButton.setTitleColor(.white, for: .normal)
         googleButton.addTarget(self, action: #selector(handleGoogleLogin), for: .touchUpInside)
         GIDSignIn.sharedInstance().uiDelegate = self
@@ -199,7 +180,6 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
             
             guard let uid = user?.uid else { return }
             print("Successfully logged into Firebase with Google: ", uid)
-            self.uid = uid
             DispatchQueue.main.async(execute: {
                 self.performSegue(withIdentifier: "hubSegue", sender: self)
             })
@@ -209,22 +189,6 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     // End of Google button setup
     
     @IBAction func beginMailTransition(_ sender: Any) {
-        if !self.emailProcessActive {
-            UIView.animate(withDuration: 0.5, animations: {
-                self.mailButton.frame = CGRect(x: self.mailButton.frame.origin.x, y: self.mailButton.frame.origin.y - 200, width: self.mailButton.frame.size.width, height: self.mailButton.frame.size.height)
-            }) { (true) in
-                self.mailView.isHidden = false
-                self.emailProcessActive = true
-            }
-        } else {
-                self.mailView.isHidden = true
-                UIView.animate(withDuration: 0.5, animations: {
-                    self.mailButton.frame = CGRect(x: self.mailButton.frame.origin.x, y: self.mailButton.frame.origin.y + 200, width: self.mailButton.frame.size.width, height: self.mailButton.frame.size.height)
-                }) { (true) in
-                    self.emailProcessActive = false
-            }
-        }
-        
        
     }
     
@@ -267,12 +231,6 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         return inputPassword.characters.count > 6
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "hubSegue" {
-            let controller = segue.destination as! HubViewController
-            controller.uid = uid
-        }
-    }
     
     func segueTo () {
         //TODO: We must make a backendquery here. If the user is logging in for the first time and is using an email, or Twitter (check on this), then we need their name. Otherwise, continue on. 

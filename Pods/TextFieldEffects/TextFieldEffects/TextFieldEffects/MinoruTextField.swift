@@ -79,36 +79,25 @@ import UIKit
     }
     
     override open func animateViewsForTextEntry() {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.6, options: .beginFromCurrentState, animations: {
+        borderLayer.borderColor = textColor?.cgColor
+        borderLayer.shadowOffset = CGSize.zero
+        borderLayer.borderWidth = borderThickness
+        borderLayer.shadowColor = textColor?.cgColor
+        borderLayer.shadowOpacity = 0.5
+        borderLayer.shadowRadius = 1
         
-            self.borderLayer.borderColor = self.textColor?.cgColor
-            self.borderLayer.shadowOffset = CGSize.zero
-            self.borderLayer.borderWidth = self.borderThickness
-            self.borderLayer.shadowColor = self.textColor?.cgColor
-            self.borderLayer.shadowOpacity = 0.5
-            self.borderLayer.shadowRadius = 1
-        
-        }, completion: { _ in
-            self.animationCompletionHandler?(.textEntry)
-        })
+        animationCompletionHandler?(.textEntry)
     }
     
     override open func animateViewsForTextDisplay() {
-        if text!.isEmpty {
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0.6, options: .beginFromCurrentState, animations: {
-
-                self.borderLayer.borderColor = nil
-                self.borderLayer.shadowOffset = CGSize.zero
-                self.borderLayer.borderWidth = 0
-                self.borderLayer.shadowColor = nil
-                self.borderLayer.shadowOpacity = 0
-                self.borderLayer.shadowRadius = 0
-            }, completion: { _ in
+        borderLayer.borderColor = nil
+        borderLayer.shadowOffset = CGSize.zero
+        borderLayer.borderWidth = 0
+        borderLayer.shadowColor = nil
+        borderLayer.shadowOpacity = 0
+        borderLayer.shadowRadius = 0
         
-                self.animationCompletionHandler?(.textDisplay)
-            })
-            
-        }
+        animationCompletionHandler?(.textDisplay)
     }
     
     // MARK: - Private
