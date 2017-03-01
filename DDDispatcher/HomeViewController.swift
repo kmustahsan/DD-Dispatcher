@@ -61,18 +61,16 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         textField.borderStyle = .none
         textField.layer.backgroundColor = UIColor.white.cgColor
         textField.layer.masksToBounds = false
-        textField.layer.shadowColor = UIColor.gray.cgColor
+        textField.layer.shadowColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1).cgColor
         textField.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
         textField.layer.shadowOpacity = 1.0
         textField.layer.shadowRadius = 0.0
-        textField.layer.borderColor = UIColor(red: 126/255, green: 127/255, blue: 137/255, alpha: 1).cgColor
         
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        
-        textField.layer.borderColor = UIColor(red: 74/255, green: 255/255, blue: 255/255, alpha: 1).cgColor
-        textField.textColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+        textField.textColor = UIColor.black
+        textField.layer.shadowColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1).cgColor
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -92,24 +90,19 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     
     // Facebook button setup
     fileprivate func setupFacebookButton() {
-        
-        
-//        facebookButton.setImage(UIImage(named:"logo_facebook2.png"), for: UIControlState.normal)
         facebookButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 250)
         facebookButton.setTitle("Facebook", for: .normal)
-        //facebookButton.addTarget(self, action: Selector("showSortTbl"), forControlEvents: UIControlEvents.TouchUpInside)
-        
-        
-        facebookButton.addTarget(self, action: #selector(handleFacebookLogin), for: .touchUpInside)
+        if facebookButton.isHighlighted {
+            facebookButton.backgroundColor = UIColor.black
+        }
     }
     
-    func handleFacebookLogin() {
+    @IBAction func handleFacebookLogin(_ sender: Any) {
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self) { (result, error) in
             if let err = error {
                 print("Failed to login to Firebase with Facebook: ", err)
                 return
             }
-            
             self.connectFacebookToFirebase()
         }
     }
