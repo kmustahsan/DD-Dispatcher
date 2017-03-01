@@ -2,34 +2,64 @@
 //  ExtraInfoViewController.swift
 //  DDDispatcher
 //
-//  Created by macbookair11 on 2/18/17.
+//  Created by kmustahsan on 2/18/17.
 //  Copyright © 2017 DD Dispatcher. All rights reserved.
 //
 
 import UIKit
 
-class ExtraInfoViewController: UIViewController {
+class ExtraInfoViewController: UIViewController, UITextFieldDelegate  {
+    @IBOutlet weak var firstNameTextField: UITextField!
+    @IBOutlet weak var lastNameTextField: UITextField!
+    @IBOutlet weak var continueButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        Style.setupTextField(textField: firstNameTextField)
+        Style.setupTextField(textField: lastNameTextField)
+        firstNameTextField.becomeFirstResponder()
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0{
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+        
     }
-    */
-
+    
+    func keyboardWillHide(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y != 0{
+                self.view.frame.origin.y += keyboardSize.height
+            }
+        }
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        Style.activeTextField(textField: textField)
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == firstNameTextField {
+            firstNameTextField.resignFirstResponder()
+        }
+        Style.inactiveTextField(textField: textField)
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
+    
+    @IBAction func segueToHubScreen(_ sender: Any) {
+        if firstNameTextField.text != "" && lastNameTextField.text != "" {
+            performSegue(withIdentifier: "hubSegue", sender: self)
+        }
+    }
+    
 }
