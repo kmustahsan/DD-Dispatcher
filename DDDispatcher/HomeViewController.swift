@@ -10,21 +10,7 @@ import UIKit
 import Firebase
 import FBSDKLoginKit
 import GoogleSignIn
-import TextFieldEffects
 
-/*
-    TODOS: UI -   constraints
-                  icons next to Ouath buttons
-                  logo
-                  better spacing
-           Logic- confirm account uniqueness
-                  provide error handling (incorrect password, already used email, etc.)
-                  connect to firebase for email users
-                  infoSegue must also be done for Twitter users
-                  grab personal user data from Google
-                  store personal user data to DB
- 
- */
 class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
@@ -32,54 +18,35 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     @IBOutlet weak var facebookButton: UIButton!
     @IBOutlet weak var googleButton: UIButton!
     @IBOutlet weak var mailView: UIView!
-    @IBOutlet weak var mailButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //setup
-        emailTextField.keyboardType = .emailAddress
+        setupUI()
         self.emailTextField.delegate = self
         self.passwordTextField.delegate = self
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(HomeScreenViewController.dismissKeyboard))
-        view.addGestureRecognizer(tap)
-        
-        //UI
-        setTextField(textField: emailTextField)
-        setTextField(textField: passwordTextField)
-        customizeLoginButton()
-        
-        //OAuth
-        setupFacebookButton()
-        setupGoogleButton()
+        GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance().delegate = self
         
     }
 //================== UI Setup =================================
     
-    
-    func setTextField(textField: UITextField) {
-        textField.borderStyle = .none
-        textField.layer.backgroundColor = UIColor.white.cgColor
-        textField.layer.masksToBounds = false
-        textField.layer.shadowColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1).cgColor
-        textField.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
-        textField.layer.shadowOpacity = 1.0
-        textField.layer.shadowRadius = 0.0
+    func setupUI() {
+        Style.setupTextField(textField: emailTextField)
+        emailTextField.keyboardType = .emailAddress
+        Style.setupTextField(textField: passwordTextField)
+        Style.pillButton(button: loginButton)
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(HomeScreenViewController.dismissKeyboard))
+        view.addGestureRecognizer(tap)
         
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.textColor = UIColor.black
-        textField.layer.shadowColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1).cgColor
+        Style.activeTextField(textField: textField)
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        textField.textColor = UIColor.lightGray
-        textField.layer.borderColor = UIColor(red: 126/255, green: 127/255, blue: 137/255, alpha: 1).cgColor
-    }
-    
-    func customizeLoginButton() {
-        loginButton.layer.cornerRadius = 15
+        Style.inactiveTextField(textField: textField)
     }
     
     func dismissKeyboard() {
@@ -89,14 +56,6 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
 //================== OAuth Setup ===============================
     
     // Facebook button setup
-    fileprivate func setupFacebookButton() {
-        facebookButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 250)
-        facebookButton.setTitle("Facebook", for: .normal)
-        if facebookButton.isHighlighted {
-            facebookButton.backgroundColor = UIColor.black
-        }
-    }
-    
     @IBAction func handleFacebookLogin(_ sender: Any) {
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self) { (result, error) in
             if let err = error {
@@ -132,19 +91,10 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
             print(result ?? "")
         }
     }
-    
     // End of Facebook button setup
     
     //Google button setup
-    fileprivate func setupGoogleButton() {
-        googleButton.setTitle("Google", for: .normal)
-        googleButton.setTitleColor(.white, for: .normal)
-        googleButton.addTarget(self, action: #selector(handleGoogleLogin), for: .touchUpInside)
-        GIDSignIn.sharedInstance().uiDelegate = self
-        GIDSignIn.sharedInstance().delegate = self
-    }
-    
-    func handleGoogleLogin() {
+    @IBAction func handleGoogleLogin(_ sender: Any) {
         GIDSignIn.sharedInstance().signIn()
     }
     
@@ -153,7 +103,6 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
             print("Failed to login via Google: ", err)
             return
         }
-        
         print("Successfully logged into Google", user)
         /* We can store user information to Firebase here.. 
             user.profile.name
@@ -178,16 +127,7 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
             })
         })
     }
-
-    // End of Google button setup
-    
-    @IBAction func beginMailTransition(_ sender: Any) {
-       
-    }
-    
-    
-    
-    
+// End of Google button setup
     
     @IBAction func loginOnClick(_ sender: Any) {
         guard let inputEmail = emailTextField.text else { return }
@@ -227,7 +167,7 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     
     func segueTo () {
         //TODO: We must make a backendquery here. If the user is logging in for the first time and is using an email, or Twitter (check on this), then we need their name. Otherwise, continue on. 
-        let newEmailUser = false
+        let newEmailUser = true
         
         if newEmailUser {
             performSegue(withIdentifier: "infoSegue", sender: self)
