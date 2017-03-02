@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ExtraInfoViewController: UIViewController, UITextFieldDelegate  {
     @IBOutlet weak var firstNameTextField: UITextField!
@@ -58,7 +59,9 @@ class ExtraInfoViewController: UIViewController, UITextFieldDelegate  {
     
     @IBAction func segueToHubScreen(_ sender: Any) {
         if firstNameTextField.text != "" && lastNameTextField.text != "" {
-            
+            let ref = FIRDatabase.database().reference(fromURL: "https://dd-dispatcher-57aba.firebaseio.com/")
+            //ref.child("users/(user.uid)/first_name").setValue(firstNameTextField.text)
+            //ref.child("users/(user.uid)/last_name").setValue(lastNameTextField.text)
             
             performSegue(withIdentifier: "hubSegue", sender: self)
         }

@@ -250,6 +250,9 @@
                                     <constraint firstAttribute="width" constant="48" id="pMt-eC-Frc"/>
                                 </constraints>
                                 <state key="normal" image="forwardArrow"/>
+                                <connections>
+                                    <segue destination="Kxs-34-oJF" kind="show" identifier="hubSegue" id="ycC-Og-no3"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -285,4 +288,7 @@
         <image name="forwardArrow" width="48" height="48"/>
         <image name="logo" width="400" height="300"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="ycC-Og-no3"/>
+    </inferredMetricsTieBreakers>
 </document>

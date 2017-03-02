@@ -8,12 +8,11 @@
 
 import Foundation
 import Firebase
-import FirebaseDatabase
 
 class DataService {
     
     static let dataService = DataService()
-    private var _ref = FIRDatabase.database().reference()
+    private var _ref = FIRDatabase.database().reference(fromURL: "https://dd-dispatcher-57aba.firebaseio.com/")
     private var _users = FIRDatabase.database().reference().child("users")
     
     var ref: FIRDatabaseReference {

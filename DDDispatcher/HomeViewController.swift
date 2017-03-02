@@ -19,6 +19,7 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     @IBOutlet weak var googleButton: UIButton!
     @IBOutlet weak var mailView: UIView!
     var newEmailUser = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -146,7 +147,19 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                                 if let err = error {
                                     print("Error with email user", err)
                                 }
-                                print("Created user")
+                                guard let uid = user?.uid else { return }
+                                let ref = FIRDatabase.database().reference(fromURL: "https://dd-dispatcher-57aba.firebaseio.com/")
+                                let userReference = FIRDatabase.database().reference().child("users").child(uid)
+                                let values = ["first_name" : "nil", "last_name" : "nil", "email" : self.emailTextField.text, "provider" : "Email"] as [String : Any]
+                                userReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
+                                    if err != nil {
+                                        print("Error creating user in Firebase, ", err)
+                                    }
+                                    print("Created user")
+                                })
+                                
+                                
+                                
                             })
                             DispatchQueue.main.async(execute: {
                                 self.newEmailUser = true
