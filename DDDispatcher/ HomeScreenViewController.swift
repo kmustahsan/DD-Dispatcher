@@ -18,7 +18,7 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     @IBOutlet weak var facebookButton: UIButton!
     @IBOutlet weak var googleButton: UIButton!
     @IBOutlet weak var mailView: UIView!
-    var newEmailUser = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -148,10 +148,6 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                                 }
                                 print("Created user")
                             })
-                            DispatchQueue.main.async(execute: {
-                                self.newEmailUser = true
-                                self.segueTo()
-                            })
                         default:
                             print("Create User Error: \(error!)")
                         }
@@ -159,6 +155,7 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                     return
                 }
             })
+            segueTo()
         }
         
     }
@@ -169,6 +166,9 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     
     
     func segueTo () {
+        //TODO: We must make a backendquery here. If the user is logging in for the first time and is using an email, or Twitter (check on this), then we need their name. Otherwise, continue on. 
+        let newEmailUser = true
+        
         if newEmailUser {
             performSegue(withIdentifier: "infoSegue", sender: self)
         } else {

@@ -58,6 +58,8 @@ class ExtraInfoViewController: UIViewController, UITextFieldDelegate  {
     
     @IBAction func segueToHubScreen(_ sender: Any) {
         if firstNameTextField.text != "" && lastNameTextField.text != "" {
+            
+            
             performSegue(withIdentifier: "hubSegue", sender: self)
         }
     }
