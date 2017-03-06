@@ -8,17 +8,17 @@
 
 import UIKit
 import Firebase
+import FirebaseDatabase
 
 class ExtraInfoViewController: UIViewController, UITextFieldDelegate  {
-    @IBOutlet weak var firstNameTextField: UITextField!
-    @IBOutlet weak var lastNameTextField: UITextField!
+
+    @IBOutlet var nameTextField: UITextField!
     @IBOutlet weak var continueButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        Style.setupTextField(textField: firstNameTextField)
-        Style.setupTextField(textField: lastNameTextField)
-        firstNameTextField.becomeFirstResponder()
+        Style.setupTextField(textField: nameTextField)
+        nameTextField.becomeFirstResponder()
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
         view.addGestureRecognizer(tap)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
@@ -47,8 +47,8 @@ class ExtraInfoViewController: UIViewController, UITextFieldDelegate  {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {
-        if textField == firstNameTextField {
-            firstNameTextField.resignFirstResponder()
+        if textField == nameTextField {
+            nameTextField.resignFirstResponder()
         }
         Style.inactiveTextField(textField: textField)
     }
@@ -56,15 +56,19 @@ class ExtraInfoViewController: UIViewController, UITextFieldDelegate  {
     func dismissKeyboard() {
         view.endEditing(true)
     }
-    
     @IBAction func segueToHubScreen(_ sender: Any) {
-        if firstNameTextField.text != "" && lastNameTextField.text != "" {
-            let ref = FIRDatabase.database().reference(fromURL: "https://dd-dispatcher-57aba.firebaseio.com/")
-            //ref.child("users/(user.uid)/first_name").setValue(firstNameTextField.text)
-            //ref.child("users/(user.uid)/last_name").setValue(lastNameTextField.text)
-            
-            performSegue(withIdentifier: "hubSegue", sender: self)
-        }
+        guard let nameString = nameTextField.text else { return }
+        let uid = FIRAuth.auth()?.currentUser?.uid
+        let userString = "users/" + uid!
+        let ref = FIRDatabase.database().reference().child(userString)
+        ref.updateChildValues([
+            "name": nameString])
+        
+        performSegue(withIdentifier: "hubSegue", sender: self)
+        
+
     }
+    
+   
     
 }

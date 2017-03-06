@@ -2,7 +2,7 @@
 //  LoginViewController.swift
 //  DDDispatcher
 //
-//  Created by macbookair11 on 2/18/17.
+//  Created by kmustahsan on 2/18/17.
 //  Copyright © 2017 DD Dispatcher. All rights reserved.
 //
 
@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FBSDKLoginKit
 import GoogleSignIn
+import FirebaseDatabase
 
 class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
@@ -18,7 +19,7 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     @IBOutlet weak var facebookButton: UIButton!
     @IBOutlet weak var googleButton: UIButton!
     @IBOutlet weak var mailView: UIView!
-    var newEmailUser = false
+    	var newEmailUser = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,25 +72,36 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         let accessToken = FBSDKAccessToken.current()
         guard let accessTokenString = accessToken?.tokenString else { return }
         let credentials = FIRFacebookAuthProvider.credential(withAccessToken: accessTokenString)
-        FIRAuth.auth()?.signIn(with: credentials, completion: { (user, error) in
-            if let err = error {
-                print("Something went wrong with our FB user: ", err )
-                return
-            }
-            print("Successfully logged into Firebase with Facebook: ", user ?? "")
-            DispatchQueue.main.async(execute: {
-                self.performSegue(withIdentifier: "hubSegue", sender: self)
-            })
-           
-        })
-        
         FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email"]).start { (connection, result, error) in
             if let err = error {
                 print("Failed to start graph request:", err)
-                    return
+                return
             }
-            //TODO:This is where we can store user's personal data from Facebook to Firebase
-            print(result ?? "")
+            guard let data = result as? [String:Any] else  { return }
+            let name = 	data["name"]
+            let email = data["email"]
+            
+
+          
+            FIRAuth.auth()?.signIn(with: credentials, completion: { (user, error) in
+                if let err = error {
+                    print("Something went wrong with our FB user: ", err )
+                    return
+                }
+                print("Successfully logged into Firebase with Facebook: ", user ?? "")
+                guard let uid = user?.uid else { return }
+                let dictionary : [String: String] = [
+                    "name"       : name as! String,
+                    "email"      : email as! String,
+                    "provider"   : "Facebook"
+                ]
+                DataService.ds.createFirebaseUser(uid: uid, user: dictionary)
+                
+                DispatchQueue.main.async(execute: {
+                    self.performSegue(withIdentifier: "hubSegue", sender: self)
+                })
+                
+            })
         }
     }
     // End of Facebook button setup
@@ -115,14 +127,19 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         guard let accessToken = user.authentication.accessToken else { return }
         let credentials = FIRGoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
         
-        FIRAuth.auth()?.signIn(with: credentials, completion: { (user, error) in
+        FIRAuth.auth()?.signIn(with: credentials, completion: { (firUser, error) in
             if let err = error {
                 print("Failed to log into Firebase with Google: ", err)
                 return
             }
-            
-            guard let uid = user?.uid else { return }
-            print("Successfully logged into Firebase with Google: ", uid)
+            guard let uid = firUser?.uid else { return }
+            let dictionary : [String: String] = [
+                "name"       : user.profile.name,
+                "email"      : user.profile.email,
+                "provider"   : "Google"
+            ]
+            DataService.ds.createFirebaseUser(uid: uid, user: dictionary)
+
             DispatchQueue.main.async(execute: {
                 self.performSegue(withIdentifier: "hubSegue", sender: self)
             })
@@ -148,18 +165,12 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                                     print("Error with email user", err)
                                 }
                                 guard let uid = user?.uid else { return }
-                                let ref = FIRDatabase.database().reference(fromURL: "https://dd-dispatcher-57aba.firebaseio.com/")
-                                let userReference = FIRDatabase.database().reference().child("users").child(uid)
-                                let values = ["first_name" : "nil", "last_name" : "nil", "email" : self.emailTextField.text, "provider" : "Email"] as [String : Any]
-                                userReference.updateChildValues(values, withCompletionBlock: { (err, ref) in
-                                    if err != nil {
-                                        print("Error creating user in Firebase, ", err)
-                                    }
-                                    print("Created user")
-                                })
-                                
-                                
-                                
+                                let dictionary : [String: String] = [
+                                    "name"       : "nil",
+                                    "email"      : inputEmail,
+                                    "provider"   : "Email"
+                                ]
+                                DataService.ds.createFirebaseUser(uid: uid, user: dictionary)
                             })
                             DispatchQueue.main.async(execute: {
                                 self.newEmailUser = true
