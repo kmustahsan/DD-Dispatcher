@@ -2,7 +2,7 @@
 //  LoginViewController.swift
 //  DDDispatcher
 //
-//  Created by kmustahsan on 2/18/17.
+//  Created by macbookair11 on 2/18/17.
 //  Copyright © 2017 DD Dispatcher. All rights reserved.
 //
 
@@ -10,7 +10,6 @@ import UIKit
 import Firebase
 import FBSDKLoginKit
 import GoogleSignIn
-import FirebaseDatabase
 
 class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
@@ -19,7 +18,6 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     @IBOutlet weak var facebookButton: UIButton!
     @IBOutlet weak var googleButton: UIButton!
     @IBOutlet weak var mailView: UIView!
-    	var newEmailUser = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,36 +70,25 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         let accessToken = FBSDKAccessToken.current()
         guard let accessTokenString = accessToken?.tokenString else { return }
         let credentials = FIRFacebookAuthProvider.credential(withAccessToken: accessTokenString)
+        FIRAuth.auth()?.signIn(with: credentials, completion: { (user, error) in
+            if let err = error {
+                print("Something went wrong with our FB user: ", err )
+                return
+            }
+            print("Successfully logged into Firebase with Facebook: ", user ?? "")
+            DispatchQueue.main.async(execute: {
+                self.performSegue(withIdentifier: "hubSegue", sender: self)
+            })
+           
+        })
+        
         FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email"]).start { (connection, result, error) in
             if let err = error {
                 print("Failed to start graph request:", err)
-                return
-            }
-            guard let data = result as? [String:Any] else  { return }
-            let name = 	data["name"]
-            let email = data["email"]
-            
-
-          
-            FIRAuth.auth()?.signIn(with: credentials, completion: { (user, error) in
-                if let err = error {
-                    print("Something went wrong with our FB user: ", err )
                     return
-                }
-                print("Successfully logged into Firebase with Facebook: ", user ?? "")
-                guard let uid = user?.uid else { return }
-                let dictionary : [String: String] = [
-                    "name"       : name as! String,
-                    "email"      : email as! String,
-                    "provider"   : "Facebook"
-                ]
-                DataService.ds.createFirebaseUser(uid: uid, user: dictionary)
-                
-                DispatchQueue.main.async(execute: {
-                    self.performSegue(withIdentifier: "hubSegue", sender: self)
-                })
-                
-            })
+            }
+            //TODO:This is where we can store user's personal data from Facebook to Firebase
+            print(result ?? "")
         }
     }
     // End of Facebook button setup
@@ -127,19 +114,14 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         guard let accessToken = user.authentication.accessToken else { return }
         let credentials = FIRGoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
         
-        FIRAuth.auth()?.signIn(with: credentials, completion: { (firUser, error) in
+        FIRAuth.auth()?.signIn(with: credentials, completion: { (user, error) in
             if let err = error {
                 print("Failed to log into Firebase with Google: ", err)
                 return
             }
-            guard let uid = firUser?.uid else { return }
-            let dictionary : [String: String] = [
-                "name"       : user.profile.name,
-                "email"      : user.profile.email,
-                "provider"   : "Google"
-            ]
-            DataService.ds.createFirebaseUser(uid: uid, user: dictionary)
-
+            
+            guard let uid = user?.uid else { return }
+            print("Successfully logged into Firebase with Google: ", uid)
             DispatchQueue.main.async(execute: {
                 self.performSegue(withIdentifier: "hubSegue", sender: self)
             })
@@ -164,17 +146,7 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                                 if let err = error {
                                     print("Error with email user", err)
                                 }
-                                guard let uid = user?.uid else { return }
-                                let dictionary : [String: String] = [
-                                    "name"       : "nil",
-                                    "email"      : inputEmail,
-                                    "provider"   : "Email"
-                                ]
-                                DataService.ds.createFirebaseUser(uid: uid, user: dictionary)
-                            })
-                            DispatchQueue.main.async(execute: {
-                                self.newEmailUser = true
-                                self.segueTo()
+                                print("Created user")
                             })
                         default:
                             print("Create User Error: \(error!)")
@@ -183,6 +155,7 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                     return
                 }
             })
+            segueTo()
         }
         
     }
@@ -193,6 +166,9 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     
     
     func segueTo () {
+        //TODO: We must make a backendquery here. If the user is logging in for the first time and is using an email, or Twitter (check on this), then we need their name. Otherwise, continue on. 
+        let newEmailUser = true
+        
         if newEmailUser {
             performSegue(withIdentifier: "infoSegue", sender: self)
         } else {
