@@ -149,12 +149,12 @@
 		31580A6F1E5B600B00851FDD /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				1308683A1E6F97D60011C6F9 /* GroupListControllers */,
 				B8CFE6FD1E58BE2200F2E10F /* HomeViewController.swift */,
 				B8CFE7011E590BB700F2E10F /* ExtraInfoViewController.swift */,
 				B8B0E09F1E59206800A7339B /* HubViewController.swift */,
 				134C1D671E6F89500022A61E /* JoinGroupViewController.swift */,
 				130868301E6F928A0011C6F9 /* CreateGroupViewController.swift */,
+				1308683A1E6F97D60011C6F9 /* GroupListControllers */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
