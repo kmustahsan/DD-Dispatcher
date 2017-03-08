@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		130868311E6F928A0011C6F9 /* CreateGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 130868301E6F928A0011C6F9 /* CreateGroupViewController.swift */; };
+		130868331E6F92F20011C6F9 /* CreateGroup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 130868321E6F92F20011C6F9 /* CreateGroup.storyboard */; };
 		134C1D681E6F89500022A61E /* JoinGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134C1D671E6F89500022A61E /* JoinGroupViewController.swift */; };
 		134C1D6A1E6F89890022A61E /* JoinGroup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 134C1D691E6F89890022A61E /* JoinGroup.storyboard */; };
 		3F3832D41E563C6D005E1B3D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3832D31E563C6D005E1B3D /* AppDelegate.swift */; };
@@ -46,6 +48,8 @@
 /* Begin PBXFileReference section */
 		015394A914135CF84E35DA8E /* Pods_DDDispatcherUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DDDispatcherUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0FD7B7EB9AC7F3AACD8B084F /* Pods-DDDispatcherUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DDDispatcherUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DDDispatcherUITests/Pods-DDDispatcherUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		130868301E6F928A0011C6F9 /* CreateGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateGroupViewController.swift; sourceTree = "<group>"; };
+		130868321E6F92F20011C6F9 /* CreateGroup.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CreateGroup.storyboard; sourceTree = "<group>"; };
 		134C1D671E6F89500022A61E /* JoinGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinGroupViewController.swift; sourceTree = "<group>"; };
 		134C1D691E6F89890022A61E /* JoinGroup.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JoinGroup.storyboard; sourceTree = "<group>"; };
 		1F094A9A3A6880D5B608836E /* Pods-DDDispatcherUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DDDispatcherUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DDDispatcherUITests/Pods-DDDispatcherUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -109,6 +113,7 @@
 				3F3832D71E563C6D005E1B3D /* Main.storyboard */,
 				3F3832DC1E563C6D005E1B3D /* LaunchScreen.storyboard */,
 				134C1D691E6F89890022A61E /* JoinGroup.storyboard */,
+				130868321E6F92F20011C6F9 /* CreateGroup.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -129,6 +134,7 @@
 				B8CFE7011E590BB700F2E10F /* ExtraInfoViewController.swift */,
 				B8B0E09F1E59206800A7339B /* HubViewController.swift */,
 				134C1D671E6F89500022A61E /* JoinGroupViewController.swift */,
+				130868301E6F928A0011C6F9 /* CreateGroupViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -334,6 +340,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				130868331E6F92F20011C6F9 /* CreateGroup.storyboard in Resources */,
 				3F3832DE1E563C6D005E1B3D /* LaunchScreen.storyboard in Resources */,
 				134C1D6A1E6F89890022A61E /* JoinGroup.storyboard in Resources */,
 				3F3833031E563E73005E1B3D /* GoogleService-Info.plist in Resources */,
@@ -503,6 +510,7 @@
 			files = (
 				B8B0E0A01E59206800A7339B /* HubViewController.swift in Sources */,
 				B8CFE7021E590BB700F2E10F /* ExtraInfoViewController.swift in Sources */,
+				130868311E6F928A0011C6F9 /* CreateGroupViewController.swift in Sources */,
 				B8CFE6FE1E58BE2200F2E10F /* HomeViewController.swift in Sources */,
 				B820AA1E1E67A187008FBA91 /* DataService.swift in Sources */,
 				3F3832D41E563C6D005E1B3D /* AppDelegate.swift in Sources */,
