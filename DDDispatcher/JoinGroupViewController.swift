@@ -2,7 +2,7 @@
 //  JoinGroupViewController.swift
 //  DDDispatcher
 //
-//  Created by macbookair11 on 2/26/17.
+//  Created by Kashif Mustahsan on 3/7/17.
 //  Copyright © 2017 DD Dispatcher. All rights reserved.
 //
 
