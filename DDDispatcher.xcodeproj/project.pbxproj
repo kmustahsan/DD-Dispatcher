@@ -26,6 +26,9 @@
 		A441736FC7E7BA20607F364F /* Pods_DDDispatcherUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 015394A914135CF84E35DA8E /* Pods_DDDispatcherUITests.framework */; };
 		B81BBC251E673C7000DB7D3B /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81BBC241E673C7000DB7D3B /* Style.swift */; };
 		B820AA1E1E67A187008FBA91 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B820AA1D1E67A187008FBA91 /* DataService.swift */; };
+		B84A43141E76DAAD00A11D07 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84A43131E76DAAD00A11D07 /* MenuViewController.swift */; };
+		B84A43161E76DAD500A11D07 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84A43151E76DAD500A11D07 /* ContainerViewController.swift */; };
+		B84A43181E76DB1B00A11D07 /* Hub.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B84A43171E76DB1B00A11D07 /* Hub.storyboard */; };
 		B8B0E0A01E59206800A7339B /* HubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E09F1E59206800A7339B /* HubViewController.swift */; };
 		B8CFE6FE1E58BE2200F2E10F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CFE6FD1E58BE2200F2E10F /* HomeViewController.swift */; };
 		B8CFE7021E590BB700F2E10F /* ExtraInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CFE7011E590BB700F2E10F /* ExtraInfoViewController.swift */; };
@@ -81,6 +84,9 @@
 		80E488A980ED7217C4B57765 /* Pods-DDDispatcher.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DDDispatcher.release.xcconfig"; path = "Pods/Target Support Files/Pods-DDDispatcher/Pods-DDDispatcher.release.xcconfig"; sourceTree = "<group>"; };
 		B81BBC241E673C7000DB7D3B /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		B820AA1D1E67A187008FBA91 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
+		B84A43131E76DAAD00A11D07 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		B84A43151E76DAD500A11D07 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
+		B84A43171E76DB1B00A11D07 /* Hub.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Hub.storyboard; sourceTree = "<group>"; };
 		B8B0E09F1E59206800A7339B /* HubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HubViewController.swift; sourceTree = "<group>"; };
 		B8CFE6FD1E58BE2200F2E10F /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B8CFE7011E590BB700F2E10F /* ExtraInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtraInfoViewController.swift; sourceTree = "<group>"; };
@@ -133,6 +139,7 @@
 				134C1D691E6F89890022A61E /* JoinGroup.storyboard */,
 				130868321E6F92F20011C6F9 /* CreateGroup.storyboard */,
 				1308683B1E6F9B060011C6F9 /* GroupListAndInfo.storyboard */,
+				B84A43171E76DB1B00A11D07 /* Hub.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -149,9 +156,9 @@
 		31580A6F1E5B600B00851FDD /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				B84A43121E76DA8300A11D07 /* HubControllers */,
 				B8CFE6FD1E58BE2200F2E10F /* HomeViewController.swift */,
 				B8CFE7011E590BB700F2E10F /* ExtraInfoViewController.swift */,
-				B8B0E09F1E59206800A7339B /* HubViewController.swift */,
 				134C1D671E6F89500022A61E /* JoinGroupViewController.swift */,
 				130868301E6F928A0011C6F9 /* CreateGroupViewController.swift */,
 				1308683A1E6F97D60011C6F9 /* GroupListControllers */,
@@ -242,6 +249,16 @@
 				015394A914135CF84E35DA8E /* Pods_DDDispatcherUITests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B84A43121E76DA8300A11D07 /* HubControllers */ = {
+			isa = PBXGroup;
+			children = (
+				B8B0E09F1E59206800A7339B /* HubViewController.swift */,
+				B84A43131E76DAAD00A11D07 /* MenuViewController.swift */,
+				B84A43151E76DAD500A11D07 /* ContainerViewController.swift */,
+			);
+			name = HubControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -364,6 +381,7 @@
 				1308683C1E6F9B060011C6F9 /* GroupListAndInfo.storyboard in Resources */,
 				3F3832DE1E563C6D005E1B3D /* LaunchScreen.storyboard in Resources */,
 				134C1D6A1E6F89890022A61E /* JoinGroup.storyboard in Resources */,
+				B84A43181E76DB1B00A11D07 /* Hub.storyboard in Resources */,
 				3F3833031E563E73005E1B3D /* GoogleService-Info.plist in Resources */,
 				3F3832DB1E563C6D005E1B3D /* Assets.xcassets in Resources */,
 				3F3832D91E563C6D005E1B3D /* Main.storyboard in Resources */,
@@ -531,11 +549,13 @@
 			files = (
 				B8B0E0A01E59206800A7339B /* HubViewController.swift in Sources */,
 				B8CFE7021E590BB700F2E10F /* ExtraInfoViewController.swift in Sources */,
+				B84A43161E76DAD500A11D07 /* ContainerViewController.swift in Sources */,
 				130868371E6F97390011C6F9 /* GroupInfoViewController.swift in Sources */,
 				130868391E6F97A00011C6F9 /* GroupNameTableViewCell.swift in Sources */,
 				130868311E6F928A0011C6F9 /* CreateGroupViewController.swift in Sources */,
 				130868351E6F97100011C6F9 /* GroupListViewController.swift in Sources */,
 				B8CFE6FE1E58BE2200F2E10F /* HomeViewController.swift in Sources */,
+				B84A43141E76DAAD00A11D07 /* MenuViewController.swift in Sources */,
 				B820AA1E1E67A187008FBA91 /* DataService.swift in Sources */,
 				3F3832D41E563C6D005E1B3D /* AppDelegate.swift in Sources */,
 				134C1D681E6F89500022A61E /* JoinGroupViewController.swift in Sources */,
