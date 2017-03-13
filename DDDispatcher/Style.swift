@@ -36,4 +36,11 @@ struct Style {
     static func pillButton(button: UIButton) {
         button.layer.cornerRadius = 15
     }
+    
+    static func setupNavBarForHub(controller: UINavigationController) {
+        controller.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        controller.navigationBar.shadowImage = UIImage()
+        controller.navigationBar.isTranslucent = true
+        controller.view.backgroundColor = UIColor.clear
+    }
 }

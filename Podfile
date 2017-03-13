@@ -12,6 +12,7 @@ target 'DDDispatcher' do
 	pod 'Firebase/Auth'
 	pod 'GoogleSignIn'
 	pod 'Firebase/Database'
+	pod 'SideMenuController'
 
   target 'DDDispatcherTests' do
     inherit! :search_paths

@@ -29,8 +29,6 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
     }
     
     func setupButton() {
-        createGroupButton.layer.backgroundColor = UIColor(red: 240/255, green: 125/255, blue: 101/255, alpha: 1).cgColor
-        createGroupButton.setTitleColor(UIColor(red: 250/255, green: 244/255, blue: 227/255, alpha: 1), for: .normal)
         createGroupButton.layer.cornerRadius = 15
         
         avatarButton.layer.borderWidth = 1

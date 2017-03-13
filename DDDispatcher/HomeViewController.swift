@@ -90,9 +90,10 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                 }
                 print("Successfully logged into Firebase with Facebook: ", user ?? "")
                 guard let uid = user?.uid else { return }
-                let dictionary : [String: String] = [
+                let dictionary : [String: Any] = [
                     "name"       : name as! String,
                     "email"      : email as! String,
+                    "groups"     : ["Group1", "Group2"],
                     "provider"   : "Facebook"
                 ]
                 DataService.ds.createFirebaseUser(uid: uid, user: dictionary)
@@ -116,12 +117,6 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
             return
         }
         print("Successfully logged into Google", user)
-        /* We can store user information to Firebase here.. 
-            user.profile.name
-            user.profile.email
-         
-         */
-        
         guard let idToken = user.authentication.idToken else { return }
         guard let accessToken = user.authentication.accessToken else { return }
         let credentials = FIRGoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
@@ -132,9 +127,10 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                 return
             }
             guard let uid = firUser?.uid else { return }
-            let dictionary : [String: String] = [
+            let dictionary : [String: Any] = [
                 "name"       : user.profile.name,
                 "email"      : user.profile.email,
+                "groups"     : ["Group1", "Group2"],
                 "provider"   : "Google"
             ]
             DataService.ds.createFirebaseUser(uid: uid, user: dictionary)
@@ -164,9 +160,10 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                                     print("Error with email user", err)
                                 }
                                 guard let uid = user?.uid else { return }
-                                let dictionary : [String: String] = [
+                                let dictionary : [String: Any] = [
                                     "name"       : "nil",
                                     "email"      : inputEmail,
+                                    "groups"     : ["Group1", "Group2"],
                                     "provider"   : "Email"
                                 ]
                                 DataService.ds.createFirebaseUser(uid: uid, user: dictionary)
