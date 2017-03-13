@@ -173,13 +173,13 @@ class HubViewController: UIViewController, UIScrollViewDelegate,MenuViewControll
         leftArrow.isHidden = true
         
         // The first auto maker on the list is the default one to display
-        let defaultButton: UIButton = listOfMenuButtons[0]
-        
-        // Indicate that the button is selected
-        defaultButton.isSelected = true
-        
-        previousButton = defaultButton
-        selectedGroupName = activeGroupNames[0]
+//        let defaultButton: UIButton = listOfMenuButtons[0]
+//        
+//        // Indicate that the button is selected
+//        defaultButton.isSelected = true
+//        
+//        previousButton = defaultButton
+//        selectedGroupName = activeGroupNames[0]
         
     }
     
