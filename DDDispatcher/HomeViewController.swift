@@ -19,7 +19,7 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     @IBOutlet weak var facebookButton: UIButton!
     @IBOutlet weak var googleButton: UIButton!
     @IBOutlet weak var mailView: UIView!
-    	var newEmailUser = false
+    var newEmailUser = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,9 +96,8 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                     "provider"   : "Facebook"
                 ]
                 DataService.ds.createFirebaseUser(uid: uid, user: dictionary)
-                
                 DispatchQueue.main.async(execute: {
-                    self.performSegue(withIdentifier: "hubSegue", sender: self)
+                    self.segue()
                 })
                 
             })
@@ -141,7 +140,7 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
             DataService.ds.createFirebaseUser(uid: uid, user: dictionary)
 
             DispatchQueue.main.async(execute: {
-                self.performSegue(withIdentifier: "hubSegue", sender: self)
+                self.segue()
             })
         })
     }
@@ -174,7 +173,7 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                             })
                             DispatchQueue.main.async(execute: {
                                 self.newEmailUser = true
-                                self.segueTo()
+                                self.segue()
                             })
                         default:
                             print("Create User Error: \(error!)")
@@ -192,11 +191,14 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     }
     
     
-    func segueTo () {
+    func segue() {
         if newEmailUser {
             performSegue(withIdentifier: "infoSegue", sender: self)
         } else {
-            performSegue(withIdentifier: "hubSegue", sender: self)
+            let destinationStoryboard = UIStoryboard(name: "Hub", bundle: nil)
+            if let destinationViewController = destinationStoryboard.instantiateInitialViewController() {
+                self.present(destinationViewController, animated: true)
+            }
         }
     }
     
