@@ -42,6 +42,7 @@ class GroupListViewController: UIViewController, UITableViewDelegate, UITableVie
         
         //cell.groupImage =
         cell.groupName.text = "Testing Group"
+         //CACHE: retrieve info
         
         
         return cell;
