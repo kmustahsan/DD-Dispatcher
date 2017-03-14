@@ -96,7 +96,8 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                     "groups"     : ["Group1", "Group2"],
                     "provider"   : "Facebook"
                 ]
-                DataService.ds.createFirebaseUser(uid: uid, user: dictionary)
+                DataService.sharedInstance.createFirebaseUser(uid: uid, user: dictionary)
+                //CACHE: store user info here
                 DispatchQueue.main.async(execute: {
                     self.segue()
                 })
@@ -133,7 +134,8 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                 "groups"     : ["Group1", "Group2"],
                 "provider"   : "Google"
             ]
-            DataService.ds.createFirebaseUser(uid: uid, user: dictionary)
+            DataService.sharedInstance.createFirebaseUser(uid: uid, user: dictionary)
+            //CACHE: store user info here
 
             DispatchQueue.main.async(execute: {
                 self.segue()
@@ -166,7 +168,8 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                                     "groups"     : ["Group1", "Group2"],
                                     "provider"   : "Email"
                                 ]
-                                DataService.ds.createFirebaseUser(uid: uid, user: dictionary)
+                                DataService.sharedInstance.createFirebaseUser(uid: uid, user: dictionary)
+                                //CACHE: store user info here
                             })
                             DispatchQueue.main.async(execute: {
                                 self.newEmailUser = true

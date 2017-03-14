@@ -67,17 +67,13 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f1y-wn-PQ9">
-                                        <rect key="frame" x="141" y="607" width="92" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Create Group">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PZj-54-5V3">
                                         <rect key="frame" x="319" y="598" width="48" height="48"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" image="forwardArrow"/>
+                                        <connections>
+                                            <action selector="submitGroup:" destination="Ho1-zr-hYb" eventType="touchUpInside" id="bJK-7u-FfV"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Create Your Group" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zZK-D7-jzZ">
                                         <rect key="frame" x="116" y="83" width="142" height="21"/>
@@ -132,6 +128,7 @@
                     <connections>
                         <outlet property="avatarButton" destination="Nyb-ez-O5H" id="gyR-ke-kxZ"/>
                         <outlet property="createGroupButton" destination="PZj-54-5V3" id="sL9-dt-cED"/>
+                        <outlet property="groupNameTextField" destination="eB6-wZ-hHs" id="rr0-ZO-TD9"/>
                         <outlet property="textView" destination="xJY-2Q-l4L" id="l4m-zU-aop"/>
                         <segue destination="dHJ-xb-Noa" kind="unwind" identifier="unwindMenuSegue" unwindAction="unwindToHubWithSegue:" id="smb-Ae-8sZ"/>
                     </connections>
