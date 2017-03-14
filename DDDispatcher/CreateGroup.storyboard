@@ -12,7 +12,6 @@
         <!--Create Group View Controller-->
         <scene sceneID="rcU-9Q-eA9">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="MHe-jl-0Y3" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="Ho1-zr-hYb" customClass="CreateGroupViewController" customModule="DDDispatcher" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Hjf-A8-iE7"/>
@@ -87,18 +86,22 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="v4e-oV-o8C">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v4e-oV-o8C">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tlw-ba-Vcf">
                                                 <rect key="frame" x="8" y="8" width="46" height="32"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <state key="normal" title="Back"/>
+                                                <connections>
+                                                    <action selector="sendBack:" destination="Ho1-zr-hYb" eventType="touchUpInside" id="KW2-q4-Gb4"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="VLG-Bs-9Ld"/>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="ZNQ-PH-JeO"/>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleAspectFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nyb-ez-O5H">
@@ -110,6 +113,11 @@
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.95686274510000002" green="0.95686274510000002" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="v4e-oV-o8C" secondAttribute="trailing" id="68l-3l-CZC"/>
+                                    <constraint firstItem="v4e-oV-o8C" firstAttribute="leading" secondItem="Wlv-OX-9BL" secondAttribute="leading" id="SjF-mM-MNI"/>
+                                    <constraint firstItem="v4e-oV-o8C" firstAttribute="top" secondItem="Wlv-OX-9BL" secondAttribute="top" id="kCz-Qq-s9a"/>
+                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -125,8 +133,11 @@
                         <outlet property="avatarButton" destination="Nyb-ez-O5H" id="gyR-ke-kxZ"/>
                         <outlet property="createGroupButton" destination="PZj-54-5V3" id="sL9-dt-cED"/>
                         <outlet property="textView" destination="xJY-2Q-l4L" id="l4m-zU-aop"/>
+                        <segue destination="dHJ-xb-Noa" kind="unwind" identifier="unwindMenuSegue" unwindAction="unwindToHubWithSegue:" id="smb-Ae-8sZ"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MHe-jl-0Y3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="dHJ-xb-Noa" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1726" y="42"/>
         </scene>

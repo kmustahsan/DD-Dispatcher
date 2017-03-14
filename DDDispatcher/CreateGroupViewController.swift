@@ -78,6 +78,10 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
         
     }
     
+
+    @IBAction func sendBack(_ sender: Any) {
+        self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
+    }
     
     
     
