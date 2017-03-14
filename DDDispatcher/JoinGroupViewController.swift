@@ -31,6 +31,7 @@ class JoinGroupViewController: UIViewController {
                             usersArray.append( (FIRAuth.auth()!.currentUser?.uid)!)
                             ref.updateChildValues([
                                 "users": usersArray])
+                            //CACHE: update group/user
                         }
                     } //CREATE ERROR ALERT : show error to say user is already in the group
                 })
