@@ -65,6 +65,11 @@ class GroupListViewController: UIViewController, UITableViewDelegate, UITableVie
         }
     }
     
+    @IBAction func sendBack(_ sender: Any) {
+        self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
+    }
+    
+    
     
 }
 

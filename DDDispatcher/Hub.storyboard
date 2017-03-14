@@ -89,10 +89,11 @@
                             <outlet property="delegate" destination="UjV-QA-AXm" id="Nip-36-naQ"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="KxU-Ah-PVh"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="14M-bT-kVp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="61.600000000000001" y="745.27736131934034"/>
+            <point key="canvasLocation" x="62" y="949"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="jKq-2D-fBL">
@@ -129,7 +130,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0sN-9V-maU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2225" y="18"/>
+            <point key="canvasLocation" x="1970" y="18"/>
         </scene>
     </scenes>
     <resources>

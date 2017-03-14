@@ -9,27 +9,35 @@
 import UIKit
 
 class JoinGroupViewController: UIViewController {
+    @IBOutlet weak var groupCodeTextField: UITextField!
+    @IBOutlet weak var joinGroup: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        Style.setupTextField(textField: groupCodeTextField)
 
         // Do any additional setup after loading the view.
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func checkCode(code: String) {
+        // Firebase query
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    @IBAction func sendBack(_ sender: Any) {
+        self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
     }
-    */
+    
+    @IBAction func submitCode(_ sender: Any) {
+        let alert = UIAlertController(title: "Confirmation", message: "You joined Group!", preferredStyle: .alert)
+        let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {
+            (_)in
+            self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
+        })
+        
+        alert.addAction(OKAction)
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    
 
 }

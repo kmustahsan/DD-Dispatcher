@@ -10,8 +10,8 @@ import UIKit
 
 class MenuViewController: UITableViewController {
     
-    let options = ["Groups", "Create Group", "Create Event", "Join Group", "Settings"]
-    let numberOfRowsAtSection: [Int] = [0, 5]
+    let options = ["nil", "Groups", "Create Group", "Create Event", "Join Group", "Settings"]
+    let numberOfRowsAtSection: [Int] = [0, 6]
     private var previousIndex: NSIndexPath?
     
     override func viewDidLoad() {
@@ -56,21 +56,23 @@ class MenuViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView,
                             didSelectRowAt indexPath: IndexPath)  {
-
-        
         if let index = previousIndex {
             tableView.deselectRow(at: index as IndexPath, animated: true)
         }
         if indexPath.row == 1 {
+            segueToStoryboard(storyboard: "GroupListAndInfo")
+        }
+        if indexPath.row == 2 {
             segueToStoryboard(storyboard: "CreateGroup")
         }
-        else if indexPath.row == 2 {
+        else if indexPath.row == 3 {
             segueToStoryboard(storyboard: "Hub")
         }
-        else if indexPath.row == 3 {
-             segueToStoryboard(storyboard: "JoinGroup")
-        }
         else if indexPath.row == 4 {
+            segueToStoryboard(storyboard: "JoinGroup")
+            
+        }
+        else if indexPath.row == 5 {
             segueToStoryboard(storyboard: "Hub")
         }
         previousIndex = indexPath as NSIndexPath?
@@ -79,8 +81,8 @@ class MenuViewController: UITableViewController {
     func segueToStoryboard(storyboard: String) {
         let destinationStoryboard = UIStoryboard(name: storyboard, bundle: nil)
         if let destinationViewController = destinationStoryboard.instantiateInitialViewController() {
-            let baseController = HubViewController()
-            baseController.navigationController?.pushViewController(destinationViewController, animated: true)
+            self.present(destinationViewController, animated: true)
+
         }
     }
     
