@@ -11,12 +11,16 @@
  */
 
 import UIKit
+import Firebase
+import FirebaseDatabase
 
 class CreateGroupViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet weak var avatarButton: UIButton!
     @IBOutlet weak var createGroupButton: UIButton!
     @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var groupNameTextField: UITextField!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +34,6 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
     
     func setupButton() {
         createGroupButton.layer.cornerRadius = 15
-        
         avatarButton.layer.borderWidth = 1
         avatarButton.layer.masksToBounds = false
         avatarButton.layer.backgroundColor = UIColor.white.cgColor
@@ -68,9 +71,29 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
         view.endEditing(true)
     }
     
+    
     @IBAction func submitGroup(_ sender: Any) {
-        //We need to store this information in the DB
-        performSegue(withIdentifier: "codeSegue", sender: self)
+        //CACHE: Ref user
+        guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
+        //End
+        guard let groupName = groupNameTextField.text else { return }
+        guard let groupDesctiption = textView.text else { return }
+        let dictionary : [String: Any] = [
+            "admin"       : uid,
+            "name"        : groupName,
+            "description" : groupDesctiption,
+            "users"       : [uid]
+        ]
+        DataService.sharedInstance.createFirebaseGroup(values: dictionary)
+        
+        //CACHE: New group was created
+        
+        //TODO: This needs to segue to the group info page
+        let destinationStoryboard = UIStoryboard(name: "Hub", bundle: nil)
+        if let destinationViewController = destinationStoryboard.instantiateInitialViewController() {
+            self.present(destinationViewController, animated: true)
+            
+        }
     }
     
     @IBAction func selectAvatar(_ sender: Any) {
