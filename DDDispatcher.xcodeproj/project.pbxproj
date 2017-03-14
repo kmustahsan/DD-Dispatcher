@@ -30,6 +30,8 @@
 		B82612DB1E774EB100A39DFC /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82612DA1E774EB100A39DFC /* CustomTableViewCell.swift */; };
 		B84A43141E76DAAD00A11D07 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84A43131E76DAAD00A11D07 /* MenuViewController.swift */; };
 		B84A43181E76DB1B00A11D07 /* Hub.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B84A43171E76DB1B00A11D07 /* Hub.storyboard */; };
+		B872F5601E789E6900566704 /* cache.plist in Resources */ = {isa = PBXBuildFile; fileRef = B872F55F1E789E6900566704 /* cache.plist */; };
+		B872F5621E789E9F00566704 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B872F5611E789E9F00566704 /* Cache.swift */; };
 		B8B0E0A01E59206800A7339B /* HubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E09F1E59206800A7339B /* HubViewController.swift */; };
 		B8CFE6FE1E58BE2200F2E10F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CFE6FD1E58BE2200F2E10F /* HomeViewController.swift */; };
 		B8CFE7021E590BB700F2E10F /* ExtraInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CFE7011E590BB700F2E10F /* ExtraInfoViewController.swift */; };
@@ -89,6 +91,8 @@
 		B82612DA1E774EB100A39DFC /* CustomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		B84A43131E76DAAD00A11D07 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B84A43171E76DB1B00A11D07 /* Hub.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Hub.storyboard; sourceTree = "<group>"; };
+		B872F55F1E789E6900566704 /* cache.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = cache.plist; sourceTree = "<group>"; };
+		B872F5611E789E9F00566704 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		B8B0E09F1E59206800A7339B /* HubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HubViewController.swift; sourceTree = "<group>"; };
 		B8CFE6FD1E58BE2200F2E10F /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B8CFE7011E590BB700F2E10F /* ExtraInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtraInfoViewController.swift; sourceTree = "<group>"; };
@@ -136,12 +140,12 @@
 		134C1D6B1E6F8AE40022A61E /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				3F3832D71E563C6D005E1B3D /* Main.storyboard */,
 				3F3832DC1E563C6D005E1B3D /* LaunchScreen.storyboard */,
+				3F3832D71E563C6D005E1B3D /* Main.storyboard */,
+				B84A43171E76DB1B00A11D07 /* Hub.storyboard */,
 				134C1D691E6F89890022A61E /* JoinGroup.storyboard */,
 				130868321E6F92F20011C6F9 /* CreateGroup.storyboard */,
 				1308683B1E6F9B060011C6F9 /* GroupListAndInfo.storyboard */,
-				B84A43171E76DB1B00A11D07 /* Hub.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -151,6 +155,7 @@
 			children = (
 				B820AA1D1E67A187008FBA91 /* DataService.swift */,
 				B81BBC241E673C7000DB7D3B /* Style.swift */,
+				B872F5611E789E9F00566704 /* Cache.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -173,6 +178,7 @@
 			children = (
 				3F3832DF1E563C6D005E1B3D /* Info.plist */,
 				3F3833021E563E73005E1B3D /* GoogleService-Info.plist */,
+				B872F55F1E789E6900566704 /* cache.plist */,
 			);
 			name = PList;
 			sourceTree = "<group>";
@@ -385,6 +391,7 @@
 				3F3832DE1E563C6D005E1B3D /* LaunchScreen.storyboard in Resources */,
 				134C1D6A1E6F89890022A61E /* JoinGroup.storyboard in Resources */,
 				B84A43181E76DB1B00A11D07 /* Hub.storyboard in Resources */,
+				B872F5601E789E6900566704 /* cache.plist in Resources */,
 				3F3833031E563E73005E1B3D /* GoogleService-Info.plist in Resources */,
 				3F3832DB1E563C6D005E1B3D /* Assets.xcassets in Resources */,
 				3F3832D91E563C6D005E1B3D /* Main.storyboard in Resources */,
@@ -551,6 +558,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8B0E0A01E59206800A7339B /* HubViewController.swift in Sources */,
+				B872F5621E789E9F00566704 /* Cache.swift in Sources */,
 				B8CFE7021E590BB700F2E10F /* ExtraInfoViewController.swift in Sources */,
 				130868371E6F97390011C6F9 /* GroupInfoViewController.swift in Sources */,
 				B82612D81E77118600A39DFC /* CustomSideMenuController.swift in Sources */,
