@@ -23,7 +23,7 @@ class DataService {
         return _users
     }
     
-    func createFirebaseUser(uid: String, user: Dictionary<String, String>) {
+    func createFirebaseUser(uid: String, user: Dictionary<String, Any>) {
         ref.child("users").child(uid).setValue(user)
     }
 }

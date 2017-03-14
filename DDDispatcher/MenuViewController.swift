@@ -7,44 +7,83 @@
 //
 
 import UIKit
-import Firebase
-//----------------------- Related to Sliding View BEGIN ----------------------
-@objc
 
-// Define MenuViewControllerDelegate as a protocol with one required method
-protocol MenuViewControllerDelegate {
-    func sportSelected(_ url: URL)
-}
-
-class MenuViewController:UIViewController, UITableViewDelegate{
-    var delegate: MenuViewControllerDelegate?
+class MenuViewController: UITableViewController {
+    
+    let options = ["nil", "Groups", "Create Group", "Create Event", "Join Group", "Settings"]
+    let numberOfRowsAtSection: [Int] = [0, 6]
+    private var previousIndex: NSIndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
-    }
-    // Prepare the view before it appears to the user
-    override func viewWillAppear(_ animated: Bool) {
-        
-        super.viewWillAppear(animated)
-    }
-    // Scroll the selected sport name row towards the middle of the table view
-    override func viewDidAppear(_ animated: Bool) {
-        
-        super.viewDidAppear(animated)
-    }
-    /*
-     ----------------------------------------------
-     MARK: - UITableViewDataSource Protocol Methods
-     ----------------------------------------------
-     */
-    
-    // Asks the data source to return the number of sections in the table view
-    func numberOfSections(in tableView: UITableView) -> Int {
-        
-        return 1
     }
     
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        var rows = 0
+        
+        if section < numberOfRowsAtSection.count {
+            rows = numberOfRowsAtSection[section]
+        }
+        
+        return rows
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        if indexPath.row == 0 {
+            return 150
+        }
+        return 50
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "profileCell")!
+            return cell
+        }
+        else {
+            let optionsValue = options[indexPath.row]
+            let cell = tableView.dequeueReusableCell(withIdentifier: "menuCell")!
+            cell.textLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 15)
+            cell.textLabel?.text = optionsValue
+            return cell
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView,
+                            didSelectRowAt indexPath: IndexPath)  {
+        if let index = previousIndex {
+            tableView.deselectRow(at: index as IndexPath, animated: true)
+        }
+        if indexPath.row == 1 {
+            segueToStoryboard(storyboard: "GroupListAndInfo")
+        }
+        if indexPath.row == 2 {
+            segueToStoryboard(storyboard: "CreateGroup")
+        }
+        else if indexPath.row == 3 {
+            segueToStoryboard(storyboard: "Hub")
+        }
+        else if indexPath.row == 4 {
+            segueToStoryboard(storyboard: "JoinGroup")
+            
+        }
+        else if indexPath.row == 5 {
+            segueToStoryboard(storyboard: "Hub")
+        }
+        previousIndex = indexPath as NSIndexPath?
+    }
+    
+    func segueToStoryboard(storyboard: String) {
+        let destinationStoryboard = UIStoryboard(name: storyboard, bundle: nil)
+        if let destinationViewController = destinationStoryboard.instantiateInitialViewController() {
+            self.present(destinationViewController, animated: true)
+
+        }
+    }
     
 }

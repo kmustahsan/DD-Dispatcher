@@ -64,8 +64,10 @@ class ExtraInfoViewController: UIViewController, UITextFieldDelegate  {
         ref.updateChildValues([
             "name": nameString])
         
-        performSegue(withIdentifier: "hubSegue", sender: self)
-        
+        let destinationStoryboard = UIStoryboard(name: "Hub", bundle: nil)
+        if let destinationViewController = destinationStoryboard.instantiateInitialViewController() {
+            self.present(destinationViewController, animated: true)
+        }
 
     }
     

@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import SideMenuController
 @objc
 
 // Define HomeViewControllerDelegate as a protocol with two optional methods
@@ -17,9 +18,7 @@ protocol HubViewControllerDelegate {
     @objc optional func collapseMenuView()
 }
 
-class HubViewController: UIViewController, UIScrollViewDelegate,MenuViewControllerDelegate {
-    var uid = String()
-    
+class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControllerDelegate {
     // Instance variables
     @IBOutlet weak var label: UILabel!
     @IBOutlet var leftArrow: UIImageView!
@@ -36,32 +35,17 @@ class HubViewController: UIViewController, UIScrollViewDelegate,MenuViewControll
     let kScrollMenuHeight: CGFloat = 90.0
     var selectedGroupName = ""
     var previousButton = UIButton(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
-    
     let backgroundColorToUse = UIColor(red: 0.6, green: 0.8, blue: 1.0, alpha: 1.0)
-    
-    
-    
     var delegate: HubViewControllerDelegate?
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("UID ", uid)
-        label.text = "UID: " + uid
-        
-        // Todo: retrieve active groups and active group names
-        //
-        // activeGroupNames =
-        
-        /**********************
-         * Set Background Colors
-         **********************/
-        
-        self.view.backgroundColor = UIColor.white
-        leftArrow.backgroundColor = backgroundColorToUse
-        rightArrow.backgroundColor = backgroundColorToUse
-        scrollMenu.backgroundColor = backgroundColorToUse
-        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = UIColor.clear
+        sideMenuController?.delegate = self
+ /*        
         /***********************************************************************
          * Instantiate and setup the buttons for the horizontally scrollable menu
          ***********************************************************************/
@@ -132,8 +116,11 @@ class HubViewController: UIViewController, UIScrollViewDelegate,MenuViewControll
             
             // Add the constructed button to the list of buttons
             listOfMenuButtons.append(scrollMenuButton)
+            sideMenuController?.delegate = self
+            */
         }
         
+ /*
         /*********************************************************************************************
          * Compute the sumOfButtonWidths = sum of the widths of all buttons to be displayed in the menu
          *********************************************************************************************/
@@ -173,14 +160,13 @@ class HubViewController: UIViewController, UIScrollViewDelegate,MenuViewControll
         leftArrow.isHidden = true
         
         // The first auto maker on the list is the default one to display
-//        let defaultButton: UIButton = listOfMenuButtons[0]
-//        
-//        // Indicate that the button is selected
-//        defaultButton.isSelected = true
-//        
-//        previousButton = defaultButton
-//        selectedGroupName = activeGroupNames[0]
-        
+        //        let defaultButton: UIButton = listOfMenuButtons[0]
+        //
+        //        // Indicate that the button is selected
+        //        defaultButton.isSelected = true
+        //
+        //        previousButton = defaultButton
+        //        selectedGroupName = activeGroupNames[0]
     }
     
     /*
@@ -267,8 +253,20 @@ class HubViewController: UIViewController, UIScrollViewDelegate,MenuViewControll
             rightArrow.isHidden  = false     // Show right arrow
         }
     }
-    
-    func sportSelected(_ url: URL) {
-        
+ */
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print("\(#function) -- \(self)")
     }
+    
+    func sideMenuControllerDidHide(_ sideMenuController: SideMenuController) {
+        print(#function)
+    }
+    
+    func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
+        print(#function)
+    }
+    @IBAction func unwindToHub(segue: UIStoryboardSegue) {}
+    
 }
+
