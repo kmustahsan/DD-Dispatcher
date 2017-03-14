@@ -50,10 +50,6 @@ class DataService {
         groups.childByAutoId().setValue(values)
     }
     
-    func createFirebaseGroupUsers(values: [String]) {
-        groupUsers.setValue(values)
-    }
-    
     func queryFirebaseUserByUID(uid: String) {
         queryUserRef.child(uid).observe(.value, with: { (snapshot) -> Void in
             if !snapshot.exists() { return }

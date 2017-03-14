@@ -81,14 +81,11 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
         let dictionary : [String: Any] = [
             "admin"       : uid,
             "name"        : groupName,
-            "description" : groupDesctiption
-        ]
-        
-        let usersDictionary : [String] = [
-            uid
+            "description" : groupDesctiption,
+            "users"       : [uid]
         ]
         DataService.sharedInstance.createFirebaseGroup(values: dictionary)
-        DataService.sharedInstance.createFirebaseGroupUsers(values: usersDictionary)
+        
         //CACHE: New group was created
         
         //TODO: This needs to segue to the group info page

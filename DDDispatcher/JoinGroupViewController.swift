@@ -27,14 +27,14 @@ class JoinGroupViewController: UIViewController {
                 ref.observeSingleEvent(of: .value, with: { (snapshot) in
                     if snapshot.exists() {
                         var usersArray = (snapshot.value as? NSDictionary)?["users"] as! [String]
-                        usersArray.append( (FIRAuth.auth()!.currentUser?.uid)!)
-                        
-                        ref.updateChildValues([
-                            "users": usersArray])
-                    }
+                        if !usersArray.contains((FIRAuth.auth()!.currentUser?.uid)!) {
+                            usersArray.append( (FIRAuth.auth()!.currentUser?.uid)!)
+                            ref.updateChildValues([
+                                "users": usersArray])
+                        }
+                    } //CREATE ERROR ALERT : show error to say user is already in the group
                 })
                 
-               
                 self.confirmationAlert()
             } else {
                 self.errorAlert()
@@ -42,7 +42,7 @@ class JoinGroupViewController: UIViewController {
         }
     }
     
- 
+
     
     func confirmationAlert() {
         let alert = UIAlertController(title: "Confirmation", message: "You joined Group!", preferredStyle: .alert)
