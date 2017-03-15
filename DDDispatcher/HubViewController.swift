@@ -20,7 +20,6 @@ protocol HubViewControllerDelegate {
 
 class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControllerDelegate {
     // Instance variables
-    @IBOutlet weak var label: UILabel!
     @IBOutlet var leftArrow: UIImageView!
     @IBOutlet var rightArrow: UIImageView!
     @IBOutlet var scrollMenu: UIScrollView!
@@ -29,7 +28,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     var dict_avtiveGroups = [String: AnyObject]()
     
     // Array storing active group names.
-    var activeGroupNames = [String]()
+    var activeGroupNames = ["group.png", "group.png", "group.png", "group.png", "group.png"]
     
     // Scroll menu properties
     let kScrollMenuHeight: CGFloat = 90.0
@@ -45,7 +44,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = UIColor.clear
         sideMenuController?.delegate = self
- /*        
+        
         /***********************************************************************
          * Instantiate and setup the buttons for the horizontally scrollable menu
          ***********************************************************************/
@@ -117,10 +116,10 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             // Add the constructed button to the list of buttons
             listOfMenuButtons.append(scrollMenuButton)
             sideMenuController?.delegate = self
-            */
+ 
         }
         
- /*
+ 
         /*********************************************************************************************
          * Compute the sumOfButtonWidths = sum of the widths of all buttons to be displayed in the menu
          *********************************************************************************************/
@@ -158,6 +157,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         
         // Hide left arrow
         leftArrow.isHidden = true
+        rightArrow.isHidden = true
         
         // The first auto maker on the list is the default one to display
         //        let defaultButton: UIButton = listOfMenuButtons[0]
@@ -253,7 +253,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             rightArrow.isHidden  = false     // Show right arrow
         }
     }
- */
+ 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         print("\(#function) -- \(self)")
