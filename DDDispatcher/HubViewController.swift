@@ -49,7 +49,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         self.view.backgroundColor = UIColor.white
         
         //Set background color for the scroll menu so check circular image
-        scrollMenu.backgroundColor = UIColor(red: 0.6, green: 0.8, blue: 1.0, alpha: 1.0)
+        //scrollMenu.backgroundColor = UIColor(red: 0.6, green: 0.8, blue: 1.0, alpha: 1.0)
         
         /***********************************************************************
          * Instantiate and setup the buttons for the horizontally scrollable menu
@@ -71,7 +71,9 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             // button width  = auto logo image width + 10 points padding for each side
             // button height = kScrollMenuHeight points
             scrollMenuButton.frame = CGRect(x: 0.0, y: 0.0, width: groupLogo!.size.width + 20.0, height:kScrollMenuHeight)
-            scrollMenuButton.layer.cornerRadius = 0.5 * scrollMenuButton.bounds.width
+            //scrollMenuButton.layer.cornerRadius = 0.5 * scrollMenuButton.bounds.width
+            // Test:
+            s//crollMenuButton.backgroundColor = UIColor.white
             
             // Set the button image to be the group's logo
             scrollMenuButton.setImage(groupLogo, for: UIControlState())
