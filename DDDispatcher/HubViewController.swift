@@ -19,9 +19,8 @@ protocol HubViewControllerDelegate {
 }
 
 class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControllerDelegate {
+    
     // Instance variables
-    @IBOutlet var leftArrow: UIImageView!
-    @IBOutlet var rightArrow: UIImageView!
     @IBOutlet var scrollMenu: UIScrollView!
     
     // Dictionary containing active group info.
@@ -39,11 +38,18 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = UIColor.clear
         sideMenuController?.delegate = self
+        
+        //set background colors
+        self.view.backgroundColor = UIColor.white
+        
+        //Set background color for the scroll menu so check circular image
+        scrollMenu.backgroundColor = UIColor(red: 0.6, green: 0.8, blue: 1.0, alpha: 1.0)
         
         /***********************************************************************
          * Instantiate and setup the buttons for the horizontally scrollable menu
@@ -59,11 +65,13 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             
             // Todo: Obtain the group's logo image.
             let groupLogo = UIImage(named: activeGroupNames[i])
+
             
             // Set the button frame at origin at (x, y) = (0, 0) with
             // button width  = auto logo image width + 10 points padding for each side
             // button height = kScrollMenuHeight points
             scrollMenuButton.frame = CGRect(x: 0.0, y: 0.0, width: groupLogo!.size.width + 20.0, height:kScrollMenuHeight)
+            scrollMenuButton.layer.cornerRadius = 0.5 * scrollMenuButton.bounds.width
             
             // Set the button image to be the group's logo
             scrollMenuButton.setImage(groupLogo, for: UIControlState())
@@ -151,22 +159,6 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         // Horizontally scrollable menu's content height size = kScrollMenuHeight points
         scrollMenu.contentSize = CGSize(width: sumOfButtonWidths, height: kScrollMenuHeight)
         
-        /*******************************************************
-         * Select and show the default auto maker upon app launch
-         *******************************************************/
-        
-        // Hide left arrow
-        leftArrow.isHidden = true
-        rightArrow.isHidden = true
-        
-        // The first auto maker on the list is the default one to display
-        //        let defaultButton: UIButton = listOfMenuButtons[0]
-        //
-        //        // Indicate that the button is selected
-        //        defaultButton.isSelected = true
-        //
-        //        previousButton = defaultButton
-        //        selectedGroupName = activeGroupNames[0]
     }
     
     /*
@@ -218,39 +210,9 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-        /*
-         Content        = concatenated list of buttons
-         Content Width  = sum of all button widths, sumOfButtonWidths
-         Content Height = kScrollMenuHeight points
-         Origin         = (x, y) values of the bottom left corner of the scroll view or content
-         Sx             = Scroll View's origin x value
-         Cx             = Content's origin x value
-         contentOffset  = Sx - Cx
-         
-         Interpretation of the Arrows:
-         
-         IF scrolled all the way to the RIGHT THEN show only RIGHT arrow: indicating that the data (content) is
-         on the right hand side and therefore, the user must *** scroll to the left *** to see the content.
-         
-         IF scrolled all the way to the LEFT THEN show only LEFT arrow: indicating that the data (content) is
-         on the left hand side and therefore, the user must *** scroll to the right *** to see the content.
-         
-         5 pixels used as padding
-         */
-        if scrollView.contentOffset.x <= 5 {
-            // Scrolling is done all the way to the RIGHT
-            leftArrow.isHidden   = true      // Hide left arrow
-            rightArrow.isHidden  = false     // Show right arrow
-        }
-        else if scrollView.contentOffset.x >= (scrollView.contentSize.width - scrollView.frame.size.width) - 5 {
-            // Scrolling is done all the way to the LEFT
-            leftArrow.isHidden   = false     // Show left arrow
-            rightArrow.isHidden  = true      // Hide right arrow
-        }
-        else {
-            // Scrolling is in between. Scrolling can be done in either direction.
-            leftArrow.isHidden   = false     // Show left arrow
-            rightArrow.isHidden  = false     // Show right arrow
+        //disable horizontal scrolling
+        if scrollView.contentOffset.y != 0 {
+            scrollView.contentOffset.y = 0
         }
     }
  
@@ -266,6 +228,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
         print(#function)
     }
+    
     @IBAction func unwindToHub(segue: UIStoryboardSegue) {}
     
 }
