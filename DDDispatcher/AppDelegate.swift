@@ -10,6 +10,7 @@ import UIKit
 import Firebase
 import FBSDKCoreKit
 import GoogleSignIn
+import GoogleMaps
 import SideMenuController
 
 @UIApplicationMain
@@ -28,7 +29,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SideMenuController.preferences.drawing.centerPanelShadow = true
         SideMenuController.preferences.animating.statusBarBehaviour = .showUnderlay
         SideMenuController.preferences.animating.transitionAnimator = FadeAnimator.self
-
+        GMSServices.provideAPIKey("AIzaSyBi7mQwhgrJJTG5Vrrz44LMjYIJi7iiN8U")
        
         
         return true

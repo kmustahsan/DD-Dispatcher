@@ -32,6 +32,9 @@
 		B84A43181E76DB1B00A11D07 /* Hub.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B84A43171E76DB1B00A11D07 /* Hub.storyboard */; };
 		B872F5601E789E6900566704 /* cache.plist in Resources */ = {isa = PBXBuildFile; fileRef = B872F55F1E789E6900566704 /* cache.plist */; };
 		B872F5621E789E9F00566704 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B872F5611E789E9F00566704 /* Cache.swift */; };
+		B872F5641E7C780900566704 /* Map.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B872F5631E7C780900566704 /* Map.storyboard */; };
+		B872F5661E7C7AF400566704 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B872F5651E7C7AF400566704 /* MapViewController.swift */; };
+		B872F56A1E7CA16400566704 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B872F5691E7CA16300566704 /* CoreLocation.framework */; };
 		B8B0E0A01E59206800A7339B /* HubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E09F1E59206800A7339B /* HubViewController.swift */; };
 		B8CFE6FE1E58BE2200F2E10F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CFE6FD1E58BE2200F2E10F /* HomeViewController.swift */; };
 		B8CFE7021E590BB700F2E10F /* ExtraInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CFE7011E590BB700F2E10F /* ExtraInfoViewController.swift */; };
@@ -93,6 +96,9 @@
 		B84A43171E76DB1B00A11D07 /* Hub.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Hub.storyboard; sourceTree = "<group>"; };
 		B872F55F1E789E6900566704 /* cache.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = cache.plist; sourceTree = "<group>"; };
 		B872F5611E789E9F00566704 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		B872F5631E7C780900566704 /* Map.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Map.storyboard; sourceTree = "<group>"; };
+		B872F5651E7C7AF400566704 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		B872F5691E7CA16300566704 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		B8B0E09F1E59206800A7339B /* HubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HubViewController.swift; sourceTree = "<group>"; };
 		B8CFE6FD1E58BE2200F2E10F /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B8CFE7011E590BB700F2E10F /* ExtraInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtraInfoViewController.swift; sourceTree = "<group>"; };
@@ -104,6 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B872F56A1E7CA16400566704 /* CoreLocation.framework in Frameworks */,
 				DEFFD125797971AA675CC968 /* Pods_DDDispatcher.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -146,6 +153,7 @@
 				134C1D691E6F89890022A61E /* JoinGroup.storyboard */,
 				130868321E6F92F20011C6F9 /* CreateGroup.storyboard */,
 				1308683B1E6F9B060011C6F9 /* GroupListAndInfo.storyboard */,
+				B872F5631E7C780900566704 /* Map.storyboard */,
 			);
 			name = Storyboards;
 			sourceTree = "<group>";
@@ -252,6 +260,7 @@
 		8BAB30903C4EE41157CD1919 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B872F5691E7CA16300566704 /* CoreLocation.framework */,
 				5F9467B053EA932CF671E5B6 /* Pods_DDDispatcher.framework */,
 				49BE5BADE2763B6D00B3E1B1 /* Pods_DDDispatcherTests.framework */,
 				015394A914135CF84E35DA8E /* Pods_DDDispatcherUITests.framework */,
@@ -266,6 +275,7 @@
 				B84A43131E76DAAD00A11D07 /* MenuViewController.swift */,
 				B82612D71E77118600A39DFC /* CustomSideMenuController.swift */,
 				B82612DA1E774EB100A39DFC /* CustomTableViewCell.swift */,
+				B872F5651E7C7AF400566704 /* MapViewController.swift */,
 			);
 			name = HubControllers;
 			sourceTree = "<group>";
@@ -393,6 +403,7 @@
 				B84A43181E76DB1B00A11D07 /* Hub.storyboard in Resources */,
 				B872F5601E789E6900566704 /* cache.plist in Resources */,
 				3F3833031E563E73005E1B3D /* GoogleService-Info.plist in Resources */,
+				B872F5641E7C780900566704 /* Map.storyboard in Resources */,
 				3F3832DB1E563C6D005E1B3D /* Assets.xcassets in Resources */,
 				3F3832D91E563C6D005E1B3D /* Main.storyboard in Resources */,
 			);
@@ -572,6 +583,7 @@
 				3F3832D41E563C6D005E1B3D /* AppDelegate.swift in Sources */,
 				134C1D681E6F89500022A61E /* JoinGroupViewController.swift in Sources */,
 				B81BBC251E673C7000DB7D3B /* Style.swift in Sources */,
+				B872F5661E7C7AF400566704 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
