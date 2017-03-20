@@ -70,6 +70,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Allow location</string>
+	<string>Show your location on the map</string>
 </dict>
 </plist>

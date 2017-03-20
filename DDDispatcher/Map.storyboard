@@ -28,10 +28,10 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="151"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zjg-8Y-1Kz">
-                                                <rect key="frame" x="43" y="46" width="289" height="40"/>
+                                                <rect key="frame" x="43" y="46" width="289" height="25"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="CM6-Ow-PyP"/>
+                                                    <constraint firstAttribute="height" constant="25" id="RXJ-iy-CNI"/>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t0s-Hm-W9S">
@@ -45,16 +45,16 @@
                                                 </state>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kVT-sq-tlh">
-                                                <rect key="frame" x="43" y="94" width="289" height="40"/>
+                                                <rect key="frame" x="43" y="93" width="289" height="25"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="8be-ds-TyS"/>
+                                                    <constraint firstAttribute="height" constant="25" id="dp2-uV-Jw1"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="kVT-sq-tlh" firstAttribute="top" secondItem="zjg-8Y-1Kz" secondAttribute="bottom" constant="8" id="1X7-4Z-r5g"/>
+                                            <constraint firstItem="kVT-sq-tlh" firstAttribute="top" secondItem="zjg-8Y-1Kz" secondAttribute="bottom" constant="22" id="1X7-4Z-r5g"/>
                                             <constraint firstItem="t0s-Hm-W9S" firstAttribute="top" secondItem="tlf-VM-hlF" secondAttribute="top" constant="8" id="6M9-tt-3AZ"/>
                                             <constraint firstItem="kVT-sq-tlh" firstAttribute="leading" secondItem="tlf-VM-hlF" secondAttribute="leading" constant="43" id="EkY-9O-BLo"/>
                                             <constraint firstAttribute="trailing" secondItem="kVT-sq-tlh" secondAttribute="trailing" constant="43" id="Tdq-mU-YQD"/>
@@ -66,7 +66,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zCB-sb-vQR">
-                                        <rect key="frame" x="34" y="119" width="307" height="55"/>
+                                        <rect key="frame" x="34" y="126" width="307" height="55"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Where to?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PjO-Ud-wE5">
                                                 <rect key="frame" x="8" y="17" width="98" height="21"/>
@@ -83,11 +83,11 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="zCB-sb-vQR" firstAttribute="leading" secondItem="37r-Bm-0oM" secondAttribute="leading" constant="34" id="1vi-Pq-kem"/>
+                                    <constraint firstItem="zCB-sb-vQR" firstAttribute="leading" secondItem="37r-Bm-0oM" secondAttribute="leading" constant="34" id="3MH-dq-VQF"/>
                                     <constraint firstItem="tlf-VM-hlF" firstAttribute="leading" secondItem="37r-Bm-0oM" secondAttribute="leading" id="6xv-Ek-Ime"/>
-                                    <constraint firstItem="zCB-sb-vQR" firstAttribute="top" secondItem="37r-Bm-0oM" secondAttribute="top" constant="119" id="BhU-RC-WHN"/>
+                                    <constraint firstAttribute="trailing" secondItem="zCB-sb-vQR" secondAttribute="trailing" constant="34" id="Ltw-i6-fxs"/>
                                     <constraint firstAttribute="trailing" secondItem="tlf-VM-hlF" secondAttribute="trailing" id="Pnn-rt-ITN"/>
-                                    <constraint firstAttribute="trailing" secondItem="zCB-sb-vQR" secondAttribute="trailing" constant="34" id="Wb5-cS-7m6"/>
+                                    <constraint firstItem="zCB-sb-vQR" firstAttribute="top" secondItem="37r-Bm-0oM" secondAttribute="top" constant="126" id="fn2-cz-6W5"/>
                                     <constraint firstItem="tlf-VM-hlF" firstAttribute="leading" secondItem="37r-Bm-0oM" secondAttribute="leading" id="l7g-xa-OLm"/>
                                     <constraint firstItem="tlf-VM-hlF" firstAttribute="top" secondItem="37r-Bm-0oM" secondAttribute="top" id="xCv-G2-PsT"/>
                                     <constraint firstAttribute="trailing" secondItem="tlf-VM-hlF" secondAttribute="trailing" id="z2e-UN-SB6"/>
@@ -110,7 +110,7 @@
                         <outlet property="searchDisplayController" destination="5xT-GY-9ZJ" id="pET-LG-kHZ"/>
                         <outlet property="searchTrigger" destination="zCB-sb-vQR" id="uDd-bf-PV9"/>
                         <outlet property="startSearchView" destination="zjg-8Y-1Kz" id="qDI-Jt-BT4"/>
-                        <segue destination="6uI-LD-DkI" kind="show" identifier="rideSegue" id="pcG-R4-Z0P"/>
+                        <segue destination="6uI-LD-DkI" kind="show" identifier="confirmationSegue" id="pcG-R4-Z0P"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9nW-VB-Ri2" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -125,10 +125,10 @@
             </objects>
             <point key="canvasLocation" x="-44" y="-16.641679160419791"/>
         </scene>
-        <!--Search View Controller-->
+        <!--Ride Confirmation View Controller-->
         <scene sceneID="gJn-YK-D3d">
             <objects>
-                <viewController id="6uI-LD-DkI" customClass="SearchViewController" customModule="DDDispatcher" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="6uI-LD-DkI" customClass="RideConfirmationViewController" customModule="DDDispatcher" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9fm-0n-kXG"/>
                         <viewControllerLayoutGuide type="bottom" id="CjJ-5n-HdJ"/>
@@ -141,7 +141,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kBr-jQ-FvW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="644" y="-15.742128935532236"/>
+            <point key="canvasLocation" x="775" y="-17"/>
         </scene>
     </scenes>
 </document>
