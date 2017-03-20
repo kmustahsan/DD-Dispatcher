@@ -137,6 +137,7 @@ extension MapViewController: GMSAutocompleteResultsViewControllerDelegate {
         if destinationSearchController?.isActive == true {
             
             destinationPlace = place
+            //send place.formattedAddress
             performSegue(withIdentifier: "confirmationSegue", sender: nil)
         }
         
