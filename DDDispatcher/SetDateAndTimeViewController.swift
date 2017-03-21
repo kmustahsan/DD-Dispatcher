@@ -13,6 +13,7 @@ class SetDateAndTimeViewController: UIViewController {
     //set variables
     var infoPassed = ["", "", ""]
     var dateToPass = ["", ""] //[0] = start date, [1] end date
+    
     var endDateChanged = 0
     
     //set outlet
@@ -32,11 +33,8 @@ class SetDateAndTimeViewController: UIViewController {
         
         dateToPass[0] = dateFormatter.string(from: startDatePicker.date)
         
-        
         startDatePicker.addTarget(self, action: #selector(SetDateAndTimeViewController.startDatePickerChanged), for: UIControlEvents.valueChanged)
         endDatePicker.addTarget(self, action: #selector(SetDateAndTimeViewController.endDatePickerChanged), for: UIControlEvents.valueChanged)
-        
-        
     }
     
     /*
@@ -120,9 +118,6 @@ class SetDateAndTimeViewController: UIViewController {
             createEventFormViewController.infoPassed = infoPassed
             createEventFormViewController.doneSetting = 1
             createEventFormViewController.datePassed = dateToPass
-        } else if segue.identifier == "selectDriver" {
-            
-            
         }
     }
     

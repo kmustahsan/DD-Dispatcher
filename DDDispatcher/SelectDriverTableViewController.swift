@@ -10,10 +10,20 @@ import UIKit
 
 class SelectDriverTableViewController: UITableViewController {
 
-    var groupMembers = ["Pikachu Raichu", "Yoonju Lee", "Woo Jin Kye"]
+    //set variables
+    var groupMembersPassed = [""]
+    var drivers = [""]
+    var eventInformationPassed = ["", "", "", "", ""] //[0] group Name, [1] event name, [2] description, [3] start date, [4] end date
+    
+    //set outlet
+    @IBOutlet var groupMembersTableView: UITableView!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.title = "Select Drivers"
+        self.navigationItem.leftBarButtonItem?.title = "Back"
+        self.navigationItem.leftBarButtonItem?.tintColor = .black
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -25,87 +35,59 @@ class SelectDriverTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return groupMembers.count
+        return groupMembersPassed.count
     }
 
-    //-------------------------------------
-    // Prepare and Return a Table View Cell
-    //-------------------------------------
     
+    //-------------------------------------
+    // Return a Table View Cell
+    //-------------------------------------
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CityTableView", for: indexPath) as UITableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "groupMemeberCell", for: indexPath) as UITableViewCell
         
-        let sectionNumber = (indexPath as NSIndexPath).section
         let rowNumber = (indexPath as NSIndexPath).row
         
-        // Obtain the name of the given country
-        let givenCountryName = countryNames[sectionNumber]
-        
-        /*
-         Note that city names must not be sorted. The order shows how favorite the city is.
-         The higher the order the more favorite the city is. The user specifies the ordering
-         in the Edit mode by moving a row from one location to another for the same country.
-         */
-        
-        // Obtain the list of cities in the given country as AnyObject
-        let cities: AnyObject? = applicationDelegate.dict_Country_Cities[givenCountryName] as AnyObject
-        
-        // Typecast the AnyObject to Swift array of String objects
-        var citiesOfGivenCountry = cities! as! [String]
-        
         // Set the cell title to be the city name
-        cell.textLabel!.text = citiesOfGivenCountry[rowNumber]
-        
-        cell.imageView!.image = UIImage(named: "FavoriteIcon.png")
+        cell.textLabel!.text = groupMembersPassed[rowNumber]
         
         return cell
     }
-
-
+    
     /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+     -----------------------------------
+     MARK: - Table View Delegate Methods
+     -----------------------------------
+     */
+    
+    // Tapping a row (group member's name)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let rowNumber = (indexPath as NSIndexPath).row
+        
+        if let cell = tableView.cellForRow(at: indexPath) {
+            
+            if cell.accessoryType == .none {
+                cell.accessoryType = .checkmark
+                drivers.append(groupMembersPassed[rowNumber])
+                print(drivers)
+                
+            } else {
+                cell.accessoryType = .none
+                
+                let memberToBeRemoved = groupMembersPassed[rowNumber]
+                
+                for i in stride(from: 0, to: drivers.count, by: 1) {
+                    print(drivers[i])
+                    if drivers[i] == memberToBeRemoved {
+                        drivers.remove(at: i)
+                        break
+                    }
+                }
+                print(drivers)
+            }
+        }
+        
     }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }

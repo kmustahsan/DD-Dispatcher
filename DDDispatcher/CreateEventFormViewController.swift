@@ -16,6 +16,7 @@ class CreateEventFormViewController: UIViewController {
     var infoPassed = ["", "", ""]
     var doneSetting = 0
     var datePassed = ["", ""]
+    var groupMembersToPass = ["Pikachu Raichu", "Yoonju Lee", "Woo Jin Kye"]
     
     //set outlets
     @IBOutlet var groupName: UITextField!
@@ -23,8 +24,6 @@ class CreateEventFormViewController: UIViewController {
     @IBOutlet var startDate: UITextField!
     @IBOutlet var endDate: UITextField!
     @IBOutlet var eventDescription: UITextView!
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,10 +107,24 @@ class CreateEventFormViewController: UIViewController {
             setDateAndTimeViewController.infoPassed = infoToPass
         } else if segue.identifier == "selectDriver" {
             
+            if eventName.text! == "" || startDate.text! == "" || endDate.text! == "" || startDate.text! == "Start Date:" || endDate.text! == "End Date" {
+                let alertController = UIAlertController(title: "Warning",
+                                                    message: "Please fill out the form completely",
+                                                    preferredStyle: UIAlertControllerStyle.alert)
+            
+                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            
+                present(alertController, animated: true, completion: nil)
+            }
+            
             let selectDriverTableViewController: SelectDriverTableViewController = segue.destination as! SelectDriverTableViewController
             
-            //Pass the data object to the destination view controller object
-            // createEventFormViewController.groupNamePassed = groupName
+            selectDriverTableViewController.eventInformationPassed[0] = infoPassed[0]
+            selectDriverTableViewController.eventInformationPassed[1] = infoPassed[1]
+            selectDriverTableViewController.eventInformationPassed[2] = infoPassed[2]
+            selectDriverTableViewController.eventInformationPassed[3] = datePassed[0]
+            selectDriverTableViewController.eventInformationPassed[4] = datePassed[1]
+            selectDriverTableViewController.groupMembersPassed = groupMembersToPass
         }
     }
 

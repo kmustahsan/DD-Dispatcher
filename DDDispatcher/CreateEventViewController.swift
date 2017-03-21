@@ -15,21 +15,26 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
     var dict_adminGroups = [String: AnyObject]()
     
     // store group names (keys of dictionary)
-    var groupNames = ["group.png", "Favorite.png"]
+    var groupNames = ["Hey group", "Pokemon Go"]
     var groupName = ""
+    
+    //value of dict_adminGroups
+    var groupLogos = ["logo.png", "logo.png"]
+    
+    //set outlets
+    @IBOutlet var groupsTableView: UITableView!
+
     
     // value of dict_adminGroups
     // [0] = group name, [1] = event title, [2] = description, [3]=start date, [4] = end date
-    var eventInformation = ["group.png", "ABC event", "bring your own bear", "Dec 20 20:00", "Dec 20 22:00"]
-    
+    //var eventInformation = ["group.png", "ABC event", "bring your own bear", "Dec 20 20:00", "Dec 20 22:00"]
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dict_adminGroups = [groupNames[0]: eventInformation as AnyObject, groupNames[1]: eventInformation as AnyObject]
-        
-  
+        dict_adminGroups = [groupNames[0]: groupLogos as AnyObject, groupNames[1]: groupLogos as AnyObject]
+
     }
 
 
@@ -58,7 +63,7 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
         cell.textLabel!.text = groupName
         
         // Add the group logo
-        cell.imageView!.image = UIImage(named: "group.png")
+        cell.imageView!.image = UIImage(named: groupLogos[rowNumber])
         
         return cell
     }
@@ -88,6 +93,15 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
      MARK: - Prepare For Segue
      -------------------------
      */
+    
+    
+    @IBAction func NotaGroupEventButtonClicked(_ sender: Any) {
+        
+        groupName = "Not a Group Event"
+        performSegue(withIdentifier: "FormView", sender: self)
+        
+        
+    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "FormView" {
