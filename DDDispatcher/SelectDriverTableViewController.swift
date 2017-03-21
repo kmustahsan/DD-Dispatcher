@@ -10,6 +10,8 @@ import UIKit
 
 class SelectDriverTableViewController: UITableViewController {
 
+    var groupMembers = ["Pikachu Raichu", "Yoonju Lee", "Woo Jin Kye"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,32 +22,46 @@ class SelectDriverTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return groupMembers.count
     }
 
-    /*
+    //-------------------------------------
+    // Prepare and Return a Table View Cell
+    //-------------------------------------
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CityTableView", for: indexPath) as UITableViewCell
+        
+        let sectionNumber = (indexPath as NSIndexPath).section
+        let rowNumber = (indexPath as NSIndexPath).row
+        
+        // Obtain the name of the given country
+        let givenCountryName = countryNames[sectionNumber]
+        
+        /*
+         Note that city names must not be sorted. The order shows how favorite the city is.
+         The higher the order the more favorite the city is. The user specifies the ordering
+         in the Edit mode by moving a row from one location to another for the same country.
+         */
+        
+        // Obtain the list of cities in the given country as AnyObject
+        let cities: AnyObject? = applicationDelegate.dict_Country_Cities[givenCountryName] as AnyObject
+        
+        // Typecast the AnyObject to Swift array of String objects
+        var citiesOfGivenCountry = cities! as! [String]
+        
+        // Set the cell title to be the city name
+        cell.textLabel!.text = citiesOfGivenCountry[rowNumber]
+        
+        cell.imageView!.image = UIImage(named: "FavoriteIcon.png")
+        
         return cell
     }
-    */
+
 
     /*
     // Override to support conditional editing of the table view.

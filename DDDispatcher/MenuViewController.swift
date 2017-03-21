@@ -66,7 +66,7 @@ class MenuViewController: UITableViewController {
             segueToStoryboard(storyboard: "CreateGroup")
         }
         else if indexPath.row == 3 {
-            segueToStoryboard(storyboard: "Hub")
+            segueToStoryboard(storyboard: "CreateEvent")
         }
         else if indexPath.row == 4 {
             segueToStoryboard(storyboard: "JoinGroup")

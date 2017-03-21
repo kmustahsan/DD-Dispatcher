@@ -10,26 +10,109 @@ import UIKit
 
 class CreateEventFormViewController: UIViewController {
 
+    //set variables
+    var groupNamePassed = ""
+    var infoToPass = ["", "", ""] //[0] = group name, [1] = event name, [2] = event description
+    var infoPassed = ["", "", ""]
+    var doneSetting = 0
+    var datePassed = ["", ""]
+    
+    //set outlets
+    @IBOutlet var groupName: UITextField!
+    @IBOutlet var eventName: UITextField!
+    @IBOutlet var startDate: UITextField!
+    @IBOutlet var endDate: UITextField!
+    @IBOutlet var eventDescription: UITextView!
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        groupName.text! = groupNamePassed
+        
+        print(doneSetting)
+        
+        if doneSetting == 1 {
+            groupName.text! = infoPassed[0]
+            eventName.text! = infoPassed[1]
+            eventDescription.text! = infoPassed[2]
+            startDate.text! = datePassed[0]
+            endDate.text! = datePassed[1]
+        }
+        
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
-
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+     ---------------------------------
+     MARK: - Keyboard Handling Methods
+     ---------------------------------
+     */
+    
+    /*
+    // This method is invoked when the user taps the Done key on the keyboard
+    @IBAction func keyboardDone(_ sender: UITextField) {
+        
+        // Once the text field is no longer the first responder, the keyboard is removed
+        sender.resignFirstResponder()
     }
     */
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        if let touch = touches.first {
+   
+            // when user clicks outside of the textfield
+            if eventName.isFirstResponder && (touch.view != eventName) {
+                
+                eventName.resignFirstResponder()
+            }
+            
+            //when user clicks outside of the textview
+            if eventDescription.isFirstResponder && (touch.view != eventDescription) {
+                
+                eventDescription.resignFirstResponder()
+            }
+        }
+        super.touchesBegan(touches, with:event)
+    }
+    
+    /*
+     ---------------------------------
+     MARK: - Prepare for Segue
+     ---------------------------------
+     */
+    
+    @IBAction func setDateAndTimeButtonClicked(_ sender: Any) {
+       
+        if doneSetting == 0 {
+            infoToPass[0] = groupNamePassed
+        } else {
+            infoToPass[0] = groupName.text!
+        }
+        infoToPass[1] = eventName.text!
+        infoToPass[2] = eventDescription.text!
+       
+        performSegue(withIdentifier: "SetDate", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "SetDate" {
+            
+            // Obtain the object reference of the destination view controller
+            let setDateAndTimeViewController: SetDateAndTimeViewController = segue.destination as! SetDateAndTimeViewController
+            
+            //Pass the data object to the destination view controller object
+            setDateAndTimeViewController.infoPassed = infoToPass
+        } else if segue.identifier == "selectDriver" {
+            
+            let selectDriverTableViewController: SelectDriverTableViewController = segue.destination as! SelectDriverTableViewController
+            
+            //Pass the data object to the destination view controller object
+            // createEventFormViewController.groupNamePassed = groupName
+        }
+    }
 
 }
