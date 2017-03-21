@@ -19,17 +19,24 @@ protocol HubViewControllerDelegate {
 }
 
 class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControllerDelegate {
+    
     // Instance variables
-    @IBOutlet weak var label: UILabel!
-    @IBOutlet var leftArrow: UIImageView!
-    @IBOutlet var rightArrow: UIImageView!
     @IBOutlet var scrollMenu: UIScrollView!
+    @IBOutlet var eventName: UITextField!
+    @IBOutlet var eventDescription: UITextView!
+    @IBOutlet var startTimeAndDate: UITextField!
+    @IBOutlet var endTimeAndDate: UITextField!
+    @IBOutlet var requestRideButton: UIButton!
     
     // Dictionary containing active group info.
     var dict_avtiveGroups = [String: AnyObject]()
     
     // Array storing active group names.
-    var activeGroupNames = [String]()
+    var activeGroupNames = ["group.png", "Favorite.png", "group.png", "group.png", "group.png"]
+    
+    // Array storing event information.
+    var eventInformation = ["group.png" , "ABC Event", "Bring your own bear", "Dec 20 20:00", "Dec 20 23:00"]
+    var eventInformation2 = ["Favorite.png", "Go Pikachu", "Let's catch pikachu tonight", "Nov 20 20:00", "Nov 20 22:00"]
     
     // Scroll menu properties
     let kScrollMenuHeight: CGFloat = 90.0
@@ -38,14 +45,27 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     let backgroundColorToUse = UIColor(red: 0.6, green: 0.8, blue: 1.0, alpha: 1.0)
     var delegate: HubViewControllerDelegate?
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        dict_avtiveGroups = [
+            activeGroupNames[0] : eventInformation as AnyObject,
+            activeGroupNames[1] : eventInformation2 as AnyObject
+        ]
+        
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = UIColor.clear
         sideMenuController?.delegate = self
- /*        
+        
+        //set background colors
+        //self.view.backgroundColor = UIColor.white
+        
+        //Set background color for the scroll menu so check circular image
+        //scrollMenu.backgroundColor = UIColor(red: 0.6, green: 0.8, blue: 1.0, alpha: 1.0)
+        
         /***********************************************************************
          * Instantiate and setup the buttons for the horizontally scrollable menu
          ***********************************************************************/
@@ -59,12 +79,16 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             let scrollMenuButton = UIButton(type: UIButtonType.custom)
             
             // Todo: Obtain the group's logo image.
-            let groupLogo = UIImage(named: activeGroupNames[i])
+            var groupLogo = UIImage(named: activeGroupNames[i])
+            groupLogo = resizeImage(image: groupLogo!, newHeight: 30)
             
             // Set the button frame at origin at (x, y) = (0, 0) with
             // button width  = auto logo image width + 10 points padding for each side
             // button height = kScrollMenuHeight points
             scrollMenuButton.frame = CGRect(x: 0.0, y: 0.0, width: groupLogo!.size.width + 20.0, height:kScrollMenuHeight)
+            //scrollMenuButton.layer.cornerRadius = 0.5 * scrollMenuButton.bounds.width
+            // Test:
+            //crollMenuButton.backgroundColor = UIColor.white
             
             // Set the button image to be the group's logo
             scrollMenuButton.setImage(groupLogo, for: UIControlState())
@@ -117,10 +141,8 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             // Add the constructed button to the list of buttons
             listOfMenuButtons.append(scrollMenuButton)
             sideMenuController?.delegate = self
-            */
+ 
         }
-        
- /*
         /*********************************************************************************************
          * Compute the sumOfButtonWidths = sum of the widths of all buttons to be displayed in the menu
          *********************************************************************************************/
@@ -152,21 +174,28 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         // Horizontally scrollable menu's content height size = kScrollMenuHeight points
         scrollMenu.contentSize = CGSize(width: sumOfButtonWidths, height: kScrollMenuHeight)
         
-        /*******************************************************
-         * Select and show the default auto maker upon app launch
-         *******************************************************/
+        /******************************************************************************
+        * Event Information
+        *******************************************************************************/
+        eventName.isHidden = true
+        eventDescription.isHidden = true
+        startTimeAndDate.isHidden = true
+        endTimeAndDate.isHidden = true
+        requestRideButton.isHidden = true
+    }
+    
+    //resize group logo image
+    func resizeImage(image: UIImage, newHeight: CGFloat) -> UIImage? {
         
-        // Hide left arrow
-        leftArrow.isHidden = true
+        let scale = newHeight / image.size.height
+        let newWidth = image.size.width * scale
+        UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
+        image.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
         
-        // The first auto maker on the list is the default one to display
-        //        let defaultButton: UIButton = listOfMenuButtons[0]
-        //
-        //        // Indicate that the button is selected
-        //        defaultButton.isSelected = true
-        //
-        //        previousButton = defaultButton
-        //        selectedGroupName = activeGroupNames[0]
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage
     }
     
     /*
@@ -187,11 +216,28 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             previousButton.isSelected = false
         }
         
+        
         previousButton = selectedButton
         
         selectedGroupName = selectedButton.title(for: UIControlState())!
+        print(selectedGroupName)
         
-        // Todo: create ride request button
+        /******************************************************************
+        * show event information
+        *******************************************************************/
+        
+        eventName.isHidden = false
+        eventDescription.isHidden = false
+        startTimeAndDate.isHidden = false
+        endTimeAndDate.isHidden = false
+        requestRideButton.isHidden = false
+        
+   
+        var eventInfo = dict_avtiveGroups[selectedGroupName] as! [String]
+        eventName.text = eventInfo[1]
+        eventDescription.text = eventInfo[2]
+        startTimeAndDate.text = eventInfo[3]
+        endTimeAndDate.text = eventInfo[4]
     }
     
     /*
@@ -218,42 +264,12 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-        /*
-         Content        = concatenated list of buttons
-         Content Width  = sum of all button widths, sumOfButtonWidths
-         Content Height = kScrollMenuHeight points
-         Origin         = (x, y) values of the bottom left corner of the scroll view or content
-         Sx             = Scroll View's origin x value
-         Cx             = Content's origin x value
-         contentOffset  = Sx - Cx
-         
-         Interpretation of the Arrows:
-         
-         IF scrolled all the way to the RIGHT THEN show only RIGHT arrow: indicating that the data (content) is
-         on the right hand side and therefore, the user must *** scroll to the left *** to see the content.
-         
-         IF scrolled all the way to the LEFT THEN show only LEFT arrow: indicating that the data (content) is
-         on the left hand side and therefore, the user must *** scroll to the right *** to see the content.
-         
-         5 pixels used as padding
-         */
-        if scrollView.contentOffset.x <= 5 {
-            // Scrolling is done all the way to the RIGHT
-            leftArrow.isHidden   = true      // Hide left arrow
-            rightArrow.isHidden  = false     // Show right arrow
-        }
-        else if scrollView.contentOffset.x >= (scrollView.contentSize.width - scrollView.frame.size.width) - 5 {
-            // Scrolling is done all the way to the LEFT
-            leftArrow.isHidden   = false     // Show left arrow
-            rightArrow.isHidden  = true      // Hide right arrow
-        }
-        else {
-            // Scrolling is in between. Scrolling can be done in either direction.
-            leftArrow.isHidden   = false     // Show left arrow
-            rightArrow.isHidden  = false     // Show right arrow
+        //disable horizontal scrolling
+        if scrollView.contentOffset.y != 0 {
+            scrollView.contentOffset.y = 0
         }
     }
- */
+ 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         print("\(#function) -- \(self)")
@@ -266,6 +282,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     func sideMenuControllerDidReveal(_ sideMenuController: SideMenuController) {
         print(#function)
     }
+    
     @IBAction func unwindToHub(segue: UIStoryboardSegue) {}
     
 }
