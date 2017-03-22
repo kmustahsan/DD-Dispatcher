@@ -69,7 +69,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>For always realtime location even when the app is in the background</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Show your location on the map</string>
+	<string>For updating location for the apps use, and to set pick up and drop offs</string>
 </dict>
 </plist>
