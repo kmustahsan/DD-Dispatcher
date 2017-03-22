@@ -73,7 +73,7 @@ class MenuViewController: UITableViewController {
             
         }
         else if indexPath.row == 5 {
-            segueToStoryboard(storyboard: "Hub")
+            segueToStoryboard(storyboard: "Map")
         }
         previousIndex = indexPath as NSIndexPath?
     }

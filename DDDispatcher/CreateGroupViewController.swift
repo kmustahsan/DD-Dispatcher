@@ -46,7 +46,7 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
         textView.delegate = self
         textView.text = "What does this group? Who is it for?"
         textView.textColor = UIColor.lightGray
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
         
     }

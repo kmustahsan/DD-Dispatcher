@@ -29,10 +29,12 @@
 		B820AA1E1E67A187008FBA91 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B820AA1D1E67A187008FBA91 /* DataService.swift */; };
 		B82612D81E77118600A39DFC /* CustomSideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82612D71E77118600A39DFC /* CustomSideMenuController.swift */; };
 		B82612DB1E774EB100A39DFC /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82612DA1E774EB100A39DFC /* CustomTableViewCell.swift */; };
+		B829EA331E7F67B8007213D5 /* RideConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B829EA321E7F67B8007213D5 /* RideConfirmationViewController.swift */; };
 		B84A43141E76DAAD00A11D07 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84A43131E76DAAD00A11D07 /* MenuViewController.swift */; };
 		B84A43181E76DB1B00A11D07 /* Hub.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B84A43171E76DB1B00A11D07 /* Hub.storyboard */; };
 		B872F5601E789E6900566704 /* cache.plist in Resources */ = {isa = PBXBuildFile; fileRef = B872F55F1E789E6900566704 /* cache.plist */; };
 		B872F5621E789E9F00566704 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B872F5611E789E9F00566704 /* Cache.swift */; };
+		B872F56A1E7CA16400566704 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B872F5691E7CA16300566704 /* CoreLocation.framework */; };
 		B8B0E0A01E59206800A7339B /* HubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E09F1E59206800A7339B /* HubViewController.swift */; };
 		B8CFE6FE1E58BE2200F2E10F /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CFE6FD1E58BE2200F2E10F /* HomeViewController.swift */; };
 		B8CFE7021E590BB700F2E10F /* ExtraInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CFE7011E590BB700F2E10F /* ExtraInfoViewController.swift */; };
@@ -91,10 +93,12 @@
 		B820AA1D1E67A187008FBA91 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		B82612D71E77118600A39DFC /* CustomSideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSideMenuController.swift; sourceTree = "<group>"; };
 		B82612DA1E774EB100A39DFC /* CustomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		B829EA321E7F67B8007213D5 /* RideConfirmationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideConfirmationViewController.swift; sourceTree = "<group>"; };
 		B84A43131E76DAAD00A11D07 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B84A43171E76DB1B00A11D07 /* Hub.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Hub.storyboard; sourceTree = "<group>"; };
 		B872F55F1E789E6900566704 /* cache.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = cache.plist; sourceTree = "<group>"; };
 		B872F5611E789E9F00566704 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		B872F5691E7CA16300566704 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		B8B0E09F1E59206800A7339B /* HubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HubViewController.swift; sourceTree = "<group>"; };
 		B8CFE6FD1E58BE2200F2E10F /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B8CFE7011E590BB700F2E10F /* ExtraInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtraInfoViewController.swift; sourceTree = "<group>"; };
@@ -106,6 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B872F56A1E7CA16400566704 /* CoreLocation.framework in Frameworks */,
 				DEFFD125797971AA675CC968 /* Pods_DDDispatcher.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -255,6 +260,7 @@
 		8BAB30903C4EE41157CD1919 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B872F5691E7CA16300566704 /* CoreLocation.framework */,
 				5F9467B053EA932CF671E5B6 /* Pods_DDDispatcher.framework */,
 				49BE5BADE2763B6D00B3E1B1 /* Pods_DDDispatcherTests.framework */,
 				015394A914135CF84E35DA8E /* Pods_DDDispatcherUITests.framework */,
@@ -269,6 +275,7 @@
 				B84A43131E76DAAD00A11D07 /* MenuViewController.swift */,
 				B82612D71E77118600A39DFC /* CustomSideMenuController.swift */,
 				B82612DA1E774EB100A39DFC /* CustomTableViewCell.swift */,
+				B829EA321E7F67B8007213D5 /* RideConfirmationViewController.swift */,
 			);
 			name = HubControllers;
 			sourceTree = "<group>";
@@ -567,6 +574,7 @@
 				B8CFE7021E590BB700F2E10F /* ExtraInfoViewController.swift in Sources */,
 				130868371E6F97390011C6F9 /* GroupInfoViewController.swift in Sources */,
 				B82612D81E77118600A39DFC /* CustomSideMenuController.swift in Sources */,
+				B829EA331E7F67B8007213D5 /* RideConfirmationViewController.swift in Sources */,
 				130868391E6F97A00011C6F9 /* GroupNameTableViewCell.swift in Sources */,
 				130868311E6F928A0011C6F9 /* CreateGroupViewController.swift in Sources */,
 				130868351E6F97100011C6F9 /* GroupListViewController.swift in Sources */,

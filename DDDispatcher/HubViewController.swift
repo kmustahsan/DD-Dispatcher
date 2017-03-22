@@ -9,8 +9,10 @@
 import UIKit
 import Firebase
 import SideMenuController
+import GoogleMaps
+import GooglePlaces
+import CoreLocation
 @objc
-
 // Define HomeViewControllerDelegate as a protocol with two optional methods
 protocol HubViewControllerDelegate {
     
@@ -18,26 +20,32 @@ protocol HubViewControllerDelegate {
     @objc optional func collapseMenuView()
 }
 
-class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControllerDelegate {
+class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControllerDelegate,
+                        GMSMapViewDelegate, CLLocationManagerDelegate {
+    @IBOutlet weak var mapView: GMSMapView!
+    @IBOutlet weak var searchContainerView: UIView!
+    @IBOutlet weak var startSearchView: UIView!
+    @IBOutlet weak var destinationSearchView: UIView!
+    @IBOutlet weak var searchTrigger: UIView!
+    @IBOutlet weak var infoView: UIView!
+    var placesClient: GMSPlacesClient!
+    var currentPlace: GMSPlace!
+    var destinationPlace: GMSPlace!
+    var locationManager = CLLocationManager()
+    var resultsViewController: GMSAutocompleteResultsViewController?
+    var startSearchController: UISearchController?
+    var destinationSearchController: UISearchController?
+    var resultView: UITextView?
     
-    // Instance variables
-    @IBOutlet var scrollMenu: UIScrollView!
-    @IBOutlet var eventName: UITextField!
-    @IBOutlet var eventDescription: UITextView!
-    @IBOutlet var startTimeAndDate: UITextField!
-    @IBOutlet var endTimeAndDate: UITextField!
-    @IBOutlet var requestRideButton: UIButton!
-    
+    @IBOutlet weak var scrollMenu: UIScrollView!
+    @IBOutlet weak var eventDescription: UIView!
     // Dictionary containing active group info.
     var dict_avtiveGroups = [String: AnyObject]()
-    
     // Array storing active group names.
     var activeGroupNames = ["group.png", "Favorite.png", "group.png", "group.png", "group.png"]
-    
     // Array storing event information.
     var eventInformation = ["group.png" , "ABC Event", "Bring your own bear", "Dec 20 20:00", "Dec 20 23:00"]
     var eventInformation2 = ["Favorite.png", "Go Pikachu", "Let's catch pikachu tonight", "Nov 20 20:00", "Nov 20 22:00"]
-    
     // Scroll menu properties
     let kScrollMenuHeight: CGFloat = 90.0
     var selectedGroupName = ""
@@ -46,20 +54,116 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     var delegate: HubViewControllerDelegate?
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        findCurrentPlace()
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(),
+                                                                    for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = UIColor.clear
+        searchContainerView.isHidden = true
+        mapView.settings.consumesGesturesInView = false
+        mapView.isMyLocationEnabled = true
+        mapView.delegate = self
+        self.mapView.bringSubview(toFront: infoView)
+        eventDescription.isHidden = true
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(segueTo))
+        self.searchTrigger.addGestureRecognizer(gesture)
+        
         dict_avtiveGroups = [
             activeGroupNames[0] : eventInformation as AnyObject,
             activeGroupNames[1] : eventInformation2 as AnyObject
         ]
+        setupScrollMenu()
         
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = UIColor.clear
-        sideMenuController?.delegate = self
+    }
+    
+    func findCurrentPlace() {
+        placesClient = GMSPlacesClient.shared()
+        placesClient.currentPlace(callback: { (placeLikelihoodList, error) -> Void in
+            if let error = error {
+                print("Pick Place error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let placeLikelihoodList = placeLikelihoodList {
+                let likelihood = placeLikelihoodList.likelihoods[0]
+                let place = likelihood.place
+                print("Current Place name \(place.name) at likelihood \(likelihood.likelihood)")
+                print("Current Place address \(place.formattedAddress)")
+                print("Current Place attributions \(place.attributions)")
+                print("Current PlaceID \(place.placeID)")
+                self.currentPlace = place
+                self.setMap()
+            }
+        })
+    }
+    func setMap() {
+        let camera = GMSCameraPosition.camera(withLatitude: (currentPlace.coordinate.latitude), longitude:(currentPlace.coordinate.longitude), zoom:15)
+        mapView.animate(to: camera)
+    }
+    
+    func segueTo() {
+        infoView.isHidden = true
+        searchContainerView.isHidden = false
+        self.mapView.bringSubview(toFront: searchContainerView)
         
+        resultsViewController = GMSAutocompleteResultsViewController()
+        resultsViewController?.delegate = self
+        
+        //filter
+        
+        let filter = GMSAutocompleteFilter()
+        filter.type = GMSPlacesAutocompleteTypeFilter.address
+        
+        let northEast = CLLocationCoordinate2DMake(currentPlace.coordinate.latitude + 0.15, currentPlace.coordinate.longitude + 0.15)
+        let southWest = CLLocationCoordinate2DMake(currentPlace.coordinate.latitude - 0.15, currentPlace.coordinate.longitude - 0.15)
+        let userBound = GMSCoordinateBounds(coordinate: northEast, coordinate: southWest)
+        
+        
+        resultsViewController?.autocompleteFilter = filter
+        resultsViewController?.autocompleteBounds = userBound
+        
+        startSearchController = UISearchController(searchResultsController: resultsViewController)
+        destinationSearchController = UISearchController(searchResultsController: resultsViewController)
+        
+        setupSearchUI(searchController: startSearchController)
+        setupSearchUI(searchController: destinationSearchController)
+        startSearchController?.searchBar.text = currentPlace.name
+        
+        startSearchView.addSubview((startSearchController?.searchBar)!)
+        destinationSearchView.addSubview((destinationSearchController?.searchBar)!)
+        destinationSearchController?.searchBar.becomeFirstResponder()
+        
+        definesPresentationContext = true
+    }
+    
+    func setupSearchUI(searchController: UISearchController?) {
+        searchController?.searchBar.setImage(UIImage(named: "cancelButton.png"), for: UISearchBarIcon.clear, state: .highlighted)
+        searchController?.searchBar.setImage(UIImage(named: "cancelButton.png"), for: UISearchBarIcon.clear, state: .normal)
+        
+        searchController?.searchBar.setShowsCancelButton(false, animated: true)
+        searchController?.searchResultsUpdater = resultsViewController
+        searchController?.searchBar.tintColor = .white
+        searchController?.searchBar.barTintColor = .white
+        searchController?.searchBar.backgroundColor = .white
+        searchController?.searchBar.setImage(UIImage(), for: .search, state: .normal)
+        searchController?.searchBar.frame = CGRect(x: 0, y: 0, width: destinationSearchView.frame.width, height: destinationSearchView.frame.height)
+        searchController?.searchBar.sizeToFit()
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "confirmationSegue" {
+            let rideConfimationViewController = segue.destination as! RideConfirmationViewController
+            rideConfimationViewController.startingLocation = currentPlace
+            rideConfimationViewController.destinationLocation = destinationPlace
+        }
+    }
+//SCROLL
+    func setupScrollMenu() {
         //set background colors
         //self.view.backgroundColor = UIColor.white
         
@@ -141,7 +245,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             // Add the constructed button to the list of buttons
             listOfMenuButtons.append(scrollMenuButton)
             sideMenuController?.delegate = self
- 
+            
         }
         /*********************************************************************************************
          * Compute the sumOfButtonWidths = sum of the widths of all buttons to be displayed in the menu
@@ -175,14 +279,12 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         scrollMenu.contentSize = CGSize(width: sumOfButtonWidths, height: kScrollMenuHeight)
         
         /******************************************************************************
-        * Event Information
-        *******************************************************************************/
-        eventName.isHidden = true
+         * Event Information
+         *******************************************************************************/
+        
         eventDescription.isHidden = true
-        startTimeAndDate.isHidden = true
-        endTimeAndDate.isHidden = true
-        requestRideButton.isHidden = true
     }
+    
     
     //resize group logo image
     func resizeImage(image: UIImage, newHeight: CGFloat) -> UIImage? {
@@ -223,21 +325,14 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         print(selectedGroupName)
         
         /******************************************************************
-        * show event information
-        *******************************************************************/
+         * show event information
+         *******************************************************************/
         
-        eventName.isHidden = false
+        
         eventDescription.isHidden = false
-        startTimeAndDate.isHidden = false
-        endTimeAndDate.isHidden = false
-        requestRideButton.isHidden = false
         
-   
-        var eventInfo = dict_avtiveGroups[selectedGroupName] as! [String]
-        eventName.text = eventInfo[1]
-        eventDescription.text = eventInfo[2]
-        startTimeAndDate.text = eventInfo[3]
-        endTimeAndDate.text = eventInfo[4]
+        
+        
     }
     
     /*
@@ -269,11 +364,6 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             scrollView.contentOffset.y = 0
         }
     }
- 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        print("\(#function) -- \(self)")
-    }
     
     func sideMenuControllerDidHide(_ sideMenuController: SideMenuController) {
         print(#function)
@@ -284,6 +374,44 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     }
     
     @IBAction func unwindToHub(segue: UIStoryboardSegue) {}
+}
+
+extension HubViewController: GMSAutocompleteResultsViewControllerDelegate {
+    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
+                           didAutocompleteWith place: GMSPlace) {
+        // Do something with the selected place.
+        if destinationSearchController?.isActive == true {
+            
+            destinationPlace = place
+            //send place.formattedAddress
+            performSegue(withIdentifier: "confirmationSegue", sender: nil)
+        }
+        
+        if startSearchController?.isActive == true {
+            startSearchController?.searchBar.text = place.name
+        }
+        print("Place name: \(place.name)")
+        print("Place address: \(place.formattedAddress)")
+        print("Place attributions: \(place.attributions)")
+    }
+    
+    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
+                           didFailAutocompleteWithError error: Error){
+        // TODO: handle the error.
+        print("Error: ", error.localizedDescription)
+    }
+    
+    // Turn the network activity indicator on and off again.
+    func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+    }
+    
+    func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
+    }
+    
     
 }
+
+
 
