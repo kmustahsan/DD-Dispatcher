@@ -63,7 +63,7 @@ class ExtraInfoViewController: UIViewController, UITextFieldDelegate  {
         let ref = FIRDatabase.database().reference().child(userString)
         ref.updateChildValues([
             "name": nameString])
-        
+        //CACHE: update user info
         let destinationStoryboard = UIStoryboard(name: "Hub", bundle: nil)
         if let destinationViewController = destinationStoryboard.instantiateInitialViewController() {
             self.present(destinationViewController, animated: true)

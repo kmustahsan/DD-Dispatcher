@@ -14,7 +14,6 @@ target 'DDDispatcher' do
 	pod 'Firebase/Database'
 	pod 'SideMenuController'
 	pod ‘GoogleMaps’
- 	pod 'GooglePlacePicker'
 	pod ‘GooglePlaces’
 
   target 'DDDispatcherTests' do

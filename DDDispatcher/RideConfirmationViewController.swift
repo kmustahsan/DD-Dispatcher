@@ -11,15 +11,17 @@ import GooglePlaces
 
 class RideConfirmationViewController: UIViewController, GMSMapViewDelegate {
     @IBOutlet weak var mapView: GMSMapView!
-    @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var submitRide: UIButton!
-    @IBOutlet weak var topView: UIView!
    
     var startingLocation: GMSPlace!
     var destinationLocation: GMSPlace!
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.backgroundColor = .black
+        self.navigationController?.navigationBar.isHidden = true
         setupMap()
         createPath()
     }
@@ -29,7 +31,6 @@ class RideConfirmationViewController: UIViewController, GMSMapViewDelegate {
         mapView.settings.consumesGesturesInView = false
         mapView.isMyLocationEnabled = true
         mapView.delegate = self
-        self.mapView.bringSubview(toFront: topView)
         self.mapView.bringSubview(toFront: submitRide)
     }
     

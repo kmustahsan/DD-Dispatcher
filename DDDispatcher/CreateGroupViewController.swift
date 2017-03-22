@@ -98,6 +98,7 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
     
     @IBAction func selectAvatar(_ sender: Any) {
         //Ask the user to select a picture
+        //CACHE: store user info here
         
     }
     
