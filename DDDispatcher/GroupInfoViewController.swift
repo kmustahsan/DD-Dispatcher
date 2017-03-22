@@ -45,7 +45,7 @@ class GroupInfoViewController: UIViewController {
     
     @IBAction func leaveGroupButtonClicked(_ sender: UIButton) {
         //user leaves group, remove from group on backend
-         //CACHE: store user info here
+         //CACHE:  store user info here
         //DATA: TODO
     }
     
