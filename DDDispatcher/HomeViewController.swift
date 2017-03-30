@@ -166,12 +166,15 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                                     print("Error with email user", err)
                                 }
                                 guard let uid = user?.uid else { return }
+                                
+                                // When a user gets assigned a driver we update the driver key to true value.
                                 let dictionary : [String: Any] = [
                                     "name"       : "nil",
                                     "email"      : inputEmail,
                                     "groups"     : ["Group1", "Group2"],
                                     "provider"   : "Email",
-                                    "uid"        : uid
+                                    "uid"        : uid,
+                                    "driver"     : false
                                 ]
                                 DataService.sharedInstance.createFirebaseUser(uid: uid, user: dictionary)
                                 //CACHE: DONE store user info here

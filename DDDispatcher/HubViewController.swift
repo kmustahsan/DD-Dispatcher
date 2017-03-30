@@ -155,6 +155,18 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         
     }
     
+    @IBAction func submitRideRequest(_ sender: Any) {
+        let userId = "getUserID"
+        let groupId = "getGroupID"
+
+        let dictionary : [String: Any] = [
+            userId  : true
+        ]
+        DataService.sharedInstance.createQueue(gid: groupId,values: dictionary)
+        
+        // need to segue somewhere else
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "confirmationSegue" {
             let rideConfimationViewController = segue.destination as! RideConfirmationViewController
