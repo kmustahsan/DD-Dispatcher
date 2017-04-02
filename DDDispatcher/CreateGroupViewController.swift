@@ -91,11 +91,27 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
         //NEED GROUP ID in Dict if possible
         //cache.sharedCache.writeDictionaryCache(name: "groups", dict: dictionary)
         
-        //TODO: This needs to segue to the group info page
-        let destinationStoryboard = UIStoryboard(name: "Hub", bundle: nil)
-        if let destinationViewController = destinationStoryboard.instantiateInitialViewController() {
+        
+        //Error 04.001: When a user did not enter group name
+        if groupName == "" {
+            let alert = UIAlertController(title: "Error", message: "Please enter your group name", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        //Error 04.002: When a user did not enter group description
+        else if groupDesctiption == "What does this group? Who is it for?" {
+            let alert = UIAlertController(title: "Error", message: "Please enter your group description", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        else {
+            
+            //TODO: This needs to segue to the group info page
+            let destinationStoryboard = UIStoryboard(name: "Hub", bundle: nil)
+            if let destinationViewController = destinationStoryboard.instantiateInitialViewController() {
             self.present(destinationViewController, animated: true)
             
+            }
         }
     }
     
@@ -110,8 +126,7 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
         self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
     }
     
-    
-    
+
     
     
     
