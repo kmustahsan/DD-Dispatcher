@@ -73,7 +73,7 @@ class MenuViewController: UITableViewController {
             
         }
         else if indexPath.row == 5 {
-            segueToStoryboard(storyboard: "Hub")
+            segueToStoryboard(storyboard: "Map")
         }
         else if indexPath.row == 6 {
             

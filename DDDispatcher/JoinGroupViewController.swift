@@ -31,6 +31,12 @@ class JoinGroupViewController: UIViewController {
                             usersArray.append( (FIRAuth.auth()!.currentUser?.uid)!)
                             ref.updateChildValues([
                                 "users": usersArray])
+                             //CACHE: DONE update user/group
+                            var dict = cache.sharedCache.getUserInfo();
+                            let arrayGroups = dict["groups"]! as! NSArray
+                            let newArray = arrayGroups.adding(groupCode) as Array
+                            dict["groups"] = newArray;
+                            cache.sharedCache.writeDictionaryCache(name: "user", dict: dict)
                         }
                     } //CREATE ERROR ALERT : show error to say user is already in the group
                 })

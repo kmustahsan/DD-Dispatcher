@@ -46,7 +46,7 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
         textView.delegate = self
         textView.text = "What does this group? Who is it for?"
         textView.textColor = UIColor.lightGray
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tap)
         
     }
@@ -73,8 +73,9 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
     
     
     @IBAction func submitGroup(_ sender: Any) {
-        //CACHE: Ref user
-        guard let uid = FIRAuth.auth()?.currentUser?.uid else { return }
+        //CACHE: DONE Ref user
+        let dict = cache.sharedCache.getUserInfo()
+        guard let uid = dict["uid"] as? String else {return}
         //End
         guard let groupName = groupNameTextField.text else { return }
         guard let groupDesctiption = textView.text else { return }
@@ -87,6 +88,8 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
         DataService.sharedInstance.createFirebaseGroup(values: dictionary)
         
         //CACHE: New group was created
+        //NEED GROUP ID in Dict if possible
+        //cache.sharedCache.writeDictionaryCache(name: "groups", dict: dictionary)
         
         //TODO: This needs to segue to the group info page
         let destinationStoryboard = UIStoryboard(name: "Hub", bundle: nil)
@@ -98,6 +101,7 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
     
     @IBAction func selectAvatar(_ sender: Any) {
         //Ask the user to select a picture
+        //CACHE: store user info here
         
     }
     

@@ -13,6 +13,8 @@ target 'DDDispatcher' do
 	pod 'GoogleSignIn'
 	pod 'Firebase/Database'
 	pod 'SideMenuController'
+	pod ‘GoogleMaps’
+	pod ‘GooglePlaces’
 
   target 'DDDispatcherTests' do
     inherit! :search_paths
