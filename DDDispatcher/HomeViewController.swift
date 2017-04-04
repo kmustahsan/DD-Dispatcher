@@ -94,10 +94,12 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                     "name"       : name as! String,
                     "email"      : email as! String,
                     "groups"     : ["Group1", "Group2"],
-                    "provider"   : "Facebook"
+                    "provider"   : "Facebook",
+                    "uid"        : uid
                 ]
                 DataService.sharedInstance.createFirebaseUser(uid: uid, user: dictionary)
-                //CACHE: store user info here
+                //CACHE: DONE store user info here
+                cache.sharedCache.writeDictionaryCache(name: "user", dict: dictionary);
                 DispatchQueue.main.async(execute: {
                     self.segue()
                 })
@@ -132,11 +134,13 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                 "name"       : user.profile.name,
                 "email"      : user.profile.email,
                 "groups"     : ["Group1", "Group2"],
-                "provider"   : "Google"
+                "provider"   : "Google",
+                "uid"        : uid
             ]
             DataService.sharedInstance.createFirebaseUser(uid: uid, user: dictionary)
-            //CACHE: store user info here
-
+            //CACHE: DONE store user info here
+            print("stored in cache")
+            cache.sharedCache.writeDictionaryCache(name: "user", dict: dictionary)
             DispatchQueue.main.async(execute: {
                 self.segue()
             })
@@ -166,10 +170,12 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                                     "name"       : "nil",
                                     "email"      : inputEmail,
                                     "groups"     : ["Group1", "Group2"],
-                                    "provider"   : "Email"
+                                    "provider"   : "Email",
+                                    "uid"        : uid
                                 ]
                                 DataService.sharedInstance.createFirebaseUser(uid: uid, user: dictionary)
-                                //CACHE: store user info here
+                                //CACHE: DONE store user info here
+                                cache.sharedCache.writeDictionaryCache(name: "user", dict: dictionary);
                             })
                             DispatchQueue.main.async(execute: {
                                 self.newEmailUser = true

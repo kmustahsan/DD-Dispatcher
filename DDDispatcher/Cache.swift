@@ -48,25 +48,28 @@ class cache {
     }
     
     //Use firebase call to get groups ID's / data then store in a dictionary and write to cache
+    //not needed
     private func retriveGroupInfo()
     {
         
     }
     
     //use firebase call to retrive user info and write to cache
+    //not needed
     private func retriveUserInfo()
     {
         
     }
     
     
-    private func writeDictionaryCache(name : String, dict : Dictionary<String, Any?>){
+    func writeDictionaryCache(name : String, dict : Dictionary<String, Any?>){
         if(initDict == nil)
         {
             //throw error or console log
+            print("error with cache file, writing")
             return
         }
-        
+        print("user dict", dict)
         switch name {
         case "user":
             initDict!["user"] = dict
@@ -82,6 +85,7 @@ class cache {
         {
             let writeDict = initDict! as NSDictionary
             writeDict.write(toFile: path!, atomically: false)
+            print("wrote to cache")
         }
         
     }
