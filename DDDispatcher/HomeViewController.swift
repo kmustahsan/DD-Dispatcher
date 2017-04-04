@@ -151,6 +151,32 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
     @IBAction func loginOnClick(_ sender: Any) {
         guard let inputEmail = emailTextField.text else { return }
         guard let inputPassword = passwordTextField.text else { return }
+        
+        //Error 01.001: If a user does not fill out email text field and password text field.
+        if emailTextField.text == "" && passwordTextField.text == "" {
+            let alert = UIAlertController(title: "Error", message: "Please enter your email & password", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        //Error 01.002: If a user does not fill out the email text field
+        else if emailTextField.text == "" {
+            let alert = UIAlertController(title: "Error", message: "Please enter your email", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        //Error 01.003: If a user does not fill out the password text field
+        else if passwordTextField.text == "" {
+            let alert = UIAlertController(title: "Error", message: "Please enter your password", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        //Error 01.004: When a user put an invalid email
+        else if !isValidEmail(testStr: emailTextField.text!) {
+            let alert = UIAlertController(title: "Error", message: "Email you enter is not valid", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        
         if isValidPassword(inputPassword: inputPassword) {
             FIRAuth.auth()!.signIn(withEmail: inputEmail, password: inputPassword, completion: { (user, error) in
                 if error != nil  {
@@ -189,6 +215,12 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
                 }
             })
         }
+        //Error 01.005: When a user put an invalid email
+        else {
+            let alert = UIAlertController(title: "Error", message: "Password you enter is not valid", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
         
     }
     
@@ -196,6 +228,12 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         return inputPassword.characters.count > 6
     }
     
+    func isValidEmail(testStr:String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluate(with: testStr)
+    }
     
     func segue() {
         if newEmailUser {
@@ -207,7 +245,5 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
             }
         }
     }
-    
-    
-    
+
 }

@@ -71,6 +71,8 @@
 	</array>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>For always realtime location even when the app is in the background</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Set the group image</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>For updating location for the apps use, and to set pick up and drop offs</string>
 </dict>

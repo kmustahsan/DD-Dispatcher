@@ -14,18 +14,26 @@ import UIKit
 import Firebase
 import FirebaseDatabase
 
-class CreateGroupViewController: UIViewController, UITextViewDelegate {
+class CreateGroupViewController: UIViewController, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    let picker = UIImagePickerController()
+
     @IBOutlet weak var avatarButton: UIButton!
     @IBOutlet weak var createGroupButton: UIButton!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var groupNameTextField: UITextField!
-
+    @IBOutlet weak var groupLogo: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupUI()
+        
     }
+  /*
+    override func viewDidLayoutSubviews() {
+        setupUI()
+    }*/
     
     func setupUI() {
         setupButton()
@@ -33,6 +41,7 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
     }
     
     func setupButton() {
+     
         createGroupButton.layer.cornerRadius = 15
         avatarButton.layer.borderWidth = 1
         avatarButton.layer.masksToBounds = false
@@ -40,6 +49,7 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
         avatarButton.layer.borderColor = UIColor.white.cgColor
         avatarButton.layer.cornerRadius = avatarButton.frame.height/2
         avatarButton.clipsToBounds = true
+        avatarButton.contentMode = .scaleAspectFit
     }
     
     func setupTextView() {
@@ -91,18 +101,28 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
         //NEED GROUP ID in Dict if possible
         //cache.sharedCache.writeDictionaryCache(name: "groups", dict: dictionary)
         
-        //TODO: This needs to segue to the group info page
-        let destinationStoryboard = UIStoryboard(name: "Hub", bundle: nil)
-        if let destinationViewController = destinationStoryboard.instantiateInitialViewController() {
+        
+        //Error 04.001: When a user did not enter group name
+        if groupName == "" {
+            let alert = UIAlertController(title: "Error", message: "Please enter your group name", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        //Error 04.002: When a user did not enter group description
+        else if groupDesctiption == "What does this group? Who is it for?" {
+            let alert = UIAlertController(title: "Error", message: "Please enter your group description", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+        else {
+            
+            //TODO: This needs to segue to the group info page
+            let destinationStoryboard = UIStoryboard(name: "Hub", bundle: nil)
+            if let destinationViewController = destinationStoryboard.instantiateInitialViewController() {
             self.present(destinationViewController, animated: true)
             
+            }
         }
-    }
-    
-    @IBAction func selectAvatar(_ sender: Any) {
-        //Ask the user to select a picture
-        //CACHE: store user info here
-        
     }
     
 
@@ -110,10 +130,44 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate {
         self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
     }
     
+    //**********************************
+    //MARK: Upload Image
+    //**********************************
     
-    
-    
-    
-    
+    @IBAction func selectAvatar(_ sender: Any) {
+        print("selectAvatar\n")
+        picker.allowsEditing = true
+        picker.sourceType = .photoLibrary
+        picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+        present(picker, animated:true, completion:nil)
+    }
+
+    //get out of the library
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        print("dismiss image picker\n")
+        dismiss(animated: true, completion: nil)
+    }
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+       // avatarButton.contentMode = .scaleAspectFit
+        self.dismiss(animated: true, completion: nil)
+
+        
+        if let selectedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+           // avatarButton.setImage(selectedImage, for: UIControlState.normal)
+            avatarButton.imageView?.image = selectedImage
+
+print("111")
+        }else if let selectedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            //avatarButton.setImage(selectedImage, for: UIControlState.normal)
+            avatarButton.imageView?.image = selectedImage
+print("222")
+        }else {
+            print("somethings wrong")
+        }
+
+       // self.dismiss(animated: true, completion: nil)
+    }
 }
 
