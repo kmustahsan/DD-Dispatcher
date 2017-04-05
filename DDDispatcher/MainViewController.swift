@@ -12,7 +12,7 @@ import FBSDKLoginKit
 import GoogleSignIn
 import FirebaseDatabase
 
-class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, UITextFieldDelegate {
+class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
@@ -38,7 +38,7 @@ class HomeScreenViewController: UIViewController, GIDSignInUIDelegate, GIDSignIn
         emailTextField.keyboardType = .emailAddress
         Style.setupTextField(textField: passwordTextField)
         Style.pillButton(button: loginButton)
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(HomeScreenViewController.dismissKeyboard))
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(MainViewController.dismissKeyboard))
         view.addGestureRecognizer(tap)
         
     }
