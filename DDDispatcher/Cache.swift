@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Firebase
 
 class cache {
     //plist
@@ -32,6 +33,24 @@ class cache {
         {
             self.initDict = nil
         }
+        //setting up the caching for active listening
+        var ref: FIRDatabaseReference!
+        
+        ref = FIRDatabase.database().reference()
+        let groupRef = ref.child("groups")
+        groupRef.observe(.childAdded, with: { (snapshotD) in
+            let snapshot = snapshotD.value as? NSDictionary
+            let admin = snapshot!["admin"] as! String
+            let description = snapshot!["description"] as! String
+            let name = snapshot!["name"] as! String
+            let users = snapshot!["users"] as! [String]
+            
+            let groupDict = ["admin": admin, "description": description, "name": name, "users": users] as [String : Any]
+            var masterDict = self.getGroupsInfo();
+            masterDict[snapshotD.key] = groupDict
+        })
+        
+        
     }
     
     func getUserInfo()->Dictionary<String, Any?>{
@@ -47,19 +66,6 @@ class cache {
         return groups
     }
     
-    //Use firebase call to get groups ID's / data then store in a dictionary and write to cache
-    //not needed
-    private func retriveGroupInfo()
-    {
-        
-    }
-    
-    //use firebase call to retrive user info and write to cache
-    //not needed
-    private func retriveUserInfo()
-    {
-        
-    }
     
     
     func writeDictionaryCache(name : String, dict : Dictionary<String, Any?>){
