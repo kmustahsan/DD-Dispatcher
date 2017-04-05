@@ -48,24 +48,59 @@ class cache {
             let groupDict = ["admin": admin, "description": description, "name": name, "users": users] as [String : Any]
             var masterDict = self.getGroupsInfo();
             masterDict[snapshotD.key] = groupDict
+            self.writeDictionaryCache(name: "groups", dict: masterDict)
         })
         
         
     }
     
     func getUserInfo()->Dictionary<String, Any?>{
-        let user : Dictionary<String, Any?> = initDict!["user"] as! Dictionary<String, Any?>
+        let fileMan = FileManager.default
+        var initDictLocal : [String: Any?]?
+        if fileMan.fileExists(atPath: path!)
+        {
+            initDictLocal = NSDictionary(contentsOfFile: path!) as? [String : Any?]
+        }
+        else
+        {
+            initDictLocal = nil
+        }
+        let user : Dictionary<String, Any?> = initDictLocal!["user"] as! Dictionary<String, Any?>
         
         return user
         
     }
     
     func getGroupsInfo()->Dictionary<String, Any?>{
-        let groups : Dictionary<String, Any?> = initDict!["groups"] as! Dictionary<String, Any?>
+        let fileMan = FileManager.default
+        var initDictLocal : [String: Any?]?
+        if fileMan.fileExists(atPath: path!)
+        {
+            initDictLocal = NSDictionary(contentsOfFile: path!) as? [String : Any?]
+        }
+        else
+        {
+            initDictLocal = nil
+        }
+        let groups : Dictionary<String, Any?> = initDictLocal!["groups"] as! Dictionary<String, Any?>
         
         return groups
     }
     
+    
+    /// getGroupbyname
+    ///
+    /// - Parameter id: group id
+    /// - Returns: optional dictornary of group ["admin": admin, "description": description, "name": name, "users": users]
+    
+    func getGroupByName(id : String) ->Dictionary<String, Any?>?
+    {
+        let dict = getGroupsInfo();
+        return dict[id] as! Dictionary<String, Any?>?
+    }
+    
+    
+    //["-KgzYCrI3YQiP9zxMOic": Optional(["description": "Yellow testing", "name": "need", "users": ["WcrSNIP7N5cy4U4Pwh8L5rxSU9i2"], "admin": "WcrSNIP7N5cy4U4Pwh8L5rxSU9i2"])]
     
     
     func writeDictionaryCache(name : String, dict : Dictionary<String, Any?>){
