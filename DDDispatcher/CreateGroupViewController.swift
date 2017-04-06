@@ -95,7 +95,19 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate, UIImagePi
             "description" : groupDesctiption,
             "users"       : [uid]
         ]
-        DataService.sharedInstance.createFirebaseGroup(values: dictionary)
+        let key = DataService.sharedInstance.createFirebaseGroup(values: dictionary)
+        DataService.sharedInstance.queryFirebaseUserByUID(uid: uid) { (snapshot) in
+            var groupArray = (snapshot.value as? NSDictionary)?["groups"] as! [String]
+            if !groupArray.contains(key) {
+                if groupArray[0] == "null" {
+                    groupArray[0] = key
+                } else {
+                    groupArray.append(key)
+                }
+                DataService.sharedInstance.users.child(uid).updateChildValues(["groups" : groupArray])
+            }
+        }
+
         
         //CACHE: New group was created
         //NEED GROUP ID in Dict if possible

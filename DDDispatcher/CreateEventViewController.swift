@@ -15,13 +15,14 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
     var dict_adminGroups = [String: AnyObject]()
     
     // store group names (keys of dictionary)
-    var groupNames = ["Hey group", "Pokemon Go"]
+    let dict = cache.sharedCache.getUserInfo()
+    var groupNames = ["Group 1", "Group 2"]
     var groupName = ""
     
     //value of dict_adminGroups
     var groupLogos = ["logo.png", "logo.png"]
     
-    //set outlets
+    //set outletsc
     @IBOutlet var groupsTableView: UITableView!
 
     
@@ -32,7 +33,6 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         dict_adminGroups = [groupNames[0]: groupLogos as AnyObject, groupNames[1]: groupLogos as AnyObject]
 
     }

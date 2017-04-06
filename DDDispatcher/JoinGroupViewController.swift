@@ -62,6 +62,7 @@ class JoinGroupViewController: UIViewController {
         }
     }
     
+    
     func confirmationAlert() {
         let alert = UIAlertController(title: "Confirmation", message: "You joined Group!", preferredStyle: .alert)
         let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {

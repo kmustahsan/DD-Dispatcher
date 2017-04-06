@@ -78,6 +78,8 @@ class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelega
                 return
             }
             guard let data = result as? [String:Any] else  { return }
+            let uid = data["id"]
+            let avatarURL = "http://graph.facebook.com/\(uid)/picture?type=normal"
             let name = 	data["name"]
             let email = data["email"]
             
@@ -93,7 +95,7 @@ class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelega
                 let dictionary : [String: Any] = [
                     "name"       : name as! String,
                     "email"      : email as! String,
-                    "groups"     : ["Group1", "Group2"],
+                    "groups"     : ["null"],
                     "provider"   : "Facebook",
                     "uid"        : uid
                 ]
@@ -133,7 +135,7 @@ class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelega
             let dictionary : [String: Any] = [
                 "name"       : user.profile.name,
                 "email"      : user.profile.email,
-                "groups"     : ["Group1", "Group2"],
+                "groups"     : ["null"],
                 "provider"   : "Google",
                 "uid"        : uid
             ]
@@ -195,7 +197,7 @@ class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelega
                                 let dictionary : [String: Any] = [
                                     "name"       : "nil",
                                     "email"      : inputEmail,
-                                    "groups"     : ["Group1", "Group2"],
+                                    "groups"     : ["null"],
                                     "provider"   : "Email",
                                     "uid"        : uid
                                 ]
