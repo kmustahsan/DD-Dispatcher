@@ -194,7 +194,7 @@ class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelega
                                     print("Error with email user", err)
                                 }
                                 guard let uid = user?.uid else { return }
-                                let dictionary : [String: Any] = [
+                                var dictionary : [String: Any] = [
                                     "name"       : "nil",
                                     "email"      : inputEmail,
                                     "groups"     : ["null"],
