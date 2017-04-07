@@ -100,8 +100,8 @@ class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelega
                 ]
                 DataService.sharedInstance.createFirebaseUser(uid: uid, user: dictionary)
                 //CACHE: DONE store user info here
-                dictionary["uid"] = uid
-                cache.sharedCache.writeDictionaryCache(name: "user", dict: dictionary);
+//                dictionary["uid"] = uid
+//                cache.sharedCache.writeDictionaryCache(name: "user", dict: dictionary);
                 DispatchQueue.main.async(execute: {
                     self.segue()
                 })
@@ -140,9 +140,9 @@ class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelega
             ]
             DataService.sharedInstance.createFirebaseUser(uid: uid, user: dictionary)
             //CACHE: DONE store user info here
-            print("stored in cache")
-            dictionary["uid"] = uid
-            cache.sharedCache.writeDictionaryCache(name: "user", dict: dictionary)
+//            print("stored in cache")
+//            dictionary["uid"] = uid
+//            cache.sharedCache.writeDictionaryCache(name: "user", dict: dictionary)
             DispatchQueue.main.async(execute: {
                 self.segue()
             })
@@ -202,8 +202,8 @@ class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelega
                                 ]
                                 DataService.sharedInstance.createFirebaseUser(uid: uid, user: dictionary)
                                 //CACHE: DONE store user info here
-                                dictionary["uid"] = uid
-                                cache.sharedCache.writeDictionaryCache(name: "user", dict: dictionary);
+//                                dictionary["uid"] = uid
+//                                cache.sharedCache.writeDictionaryCache(name: "user", dict: dictionary);
                             })
                             DispatchQueue.main.async(execute: {
                                 self.newEmailUser = true

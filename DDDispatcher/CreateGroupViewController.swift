@@ -83,58 +83,58 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate, UIImagePi
     
     
     @IBAction func submitGroup(_ sender: Any) {
-        //CACHE: DONE Ref user
-        let dict = cache.sharedCache.getUserInfo()
-        guard let uid = dict["uid"] as? String else {return}
-        //End
-        guard let groupName = groupNameTextField.text else { return }
-        guard let groupDesctiption = textView.text else { return }
-        let dictionary : [String: Any] = [
-            "admin"       : uid,
-            "name"        : groupName,
-            "description" : groupDesctiption,
-            "users"       : [uid]
-        ]
-        let key = DataService.sharedInstance.createFirebaseGroup(values: dictionary)
-        DataService.sharedInstance.queryFirebaseUserByUID(uid: uid) { (snapshot) in
-            var groupArray = (snapshot.value as? NSDictionary)?["groups"] as! [String]
-            if !groupArray.contains(key) {
-                if groupArray[0] == "null" {
-                    groupArray[0] = key
-                } else {
-                    groupArray.append(key)
-                }
-                DataService.sharedInstance.users.child(uid).updateChildValues(["groups" : groupArray])
-            }
-        }
-
-        
-        //CACHE: New group was created
-        //NEED GROUP ID in Dict if possible
-        //cache.sharedCache.writeDictionaryCache(name: "groups", dict: dictionary)
-        
-        
-        //Error 04.001: When a user did not enter group name
-        if groupName == "" {
-            let alert = UIAlertController(title: "Error", message: "Please enter your group name", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-        //Error 04.002: When a user did not enter group description
-        else if groupDesctiption == "What does this group? Who is it for?" {
-            let alert = UIAlertController(title: "Error", message: "Please enter your group description", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
-        else {
-            
-            //TODO: This needs to segue to the group info page
-            let destinationStoryboard = UIStoryboard(name: "Hub", bundle: nil)
-            if let destinationViewController = destinationStoryboard.instantiateInitialViewController() {
-            self.present(destinationViewController, animated: true)
-            
-            }
-        }
+//        //CACHE: DONE Ref user
+//        let dict = cache.sharedCache.getUserInfo()
+//        guard let uid = dict["uid"] as? String else {return}
+//        //End
+//        guard let groupName = groupNameTextField.text else { return }
+//        guard let groupDesctiption = textView.text else { return }
+//        let dictionary : [String: Any] = [
+//            "admin"       : uid,
+//            "name"        : groupName,
+//            "description" : groupDesctiption,
+//            "users"       : [uid]
+//        ]
+//        let key = DataService.sharedInstance.createFirebaseGroup(values: dictionary)
+//        DataService.sharedInstance.queryFirebaseUserByUID(uid: uid) { (snapshot) in
+//            var groupArray = (snapshot.value as? NSDictionary)?["groups"] as! [String]
+//            if !groupArray.contains(key) {
+//                if groupArray[0] == "null" {
+//                    groupArray[0] = key
+//                } else {
+//                    groupArray.append(key)
+//                }
+//                DataService.sharedInstance.users.child(uid).updateChildValues(["groups" : groupArray])
+//            }
+//        }
+//
+//        
+//        //CACHE: New group was created
+//        //NEED GROUP ID in Dict if possible
+//        //cache.sharedCache.writeDictionaryCache(name: "groups", dict: dictionary)
+//        
+//        
+//        //Error 04.001: When a user did not enter group name
+//        if groupName == "" {
+//            let alert = UIAlertController(title: "Error", message: "Please enter your group name", preferredStyle: UIAlertControllerStyle.alert)
+//            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+//            self.present(alert, animated: true, completion: nil)
+//        }
+//        //Error 04.002: When a user did not enter group description
+//        else if groupDesctiption == "What does this group? Who is it for?" {
+//            let alert = UIAlertController(title: "Error", message: "Please enter your group description", preferredStyle: UIAlertControllerStyle.alert)
+//            alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+//            self.present(alert, animated: true, completion: nil)
+//        }
+//        else {
+//            
+//            //TODO: This needs to segue to the group info page
+//            let destinationStoryboard = UIStoryboard(name: "Hub", bundle: nil)
+//            if let destinationViewController = destinationStoryboard.instantiateInitialViewController() {
+//            self.present(destinationViewController, animated: true)
+//            
+//            }
+//        }
     }
     
 

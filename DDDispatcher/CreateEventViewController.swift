@@ -15,7 +15,7 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
     var dict_adminGroups = [String: AnyObject]()
     
     // store group names (keys of dictionary)
-    let dict = cache.sharedCache.getUserInfo()
+    //let dict = cache.sharedCache.getUserInfo()
     var groupNames = ["Group 1", "Group 2"]
     var groupName = ""
     
