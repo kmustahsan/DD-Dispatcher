@@ -12,11 +12,11 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
     
     
     // Dictionary containing groups that the user is admin in
-    var dict_adminGroups = [String: AnyObject]()
+    var dict_adminGroups = [String]()
     
     // store group names (keys of dictionary)
     //let dict = cache.sharedCache.getUserInfo()
-    var groupNames = ["Group 1", "Group 2"]
+    var groupNames = [String]()
     var groupName = ""
     
     //value of dict_adminGroups
@@ -24,20 +24,24 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
     
     //set outletsc
     @IBOutlet var groupsTableView: UITableView!
-
+    
     
     // value of dict_adminGroups
     // [0] = group name, [1] = event title, [2] = description, [3]=start date, [4] = end date
     //var eventInformation = ["group.png", "ABC event", "bring your own bear", "Dec 20 20:00", "Dec 20 22:00"]
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        dict_adminGroups = [groupNames[0]: groupLogos as AnyObject, groupNames[1]: groupLogos as AnyObject]
-
+        let groupInformation = Cache.sharedInstance.getValueForKey(key: "Group") as! [String : [String: Any]]
+        let keys = Array(groupInformation.keys)
+        for index in 0..<groupInformation.count {
+            groupNames.append(groupInformation[keys[index]]?["name"] as! String)
+        }
+        print(groupNames)
+        dict_adminGroups = groupNames
+        
     }
-
-
+    
     /*
      --------------------------------------
      MARK: - Table View Data Source Methods
@@ -85,7 +89,7 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
         groupName = groupNames[rowNumber]
         
         performSegue(withIdentifier: "FormView", sender: self)
-
+        
     }
     
     /*
@@ -114,7 +118,7 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
             
         } 
     }
-
-
-
+    
+    
+    
 }
