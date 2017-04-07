@@ -11,12 +11,16 @@ import UIKit
 class CustomTableViewCell: UITableViewCell {
     @IBOutlet weak var profileAvatar: UIImageView!
     @IBOutlet weak var username: UILabel!
-  //  let dict = cache.sharedCache.getUserInfo()
+    let userInfo = Cache.sharedInstance.getValueForKey(key: "User") as! [String: Any]
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        //username.text! = dict["name"] as! String
+        if let userName = userInfo["name"]  {
+            username.text! = userName as! String
+        } else {
+            username.text! = "None"
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

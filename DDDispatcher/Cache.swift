@@ -97,7 +97,7 @@ class Cache {
     }
     
     func addNewItemWithKey(key:String, value:AnyObject) {
-        print("[Cache] Starting to add item for key '\(key) with value '\(value)' . . .")
+        print("[Cache] Starting to add item for key '\(key), with value '\(value)' . . .")
         if !keyAlreadyExists(key: key) {
             if let plist = Plist(name: plistFileName) {
                 

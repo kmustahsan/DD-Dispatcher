@@ -36,10 +36,10 @@
 		B820AA1E1E67A187008FBA91 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B820AA1D1E67A187008FBA91 /* DataService.swift */; };
 		B82612D81E77118600A39DFC /* CustomSideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82612D71E77118600A39DFC /* CustomSideMenuController.swift */; };
 		B82612DB1E774EB100A39DFC /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82612DA1E774EB100A39DFC /* CustomTableViewCell.swift */; };
+		B8288A261E97F4AA007D1DAD /* Cache.plist in Resources */ = {isa = PBXBuildFile; fileRef = B8288A251E97F4AA007D1DAD /* Cache.plist */; };
 		B829EA331E7F67B8007213D5 /* RideConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B829EA321E7F67B8007213D5 /* RideConfirmationViewController.swift */; };
 		B84A43141E76DAAD00A11D07 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B84A43131E76DAAD00A11D07 /* MenuViewController.swift */; };
 		B84A43181E76DB1B00A11D07 /* Hub.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B84A43171E76DB1B00A11D07 /* Hub.storyboard */; };
-		B872F5601E789E6900566704 /* cache.plist in Resources */ = {isa = PBXBuildFile; fileRef = B872F55F1E789E6900566704 /* cache.plist */; };
 		B872F5621E789E9F00566704 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = B872F5611E789E9F00566704 /* Cache.swift */; };
 		B872F56A1E7CA16400566704 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B872F5691E7CA16300566704 /* CoreLocation.framework */; };
 		B8B0E0A01E59206800A7339B /* HubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8B0E09F1E59206800A7339B /* HubViewController.swift */; };
@@ -107,10 +107,10 @@
 		B820AA1D1E67A187008FBA91 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		B82612D71E77118600A39DFC /* CustomSideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSideMenuController.swift; sourceTree = "<group>"; };
 		B82612DA1E774EB100A39DFC /* CustomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
+		B8288A251E97F4AA007D1DAD /* Cache.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Cache.plist; sourceTree = "<group>"; };
 		B829EA321E7F67B8007213D5 /* RideConfirmationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideConfirmationViewController.swift; sourceTree = "<group>"; };
 		B84A43131E76DAAD00A11D07 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		B84A43171E76DB1B00A11D07 /* Hub.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Hub.storyboard; sourceTree = "<group>"; };
-		B872F55F1E789E6900566704 /* cache.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = cache.plist; sourceTree = "<group>"; };
 		B872F5611E789E9F00566704 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
 		B872F5691E7CA16300566704 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		B8B0E09F1E59206800A7339B /* HubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HubViewController.swift; sourceTree = "<group>"; };
@@ -204,7 +204,7 @@
 			children = (
 				3F3832DF1E563C6D005E1B3D /* Info.plist */,
 				3F3833021E563E73005E1B3D /* GoogleService-Info.plist */,
-				B872F55F1E789E6900566704 /* cache.plist */,
+				B8288A251E97F4AA007D1DAD /* Cache.plist */,
 			);
 			name = PList;
 			sourceTree = "<group>";
@@ -436,12 +436,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				130868331E6F92F20011C6F9 /* CreateGroup.storyboard in Resources */,
+				B8288A261E97F4AA007D1DAD /* Cache.plist in Resources */,
 				1308683C1E6F9B060011C6F9 /* GroupListAndInfo.storyboard in Resources */,
 				3F3832DE1E563C6D005E1B3D /* LaunchScreen.storyboard in Resources */,
 				134C1D6A1E6F89890022A61E /* JoinGroup.storyboard in Resources */,
 				B84A43181E76DB1B00A11D07 /* Hub.storyboard in Resources */,
 				39E171B41E79DD690021E1D7 /* CreateEvent.storyboard in Resources */,
-				B872F5601E789E6900566704 /* cache.plist in Resources */,
 				3931ADC71E81EB2400EE0F44 /* DriverScreens.storyboard in Resources */,
 				3F3833031E563E73005E1B3D /* GoogleService-Info.plist in Resources */,
 				3F3832DB1E563C6D005E1B3D /* Assets.xcassets in Resources */,

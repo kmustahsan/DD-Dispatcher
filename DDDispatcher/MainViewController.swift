@@ -92,16 +92,16 @@ class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelega
                 }
                 print("Successfully logged into Firebase with Facebook: ", user ?? "")
                 guard let uid = user?.uid else { return }
-                var dictionary : [String: Any] = [
+                var userInformation : [String: Any] = [
                     "name"       : name as! String,
                     "email"      : email as! String,
                     "groups"     : ["null"],
                     "provider"   : "Facebook"
                 ]
-                DataService.sharedInstance.createFirebaseUser(uid: uid, user: dictionary)
+                DataService.sharedInstance.createFirebaseUser(uid: uid, user: userInformation)
                 //CACHE: DONE store user info here
-//                dictionary["uid"] = uid
-//                cache.sharedCache.writeDictionaryCache(name: "user", dict: dictionary);
+                userInformation["uid"] = uid
+                Cache.sharedInstance.addNewItemWithKey(key: "User", value: userInformation as AnyObject)
                 DispatchQueue.main.async(execute: {
                     self.segue()
                 })
