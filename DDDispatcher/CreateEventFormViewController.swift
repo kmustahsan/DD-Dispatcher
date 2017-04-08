@@ -157,8 +157,9 @@ class CreateEventFormViewController: UIViewController {
         guard let eventName = eventName.text        else { return }
         guard let eventDesc = eventDescription.text else { return }
         guard let startDate = startDate.text        else { return }
-        guard let endDate = endDate.text            else { return }
+        guard let endDate   = endDate.text          else { return }
         
+        //Woo: selectedMembers is empty, even though it's being sected from the selectDriverVC
         var selectedMembersID = [String]()
         for index in 0..<selectedMembers.count {
             selectedMembersID.append(groupMembersToPassID[selectedMembers[index]])

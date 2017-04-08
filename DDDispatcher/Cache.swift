@@ -88,7 +88,7 @@ struct Plist {
 
 class Cache {
     static let sharedInstance = Cache()
-    private init() {} //This prevents others from using the default '()' initializer for this class.
+    private init() {} 
     
     func startCache() {
         if let _ = Plist(name: plistFileName) {
@@ -109,13 +109,13 @@ class Cache {
                 } catch {
                     print(error)
                 }
-                print("[Cache] An Action has been performed. You can check if it went ok by taking a look at the current content of the plist file: ")
+                print("[Cache] An Action has been performed. The contents are: ")
                 print("[Cache] \(plist.getValuesInPlistFile())")
             } else {
                 print("[Cache] Unable to get Plist")
             }
         } else {
-            print("[Cache] Item for key '\(key)' already exists. Not saving Item. Not overwriting value.")
+            print("[Cache] Item for key '\(key)' already exists. Not saving Item.")
         }
         
         
@@ -134,7 +134,7 @@ class Cache {
                 } catch {
                     print(error)
                 }
-                print("[Cache] An Action has been performed. You can check if it went ok by taking a look at the current content of the plist file: ")
+                print("[Cache] An Action has been performed. The contents are: ")
                 print("[Cache] \(plist.getValuesInPlistFile())")
             } else {
                 print("[Cache] Unable to get Plist")
@@ -164,7 +164,7 @@ class Cache {
             } catch {
                 print(error)
             }
-            print("[Cache] An Action has been performed. You can check if it went ok by taking a look at the current content of the plist file: ")
+            print("[Cache] An Action has been performed. The contents are: ")
             print("[Cache] \(plist.getValuesInPlistFile())")
         } else {
             print("[Cache] Unable to get Plist")
@@ -180,7 +180,7 @@ class Cache {
             if let dictValue = dict[forKey] {
                 
                 if type(of: value) != type(of: dictValue) {
-                    print("[Cache] WARNING: You are saving a \(type(of: value)) typed value into a \(type(of: dictValue)) typed value. Best practice is to save Int values to Int fields, String values to String fields etc. (For example: '_NSContiguousString' to '__NSCFString' is ok too; they are both String types) If you believe that this mismatch in the types of the values is ok and will not break your code than disregard this message.")
+                    print("[Cache] WARNING: You are saving a \(type(of: value)) typed value into a \(type(of: dictValue)) typed value.")
                 }
                 
                 dict[forKey] = value
@@ -192,7 +192,7 @@ class Cache {
             } catch {
                 print(error)
             }
-            print("[Cache] An Action has been performed. You can check if it went ok by taking a look at the current content of the plist file: ")
+            print("[Cache] An Action has been performed. The contents are: ")
             print("[Cache] \(plist.getValuesInPlistFile())")
         } else {
             print("[Cache] Unable to get Plist")
@@ -208,35 +208,29 @@ class Cache {
             let dict = plist.getMutablePlistFile()!
             
             let keys = Array(dict.allKeys)
-            //print("[Cache] Keys are: \(keys)")
             
             if keys.count != 0 {
                 
                 for (_,element) in keys.enumerated() {
-                    //print("[Cache] Key Index - \(index) = \(element)")
                     if element as! String == key {
                         print("[Cache] Found the Item that we were looking for for key: [\(key)]")
                         value = dict[key]! as AnyObject
-                    } else {
-                        //print("[Cache] This is Item with key '\(element)' and not the Item that we are looking for with key: \(key)")
                     }
                 }
                 
                 if value != nil {
-                    //print("[Cache] The Element that we were looking for exists: [\(key)]: \(value)")
                     return value!
                 } else {
-                    print("[Cache] WARNING: The Item for key '\(key)' does not exist! Please, check your spelling.")
+                    print("[Cache] WARNING: The Item for key '\(key)' does not exist.")
                     return .none
                 }
                 
             } else {
-                print("[Cache] No Plist Item Found when searching for item with key: \(key). The Plist is Empty!")
+                print("[Cache] No Plist Item Found when searching for item with key: \(key).")
                 return .none
             }
             
         } else {
-            print("[Cache] Unable to get Plist")
             return .none
         }
         
@@ -261,17 +255,14 @@ class Cache {
                         print("[Cache] Checked if item exists and found it for key: [\(key)]")
                         keyExists = true
                     } else {
-                        //print("[Cache] This is Element with key '\(element)' and not the Element that we are looking for with Key: \(key)")
                     }
                 }
                 
             } else {
-                //print("[Cache] No Plist Element Found with Key: \(key). The Plist is Empty!")
                 keyExists =  false
             }
             
         } else {
-            //print("[Cache] Unable to get Plist")
             keyExists = false
         }
         
