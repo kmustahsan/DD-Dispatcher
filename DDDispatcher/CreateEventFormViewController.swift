@@ -18,7 +18,9 @@ class CreateEventFormViewController: UIViewController {
     var infoPassed = ["", "", "", ""]
     var doneSetting = 0
     var datePassed = ["", ""]
-    var groupMembersToPass = ["Pikachu Raichu", "Yoonju Lee", "Woo Jin Kye"]
+    var groupMembersToPass = [String]()
+    var groupMembersToPassID = [String]()
+    var selectedMembers = [Int]()
     
     //set outlets
     @IBOutlet var groupName: UITextField!
@@ -43,6 +45,24 @@ class CreateEventFormViewController: UIViewController {
             endDate.text! = datePassed[1]
         }
         
+        generateDD(groupID: gid)
+    }
+    
+    func generateDD(groupID: String) {
+        if groupID == "" { return }
+        
+        DataService.sharedInstance.queryFirebaseGroup(gid: groupID) { (snapshot) in
+            guard let userArray : [String] = (snapshot.value as? NSDictionary)?["users"] as? [String]  else { return }
+            for index in 0..<userArray.count {
+                self.groupMembersToPassID.append(userArray[index])
+            }
+            for index in 0..<self.groupMembersToPassID.count {
+                DataService.sharedInstance.queryFirebaseUserByUID(uid: self.groupMembersToPassID[index], completion: { (snapshot) in
+                    guard let name : String = (snapshot.value as? NSDictionary)?["name"] as! String else { return }
+                    self.groupMembersToPass.append(name)
+                })
+            }
+        }
     }
 
     
@@ -139,13 +159,19 @@ class CreateEventFormViewController: UIViewController {
         guard let startDate = startDate.text        else { return }
         guard let endDate = endDate.text            else { return }
         
+        var selectedMembersID = [String]()
+        for index in 0..<selectedMembers.count {
+            selectedMembersID.append(groupMembersToPassID[selectedMembers[index]])
+        }
+        
         var eventToSave : [String : Any] = [
             "event"       : eventName,
             "group"       : groupName,
             "gid"         : gid,
             "description" : eventDesc,
             "start"       : startDate,
-            "end"         : endDate
+            "end"         : endDate,
+            "drivers"     : selectedMembersID
         ]
         
         let key = DataService.sharedInstance.createFirebaseEvent(values: eventToSave)

@@ -41,8 +41,23 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
         }
         print(groupNames)
         dict_adminGroups = groupNames
-        
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     /*
      --------------------------------------

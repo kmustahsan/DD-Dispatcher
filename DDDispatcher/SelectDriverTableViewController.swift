@@ -12,7 +12,7 @@ class SelectDriverTableViewController: UITableViewController {
 
     //set variables
     var groupMembersPassed = [""]
-    var drivers = [""]
+    var drivers = [Int]()
     var eventInformationPassed = ["", "", "", "", ""] //[0] group Name, [1] event name, [2] description, [3] start date, [4] end date
     
     //set outlet
@@ -69,17 +69,17 @@ class SelectDriverTableViewController: UITableViewController {
             
             if cell.accessoryType == .none {
                 cell.accessoryType = .checkmark
-                drivers.append(groupMembersPassed[rowNumber])
+                drivers.append(rowNumber)
                 print(drivers)
                 
             } else {
                 cell.accessoryType = .none
                 
-                let memberToBeRemoved = groupMembersPassed[rowNumber]
+                let memberToBeRemoved = rowNumber
                 
                 for i in stride(from: 0, to: drivers.count, by: 1) {
                     print(drivers[i])
-                    if drivers[i] == memberToBeRemoved {
+                    if i == memberToBeRemoved {
                         drivers.remove(at: i)
                         break
                     }
@@ -87,6 +87,13 @@ class SelectDriverTableViewController: UITableViewController {
                 print(drivers)
             }
         }
+        
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        let vc =  CreateEventFormViewController()
+        vc.selectedMembers = drivers
+        
         
     }
     

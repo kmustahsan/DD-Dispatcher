@@ -72,10 +72,10 @@ class DataService {
         })
     }
     
-    func queryFirebaseGroup(gid: String, completion: @escaping (Bool) -> Void) {
+    func queryFirebaseGroup(gid: String, completion: @escaping (FIRDataSnapshot) -> Void) {
         queryGroupRef.child(gid).observe(.value, with: { (snapshot) -> Void in
             if !snapshot.exists() { return }
-            completion(snapshot.exists())
+            completion(snapshot)
         })
     }
     
