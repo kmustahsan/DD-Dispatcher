@@ -12,7 +12,7 @@
         <scene sceneID="sIZ-gK-Gof">
             <objects>
                 <navigationController id="4he-RR-GHO" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="fUl-2b-nZ0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="fUl-2b-nZ0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -106,7 +106,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="evC-EB-9Hx" id="zhH-gt-5eu">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -201,7 +201,7 @@
                         <barButtonItem key="rightBarButtonItem" title="Save" id="m0b-IS-92P">
                             <color key="tintColor" red="0.098039217289999994" green="0.098039217289999994" blue="0.098039217289999994" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <action selector="saveEvent:" destination="qOw-OX-vId" id="Drf-HG-G9h"/>
+                                <action selector="saveEvent:" destination="qOw-OX-vId" id="Fwc-mo-R68"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -212,9 +212,11 @@
                         <outlet property="groupName" destination="gjs-se-rlY" id="Hpv-OH-2My"/>
                         <outlet property="startDate" destination="5rk-ul-bXK" id="qCD-TK-rl4"/>
                         <segue destination="KyF-WP-Xxp" kind="show" identifier="SetDate" id="ReX-DK-Hcs"/>
+                        <segue destination="Izp-DF-8ck" kind="unwind" identifier="unwindMenuSegue" unwindAction="unwindToHubWithSegue:" id="bWj-1d-81e"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="krg-FF-Au5" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Izp-DF-8ck" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="940" y="-404.34782608695656"/>
         </scene>

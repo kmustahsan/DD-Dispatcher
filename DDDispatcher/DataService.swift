@@ -8,7 +8,6 @@
 
 import Foundation
 import Firebase
-import FirebaseDatabase
 
 class DataService {
     
@@ -46,7 +45,7 @@ class DataService {
     var events : FIRDatabaseReference {
         return _events
     }
-    
+    //Creation
     func createFirebaseUser(uid: String, user: Dictionary<String, Any>) {
         users.child(uid).setValue(user)
     }
@@ -58,6 +57,14 @@ class DataService {
         return key
     }
     
+    func createFirebaseEvent(values: Dictionary<String, Any>) -> String {
+        let autoId = events.childByAutoId()
+        autoId.setValue(values)
+        let key = autoId.key
+        return key
+    }
+    
+    //Queries
     func queryFirebaseUserByUID(uid: String, completion: @escaping (FIRDataSnapshot) -> Void) {
         queryUserRef.child(uid).observe(.value, with: { (snapshot) -> Void in
             if !snapshot.exists() { return }
@@ -72,9 +79,6 @@ class DataService {
         })
     }
     
-    func createFireBaseEvent(values: Dictionary<String, Any>) {
-        events.childByAutoId().setValue(values)
-    }
 }
 
 

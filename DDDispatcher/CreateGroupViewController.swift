@@ -108,12 +108,12 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate, UIImagePi
             }
         }
         
-        if (Cache.sharedInstance.keyAlreadyExists(key: "Group")) {
-            var existingData = Cache.sharedInstance.getValueForKey(key: "Group") as! [String : [String: Any]]
+        if (Cache.sharedInstance.keyAlreadyExists(key: "Groups")) {
+            var existingData = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
             existingData[key] = dictionary
-            Cache.sharedInstance.saveValue(value: existingData as AnyObject, forKey: "Group")
+            Cache.sharedInstance.saveValue(value: existingData as AnyObject, forKey: "Groups")
         } else {
-            Cache.sharedInstance.addNewItemWithKey(key: "Group", value: [key: dictionary]  as AnyObject)
+            Cache.sharedInstance.addNewItemWithKey(key: "Groups", value: [key: dictionary]  as AnyObject)
         }
 //
 //        //CACHE: New group was created

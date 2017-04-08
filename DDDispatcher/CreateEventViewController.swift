@@ -18,9 +18,11 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
     //let dict = cache.sharedCache.getUserInfo()
     var groupNames = [String]()
     var groupName = ""
+    var gid = ""
+    var keys = [String]()
     
     //value of dict_adminGroups
-    var groupLogos = ["logo.png", "logo.png"]
+    var groupLogos = ["logo.png", "logo.png", "logo.png"]
     
     //set outletsc
     @IBOutlet var groupsTableView: UITableView!
@@ -32,8 +34,8 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let groupInformation = Cache.sharedInstance.getValueForKey(key: "Group") as! [String : [String: Any]]
-        let keys = Array(groupInformation.keys)
+        let groupInformation = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
+        keys = Array(groupInformation.keys)
         for index in 0..<groupInformation.count {
             groupNames.append(groupInformation[keys[index]]?["name"] as! String)
         }
@@ -62,6 +64,7 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
         let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "GroupNameAndImage") as UITableViewCell!
         
         groupName = groupNames[rowNumber]
+        gid = keys[rowNumber]
         
         //add the name of groups
         cell.textLabel!.text = groupName
@@ -87,6 +90,8 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.deselectRow(at: indexPath, animated: true)
         
         groupName = groupNames[rowNumber]
+        gid = keys[rowNumber]
+        
         
         performSegue(withIdentifier: "FormView", sender: self)
         
@@ -115,6 +120,7 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
             
             //Pass the data object to the destination view controller object
             createEventFormViewController.groupNamePassed = groupName
+            createEventFormViewController.gid = gid
             
         } 
     }
