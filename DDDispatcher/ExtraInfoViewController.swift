@@ -64,9 +64,9 @@ class ExtraInfoViewController: UIViewController, UITextFieldDelegate  {
         ref.updateChildValues([
             "name": nameString])
          //CACHE: DONE update
-        var dict = cache.sharedCache.getUserInfo()
-        dict["name"] = nameString
-        cache.sharedCache.writeDictionaryCache(name: "user", dict: dict)
+//        var dict = cache.sharedCache.getUserInfo()
+//        dict["name"] = nameString
+//        cache.sharedCache.writeDictionaryCache(name: "user", dict: dict)
         let destinationStoryboard = UIStoryboard(name: "Hub", bundle: nil)
         if let destinationViewController = destinationStoryboard.instantiateInitialViewController() {
             self.present(destinationViewController, animated: true)

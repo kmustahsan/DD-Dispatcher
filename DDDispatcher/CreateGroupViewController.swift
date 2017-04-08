@@ -84,12 +84,12 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate, UIImagePi
     
     @IBAction func submitGroup(_ sender: Any) {
         //CACHE: DONE Ref user
-        let dict = cache.sharedCache.getUserInfo()
-        guard let uid = dict["uid"] as? String else {return}
+        let userInfo = Cache.sharedInstance.getValueForKey(key: "User") as! [String: Any]
+        guard let uid = userInfo["uid"] as? String else { return }
         //End
         guard let groupName = groupNameTextField.text else { return }
         guard let groupDesctiption = textView.text else { return }
-        let dictionary : [String: Any] = [
+        var dictionary : [String: Any] = [
             "admin"       : uid,
             "name"        : groupName,
             "description" : groupDesctiption,
@@ -107,13 +107,17 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate, UIImagePi
                 DataService.sharedInstance.users.child(uid).updateChildValues(["groups" : groupArray])
             }
         }
-
         
-        //CACHE: New group was created
-        //NEED GROUP ID in Dict if possible
-        //cache.sharedCache.writeDictionaryCache(name: "groups", dict: dictionary)
-        
-        
+        if (Cache.sharedInstance.keyAlreadyExists(key: "Groups")) {
+            var existingData = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
+            existingData[key] = dictionary
+            Cache.sharedInstance.saveValue(value: existingData as AnyObject, forKey: "Groups")
+        } else {
+            Cache.sharedInstance.addNewItemWithKey(key: "Groups", value: [key: dictionary]  as AnyObject)
+        }
+//
+//        //CACHE: New group was created
+       
         //Error 04.001: When a user did not enter group name
         if groupName == "" {
             let alert = UIAlertController(title: "Error", message: "Please enter your group name", preferredStyle: UIAlertControllerStyle.alert)

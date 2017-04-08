@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SideMenuController.preferences.animating.transitionAnimator = FadeAnimator.self
         GMSPlacesClient.provideAPIKey("AIzaSyCJrgR7DKEyNFAusVVWL3a2SZLZNGzxp8s")
         GMSServices.provideAPIKey("AIzaSyCJrgR7DKEyNFAusVVWL3a2SZLZNGzxp8s")
-       
+        Cache.sharedInstance.startCache()
         
         return true
     }

@@ -9,127 +9,266 @@
 import Foundation
 import Firebase
 
-class cache {
-    //plist
-    var path = Bundle.main.path(forResource: "cache", ofType: "plist")
-    //holds root pList
-    //key : user -> Dictionary of user props, listed in design doc
-    //key : groups -> Dictionary holds group(s) information for user
-    var initDict : [String : Any?]?
+let plistFileName:String = "Cache"
+
+struct Plist {
     
+    enum PlistError: Error {
+        case FileNotWritten
+        case FileDoesNotExist
+    }
     
+    let name:String
     
-    //singletion class usage: cache.sharedCache
-    static let sharedCache = cache()
-    private init(){
-        //private init doesnt allow anyone to init the class in any other space
-        //open plist file and read
-        let fileMan = FileManager.default
-        if fileMan.fileExists(atPath: path!)
-        {
-            self.initDict = NSDictionary(contentsOfFile: path!) as? [String : Any?]
-        }
-        else
-        {
-            self.initDict = nil
-        }
-        //setting up the caching for active listening
-        var ref: FIRDatabaseReference!
+    var sourcePath:String? {
+        guard let path = Bundle.main.path(forResource: name, ofType: "plist") else { return .none }
+        return path
+    }
+    
+    var destPath:String? {
+        guard sourcePath != .none else { return .none }
+        let dir = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
+        return (dir as NSString).appendingPathComponent("\(name).plist")
+    }
+    
+    init?(name:String) {
         
-        ref = FIRDatabase.database().reference()
-        let groupRef = ref.child("groups")
-        groupRef.observe(.childAdded, with: { (snapshotD) in
-            let snapshot = snapshotD.value as? NSDictionary
-            let admin = snapshot!["admin"] as! String
-            let description = snapshot!["description"] as! String
-            let name = snapshot!["name"] as! String
-            let users = snapshot!["users"] as! [String]
+        self.name = name
+        
+        let fileManager = FileManager.default
+        
+        guard let source = sourcePath else { return nil }
+        guard let destination = destPath else { return nil }
+        guard fileManager.fileExists(atPath: source) else { return nil }
+        
+        if !fileManager.fileExists(atPath: destination) {
             
-            let groupDict = ["admin": admin, "description": description, "name": name, "users": users] as [String : Any]
-            var masterDict = self.getGroupsInfo();
-            masterDict[snapshotD.key] = groupDict
-            self.writeDictionaryCache(name: "groups", dict: masterDict)
-        })
-        
-        
+            do {
+                try fileManager.copyItem(atPath: source, toPath: destination)
+            } catch let error as NSError {
+                print("[Cache] Unable to copy file. ERROR: \(error.localizedDescription)")
+                return nil
+            }
+        }
     }
     
-    func getUserInfo()->Dictionary<String, Any?>{
-        let fileMan = FileManager.default
-        var initDictLocal : [String: Any?]?
-        if fileMan.fileExists(atPath: path!)
-        {
-            initDictLocal = NSDictionary(contentsOfFile: path!) as? [String : Any?]
+    func getValuesInPlistFile() -> NSDictionary?{
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: destPath!) {
+            guard let dict = NSDictionary(contentsOfFile: destPath!) else { return .none }
+            return dict
+        } else {
+            return .none
         }
-        else
-        {
-            initDictLocal = nil
-        }
-        let user : Dictionary<String, Any?> = initDictLocal!["user"] as! Dictionary<String, Any?>
-        
-        return user
-        
     }
     
-    func getGroupsInfo()->Dictionary<String, Any?>{
-        let fileMan = FileManager.default
-        var initDictLocal : [String: Any?]?
-        if fileMan.fileExists(atPath: path!)
-        {
-            initDictLocal = NSDictionary(contentsOfFile: path!) as? [String : Any?]
+    func getMutablePlistFile() -> NSMutableDictionary?{
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: destPath!) {
+            guard let dict = NSMutableDictionary(contentsOfFile: destPath!) else { return .none }
+            return dict
+        } else {
+            return .none
         }
-        else
-        {
-            initDictLocal = nil
-        }
-        let groups : Dictionary<String, Any?> = initDictLocal!["groups"] as! Dictionary<String, Any?>
-        
-        return groups
     }
     
-    
-    /// getGroupbyname
-    ///
-    /// - Parameter id: group id
-    /// - Returns: optional dictornary of group ["admin": admin, "description": description, "name": name, "users": users]
-    
-    func getGroupByName(id : String) ->Dictionary<String, Any?>?
-    {
-        let dict = getGroupsInfo();
-        return dict[id] as! Dictionary<String, Any?>?
+    func addValuesToPlistFile(dictionary:NSDictionary) throws {
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: destPath!) {
+            if !dictionary.write(toFile: destPath!, atomically: false) {
+                print("[Cache] File not written successfully")
+                throw PlistError.FileNotWritten
+            }
+        } else {
+            throw PlistError.FileDoesNotExist
+        }
     }
-    
-    
-    //["-KgzYCrI3YQiP9zxMOic": Optional(["description": "Yellow testing", "name": "need", "users": ["WcrSNIP7N5cy4U4Pwh8L5rxSU9i2"], "admin": "WcrSNIP7N5cy4U4Pwh8L5rxSU9i2"])]
-    
-    
-    func writeDictionaryCache(name : String, dict : Dictionary<String, Any?>){
-        if(initDict == nil)
-        {
-            //throw error or console log
-            print("error with cache file, writing")
-            return
-        }
-        print("user dict", dict)
-        switch name {
-        case "user":
-            initDict!["user"] = dict
-        case "groups":
-            initDict!["groups"] = dict
-        default:
-            return
-        }
-        
-        //write to plist
-        let fileMan = FileManager.default
-        if fileMan.fileExists(atPath: path!)
-        {
-            let writeDict = initDict! as NSDictionary
-            writeDict.write(toFile: path!, atomically: false)
-            print("wrote to cache")
-        }
-        
-    }
-    
     
 }
+
+class Cache {
+    static let sharedInstance = Cache()
+    private init() {} 
+    
+    func startCache() {
+        if let _ = Plist(name: plistFileName) {
+            print("[Cache] Cache started")
+        }
+    }
+    
+    func addNewItemWithKey(key:String, value:AnyObject) {
+        print("[Cache] Starting to add item for key '\(key), with value '\(value)' . . .")
+        if !keyAlreadyExists(key: key) {
+            if let plist = Plist(name: plistFileName) {
+                
+                let dict = plist.getMutablePlistFile()!
+                dict[key] = value
+                
+                do {
+                    try plist.addValuesToPlistFile(dictionary: dict)
+                } catch {
+                    print(error)
+                }
+                print("[Cache] An Action has been performed. The contents are: ")
+                print("[Cache] \(plist.getValuesInPlistFile())")
+            } else {
+                print("[Cache] Unable to get Plist")
+            }
+        } else {
+            print("[Cache] Item for key '\(key)' already exists. Not saving Item.")
+        }
+        
+        
+    }
+    
+    func removeItemForKey(key:String) {
+        print("[Cache] Starting to remove item for key '\(key) . . .")
+        if keyAlreadyExists(key: key) {
+            if let plist = Plist(name: plistFileName) {
+                
+                let dict = plist.getMutablePlistFile()!
+                dict.removeObject(forKey: key)
+                
+                do {
+                    try plist.addValuesToPlistFile(dictionary: dict)
+                } catch {
+                    print(error)
+                }
+                print("[Cache] An Action has been performed. The contents are: ")
+                print("[Cache] \(plist.getValuesInPlistFile())")
+            } else {
+                print("[Cache] Unable to get Plist")
+            }
+        } else {
+            print("[Cache] Item for key '\(key)' does not exists. Remove canceled.")
+        }
+        
+    }
+    
+    func removeAllItemsFromPlist() {
+        
+        if let plist = Plist(name: plistFileName) {
+            
+            let dict = plist.getMutablePlistFile()!
+            
+            let keys = Array(dict.allKeys)
+            
+            if keys.count != 0 {
+                dict.removeAllObjects()
+            } else {
+                print("[Cache] Plist is already empty. Removal of all items canceled.")
+            }
+            
+            do {
+                try plist.addValuesToPlistFile(dictionary: dict)
+            } catch {
+                print(error)
+            }
+            print("[Cache] An Action has been performed. The contents are: ")
+            print("[Cache] \(plist.getValuesInPlistFile())")
+        } else {
+            print("[Cache] Unable to get Plist")
+        }
+    }
+    
+    func saveValue(value:AnyObject, forKey:String) {
+        
+        if let plist = Plist(name: plistFileName) {
+            
+            let dict = plist.getMutablePlistFile()!
+            
+            if let dictValue = dict[forKey] {
+                
+                if type(of: value) != type(of: dictValue) {
+                    print("[Cache] WARNING: You are saving a \(type(of: value)) typed value into a \(type(of: dictValue)) typed value.")
+                }
+                
+                dict[forKey] = value
+                
+            }
+            
+            do {
+                try plist.addValuesToPlistFile(dictionary: dict)
+            } catch {
+                print(error)
+            }
+            print("[Cache] An Action has been performed. The contents are: ")
+            print("[Cache] \(plist.getValuesInPlistFile())")
+        } else {
+            print("[Cache] Unable to get Plist")
+        }
+    }
+    
+    func getValueForKey(key:String) -> AnyObject? {
+        var value:AnyObject?
+        
+        
+        if let plist = Plist(name: plistFileName) {
+            
+            let dict = plist.getMutablePlistFile()!
+            
+            let keys = Array(dict.allKeys)
+            
+            if keys.count != 0 {
+                
+                for (_,element) in keys.enumerated() {
+                    if element as! String == key {
+                        print("[Cache] Found the Item that we were looking for for key: [\(key)]")
+                        value = dict[key]! as AnyObject
+                    }
+                }
+                
+                if value != nil {
+                    return value!
+                } else {
+                    print("[Cache] WARNING: The Item for key '\(key)' does not exist.")
+                    return .none
+                }
+                
+            } else {
+                print("[Cache] No Plist Item Found when searching for item with key: \(key).")
+                return .none
+            }
+            
+        } else {
+            return .none
+        }
+        
+    }
+    
+    func keyAlreadyExists(key:String) -> Bool {
+        var keyExists = false
+        
+        if let plist = Plist(name: plistFileName) {
+            
+            let dict = plist.getMutablePlistFile()!
+            
+            let keys = Array(dict.allKeys)
+            //print("[Cache] Keys are: \(keys)")
+            
+            if keys.count != 0 {
+                
+                for (_,element) in keys.enumerated() {
+                    
+                    //print("[Cache] Key Index - \(index) = \(element)")
+                    if element as! String == key {
+                        print("[Cache] Checked if item exists and found it for key: [\(key)]")
+                        keyExists = true
+                    } else {
+                    }
+                }
+                
+            } else {
+                keyExists =  false
+            }
+            
+        } else {
+            keyExists = false
+        }
+        
+        return keyExists
+    }
+    
+}
+
+

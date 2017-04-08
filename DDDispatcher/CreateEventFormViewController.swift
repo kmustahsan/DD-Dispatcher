@@ -7,16 +7,20 @@
 //
 
 import UIKit
+import Firebase
 
 class CreateEventFormViewController: UIViewController {
 
     //set variables
     var groupNamePassed = ""
-    var infoToPass = ["", "", ""] //[0] = group name, [1] = event name, [2] = event description
-    var infoPassed = ["", "", ""]
+    var gid = ""
+    var infoToPass = ["", "", "", ""] //[0] = group name, [1] = event name, [2] = event description
+    var infoPassed = ["", "", "", ""]
     var doneSetting = 0
     var datePassed = ["", ""]
-    var groupMembersToPass = ["Pikachu Raichu", "Yoonju Lee", "Woo Jin Kye"]
+    var groupMembersToPass = [String]()
+    var groupMembersToPassID = [String]()
+    var selectedMembers = [Int]()
     
     //set outlets
     @IBOutlet var groupName: UITextField!
@@ -29,17 +33,36 @@ class CreateEventFormViewController: UIViewController {
         super.viewDidLoad()
         
         groupName.text! = groupNamePassed
-        
+        print(gid)
         print(doneSetting)
         
         if doneSetting == 1 {
             groupName.text! = infoPassed[0]
             eventName.text! = infoPassed[1]
             eventDescription.text! = infoPassed[2]
+            gid = infoPassed[3]
             startDate.text! = datePassed[0]
             endDate.text! = datePassed[1]
         }
         
+        generateDD(groupID: gid)
+    }
+    
+    func generateDD(groupID: String) {
+        if groupID == "" { return }
+        
+        DataService.sharedInstance.queryFirebaseGroup(gid: groupID) { (snapshot) in
+            guard let userArray : [String] = (snapshot.value as? NSDictionary)?["users"] as? [String]  else { return }
+            for index in 0..<userArray.count {
+                self.groupMembersToPassID.append(userArray[index])
+            }
+            for index in 0..<self.groupMembersToPassID.count {
+                DataService.sharedInstance.queryFirebaseUserByUID(uid: self.groupMembersToPassID[index], completion: { (snapshot) in
+                    guard let name : String = (snapshot.value as? NSDictionary)?["name"] as! String else { return }
+                    self.groupMembersToPass.append(name)
+                })
+            }
+        }
     }
 
     
@@ -92,6 +115,7 @@ class CreateEventFormViewController: UIViewController {
         }
         infoToPass[1] = eventName.text!
         infoToPass[2] = eventDescription.text!
+        infoToPass[3] = gid
        
         performSegue(withIdentifier: "SetDate", sender: self)
     }
@@ -129,8 +153,44 @@ class CreateEventFormViewController: UIViewController {
     }
     
     @IBAction func saveEvent(_ sender: Any) {
+        guard let groupName = groupName.text        else { return }
+        guard let eventName = eventName.text        else { return }
+        guard let eventDesc = eventDescription.text else { return }
+        guard let startDate = startDate.text        else { return }
+        guard let endDate   = endDate.text          else { return }
+        
+        D
+        var selectedMembersID = [String]()
+        for index in 0..<selectedMembers.count {
+            selectedMembersID.append(groupMembersToPassID[selectedMembers[index]])
+        }
+        // This is being sent to cache and Firebase
+        var eventToSave : [String : Any] = [
+            "event"       : eventName,
+            "group"       : groupName,
+            "gid"         : gid,
+            "description" : eventDesc,
+            "start"       : startDate,
+            "end"         : endDate,
+            "drivers"     : selectedMembersID
+        ]
+        
+        let key = DataService.sharedInstance.createFirebaseEvent(values: eventToSave)
+    
+        // cache key
+        
+        if (Cache.sharedInstance.keyAlreadyExists(key: "Events")) {
+            var existingData = Cache.sharedInstance.getValueForKey(key: "Events") as! [String : [String: Any]]
+            existingData[key] = eventToSave
+            Cache.sharedInstance.saveValue(value: existingData as AnyObject, forKey: "Events")
+        } else {
+            Cache.sharedInstance.addNewItemWithKey(key: "Events", value: [key: eventToSave]  as AnyObject)
+        }
+        
+        self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
         
     }
+   
     
     
 
