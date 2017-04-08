@@ -159,12 +159,12 @@ class CreateEventFormViewController: UIViewController {
         guard let startDate = startDate.text        else { return }
         guard let endDate   = endDate.text          else { return }
         
-        //Woo: selectedMembers is empty, even though it's being sected from the selectDriverVC
+        D
         var selectedMembersID = [String]()
         for index in 0..<selectedMembers.count {
             selectedMembersID.append(groupMembersToPassID[selectedMembers[index]])
         }
-        
+        // This is being sent to cache and Firebase
         var eventToSave : [String : Any] = [
             "event"       : eventName,
             "group"       : groupName,
