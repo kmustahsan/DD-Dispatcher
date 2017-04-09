@@ -17,6 +17,8 @@ class DataService {
     private var _groups = FIRDatabase.database().reference().child("groups")
     private var _groupUsers = FIRDatabase.database().reference().child("groups").child("users")
     private var _events = FIRDatabase.database().reference().child("events")
+    private var _storage = FIRStorage.storage().reference()
+    private var _profileStorage = FIRStorage.storage().reference().child("profile_avatar")
     
     var ref: FIRDatabaseReference {
         return _ref
@@ -45,6 +47,15 @@ class DataService {
     var events : FIRDatabaseReference {
         return _events
     }
+    
+    var storage: FIRStorageReference {
+        return _storage
+    }
+    
+    var profileStorage: FIRStorageReference {
+        return _profileStorage
+    }
+    
     //Creation
     func createFirebaseUser(uid: String, user: Dictionary<String, Any>) {
         users.child(uid).setValue(user)
@@ -77,6 +88,25 @@ class DataService {
             if !snapshot.exists() { return }
             completion(snapshot)
         })
+    }
+    
+    func addProfileImageToStorage(image: Data, completion: @escaping (String) -> Void) {
+        let imageName = UUID().uuidString
+        profileStorage.child("\(imageName).jpg").put(image, metadata: nil, completion: { (metadata, error) in
+            
+            if error != nil {
+                //print(error)
+                completion("error")
+            }
+            
+            if let imageUrl = metadata?.downloadURL()?.absoluteString {
+                completion(imageUrl)
+            } else {
+                completion("error")
+            }
+            
+        })
+
     }
     
 }

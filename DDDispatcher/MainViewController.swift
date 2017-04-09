@@ -56,6 +56,27 @@ class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelega
 //================== End of UI Setup ===========================
 //================== OAuth Setup ===============================
     
+    
+    func registerUserIntoFirebase(credentials: Any, userInformation: [String: Any]) {
+        var userInfo = userInformation
+        FIRAuth.auth()?.signIn(with: credentials as! FIRAuthCredential, completion: { (user, error) in
+            if let err = error {
+                print("Something went wrong with our FB user: ", err )
+                return
+            }
+            print("Successfully logged into Firebase with Facebook: ", user ?? "")
+            guard let uid = user?.uid else { return }
+            
+            DataService.sharedInstance.createFirebaseUser(uid: uid, user: userInfo)
+            //CACHE: DONE store user info here
+            userInfo["uid"] = uid
+            Cache.sharedInstance.addNewItemWithKey(key: "User", value: userInfo as AnyObject)
+            DispatchQueue.main.async(execute: {
+                self.segue()
+            })
+            
+        })
+    }
     // Facebook button setup
     @IBAction func handleFacebookLogin(_ sender: Any) {
         FBSDKLoginManager().logIn(withReadPermissions: ["email", "public_profile"], from: self) { (result, error) in
@@ -71,41 +92,38 @@ class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelega
         let accessToken = FBSDKAccessToken.current()
         guard let accessTokenString = accessToken?.tokenString else { return }
         let credentials = FIRFacebookAuthProvider.credential(withAccessToken: accessTokenString)
-        FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email"]).start { (connection, result, error) in
+        FBSDKGraphRequest(graphPath: "/me", parameters: ["fields": "id, name, email, picture.width(100).heigh(100)"]).start { (connection, result, error) in
             if let err = error {
                 print("Failed to start graph request:", err)
                 return
             }
             guard let data = result as? [String:Any] else  { return }
-            let uid = data["id"]
-            let avatarURL = "http://graph.facebook.com/\(uid)/picture?type=normal"
             let name = 	data["name"]
             let email = data["email"]
-            
-
-          
-            FIRAuth.auth()?.signIn(with: credentials, completion: { (user, error) in
-                if let err = error {
-                    print("Something went wrong with our FB user: ", err )
-                    return
+            var imageData:NSData? = nil
+            let picture = data["picture"] as? NSDictionary
+            let pictureData = picture?["data"] as? NSDictionary
+            if let str = pictureData?["url"] as? String{
+                if let url = NSURL(string: str) {
+                    imageData = NSData(contentsOf: url as URL)
+                    let avatar = UIImage(data: imageData! as Data)
+                    let uploadData = UIImagePNGRepresentation(avatar!)
+                    
+                    DataService.sharedInstance.addProfileImageToStorage(image: uploadData!) { (profileAvatarUrl) in
+                        
+                    let userInformation : [String: Any] = [
+                        "name"       : name as! String,
+                        "email"      : email as! String,
+                        "avatar"     : profileAvatarUrl,
+                        "groups"     : ["null"],
+                        "provider"   : "Facebook"
+                    ]
+                    self.registerUserIntoFirebase(credentials: credentials, userInformation: userInformation)
+                    }
                 }
-                print("Successfully logged into Firebase with Facebook: ", user ?? "")
-                guard let uid = user?.uid else { return }
-                var userInformation : [String: Any] = [
-                    "name"       : name as! String,
-                    "email"      : email as! String,
-                    "groups"     : ["null"],
-                    "provider"   : "Facebook"
-                ]
-                DataService.sharedInstance.createFirebaseUser(uid: uid, user: userInformation)
-                //CACHE: DONE store user info here
-                userInformation["uid"] = uid
-                Cache.sharedInstance.addNewItemWithKey(key: "User", value: userInformation as AnyObject)
-                DispatchQueue.main.async(execute: {
-                    self.segue()
-                })
-                
-            })
+            }
+            
+            
         }
     }
     // End of Facebook button setup
