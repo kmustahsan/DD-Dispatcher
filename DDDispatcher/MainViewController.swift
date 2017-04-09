@@ -10,7 +10,6 @@ import UIKit
 import Firebase
 import FBSDKLoginKit
 import GoogleSignIn
-import FirebaseDatabase
 
 class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate, UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
@@ -132,17 +131,17 @@ class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelega
                 return
             }
             guard let uid = firUser?.uid else { return }
-            var dictionary : [String: Any] = [
+            var userInformation : [String: Any] = [
                 "name"       : user.profile.name,
                 "email"      : user.profile.email,
                 "groups"     : ["null"],
                 "provider"   : "Google"
             ]
-            DataService.sharedInstance.createFirebaseUser(uid: uid, user: dictionary)
+            DataService.sharedInstance.createFirebaseUser(uid: uid, user: userInformation)
             //CACHE: DONE store user info here
 //            print("stored in cache")
-//            dictionary["uid"] = uid
-//            cache.sharedCache.writeDictionaryCache(name: "user", dict: dictionary)
+            userInformation["uid"] = uid
+            Cache.sharedInstance.addNewItemWithKey(key: "User", value: userInformation as AnyObject)
             DispatchQueue.main.async(execute: {
                 self.segue()
             })
@@ -180,30 +179,30 @@ class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelega
         }
         
         if isValidPassword(inputPassword: inputPassword) {
-            FIRAuth.auth()!.signIn(withEmail: inputEmail, password: inputPassword, completion: { (user, error) in
+            FIRAuth.auth()!.createUser(withEmail: inputEmail, password: inputPassword, completion: { (user, error) in
                 if error != nil  {
                     if let errCode = FIRAuthErrorCode(rawValue: error!._code) {
                         switch errCode {
                         case .errorCodeInvalidEmail:
                             print("invalid email")
-                        case .errorCodeEmailAlreadyInUse:
-                            print("in use")
                         case .errorCodeUserNotFound:
-                            FIRAuth.auth()!.createUser(withEmail: inputEmail, password: inputPassword, completion: { (user, error) in
+                            print("in use")
+                        case .errorCodeEmailAlreadyInUse:
+                            FIRAuth.auth()!.signIn(withEmail: inputEmail, password: inputPassword, completion: { (user, error) in
                                 if let err = error {
                                     print("Error with email user", err)
                                 }
                                 guard let uid = user?.uid else { return }
-                                var dictionary : [String: Any] = [
+                                var userInformation : [String: Any] = [
                                     "name"       : "nil",
                                     "email"      : inputEmail,
                                     "groups"     : ["null"],
                                     "provider"   : "Email"
                                 ]
-                                DataService.sharedInstance.createFirebaseUser(uid: uid, user: dictionary)
+                                DataService.sharedInstance.createFirebaseUser(uid: uid, user: userInformation)
                                 //CACHE: DONE store user info here
-//                                dictionary["uid"] = uid
-//                                cache.sharedCache.writeDictionaryCache(name: "user", dict: dictionary);
+                                userInformation["uid"] = uid
+                                Cache.sharedInstance.addNewItemWithKey(key: "User", value: userInformation as AnyObject)
                             })
                             DispatchQueue.main.async(execute: {
                                 self.newEmailUser = true
@@ -215,7 +214,9 @@ class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelega
                     }
                     return
                 }
+                
             })
+            print("Somethings wrong")
         }
         //Error 01.005: When a user put an invalid email
         else {

@@ -159,7 +159,7 @@ class CreateEventFormViewController: UIViewController {
         guard let startDate = startDate.text        else { return }
         guard let endDate   = endDate.text          else { return }
         
-        D
+        
         var selectedMembersID = [String]()
         for index in 0..<selectedMembers.count {
             selectedMembersID.append(groupMembersToPassID[selectedMembers[index]])
