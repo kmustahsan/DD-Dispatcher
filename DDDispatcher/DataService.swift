@@ -19,6 +19,7 @@ class DataService {
     private var _events = FIRDatabase.database().reference().child("events")
     private var _storage = FIRStorage.storage().reference()
     private var _profileStorage = FIRStorage.storage().reference().child("profile_avatar")
+    private var _groupStorage = FIRStorage.storage().reference().child("group_avatar")
     
     var ref: FIRDatabaseReference {
         return _ref
@@ -54,6 +55,10 @@ class DataService {
     
     var profileStorage: FIRStorageReference {
         return _profileStorage
+    }
+    
+    var groupStorage: FIRStorageReference {
+        return _groupStorage
     }
     
     //Creation
@@ -107,6 +112,25 @@ class DataService {
             
         })
 
+    }
+    
+    func addGroupImageToStorage(image: Data, completion: @escaping (String) -> Void) {
+        let imageName = UUID().uuidString
+        groupStorage.child("\(imageName).jpg").put(image, metadata: nil, completion: { (metadata, error) in
+            
+            if error != nil {
+                //print(error)
+                completion("error")
+            }
+            
+            if let imageUrl = metadata?.downloadURL()?.absoluteString {
+                completion(imageUrl)
+            } else {
+                completion("error")
+            }
+            
+        })
+        
     }
     
 }
