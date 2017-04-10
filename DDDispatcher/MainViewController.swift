@@ -148,21 +148,25 @@ class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelega
                 print("Failed to log into Firebase with Google: ", err)
                 return
             }
-            guard let uid = firUser?.uid else { return }
-            var userInformation : [String: Any] = [
-                "name"       : user.profile.name,
-                "email"      : user.profile.email,
-                "groups"     : ["null"],
-                "provider"   : "Google"
-            ]
-            DataService.sharedInstance.createFirebaseUser(uid: uid, user: userInformation)
-            //CACHE: DONE store user info here
-//            print("stored in cache")
-            userInformation["uid"] = uid
-            Cache.sharedInstance.addNewItemWithKey(key: "User", value: userInformation as AnyObject)
-            DispatchQueue.main.async(execute: {
-                self.segue()
-            })
+            var imageData:NSData? = nil
+            let dimension = round(100 * UIScreen.main.scale)
+            let pic = user.profile.imageURL(withDimension: UInt(dimension))
+            if let url = NSURL(string: (pic?.absoluteString)!) {
+                imageData = NSData(contentsOf: url as URL)
+                let avatar = UIImage(data: imageData! as Data)
+                let uploadData = UIImagePNGRepresentation(avatar!)
+                DataService.sharedInstance.addProfileImageToStorage(image: uploadData!) { (profileAvatarUrl) in
+                    
+                    let userInformation : [String: Any] = [
+                        "name"       : user.profile.name,
+                        "email"      : user.profile.email,
+                        "avatar"     : profileAvatarUrl,
+                        "groups"     : ["null"],
+                        "provider"   : "Facebook"
+                    ]
+                    self.registerUserIntoFirebase(credentials: credentials, userInformation: userInformation)
+                }
+            }
         })
     }
 // End of Google button setup
