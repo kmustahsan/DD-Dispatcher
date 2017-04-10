@@ -42,10 +42,10 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     // Dictionary containing active group info.
     var dict_avtiveGroups = [String: AnyObject]()
     // Array storing active group names.
-    var activeGroupNames = ["group.png", "Favorite.png", "group.png", "group.png", "group.png"]
+    var activeGroupNames = [String]()
     // Array storing event information.
-    var eventInformation = ["group.png" , "ABC Event", "Bring your own bear", "Dec 20 20:00", "Dec 20 23:00"]
-    var eventInformation2 = ["Favorite.png", "Go Pikachu", "Let's catch pikachu tonight", "Nov 20 20:00", "Nov 20 22:00"]
+    var eventInformation = ["group.png" , "ABC Event"]
+    var eventInformation2 = ["Favorite.png", "Go Pikachu"]
     // Scroll menu properties
     let kScrollMenuHeight: CGFloat = 90.0
     var selectedGroupName = ""
@@ -53,7 +53,17 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     let backgroundColorToUse = UIColor(red: 0.6, green: 0.8, blue: 1.0, alpha: 1.0)
     var delegate: HubViewControllerDelegate?
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        let eventInfo = Cache.sharedInstance.getValueForKey(key: "Events") as! [String : [String: Any]]
+        if eventInfo.count > 0 {
+            for index in 0..<eventInfo.count {
+                let keys = Array(eventInfo.keys)
+                activeGroupNames.append(eventInfo[keys[index]]?["group"] as! String)
+            }
+            
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,10 +82,6 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         let gesture = UITapGestureRecognizer(target: self, action: #selector(segueTo))
         self.searchTrigger.addGestureRecognizer(gesture)
         
-        dict_avtiveGroups = [
-            activeGroupNames[0] : eventInformation as AnyObject,
-            activeGroupNames[1] : eventInformation2 as AnyObject
-        ]
         setupScrollMenu()
         
     }
