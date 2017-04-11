@@ -21,7 +21,9 @@ class DataService {
     
     // rides and queues
     private var _rides = FIRDatabase.database().reference().child("rides")
-    private var _queues = FIRDatabase.database().reference().child("queues")
+    private var _ridesqueue = FIRDatabase.database().reference().child("ridesqueue")
+    private var _events = FIRDatabase.database().reference().child("events")
+
     
     var ref: FIRDatabaseReference {
         return _ref
@@ -52,8 +54,13 @@ class DataService {
         return _rides
     }
     // QUEUES
-    var queues: FIRDatabaseReference {
-        return _queues
+    var ridesqueue: FIRDatabaseReference {
+        return _ridesqueue
+    }
+    
+    // EVENTS
+    var events: FIRDatabaseReference {
+        return _events
     }
     
     func createFirebaseUser(uid: String, user: Dictionary<String, Any>) {
@@ -84,47 +91,110 @@ class DataService {
     }
     
     /*
-     Rides are created when a driver accepts a rider.
+     Rides are created when user requests a ride.
      
      rides {
         ride.id {
-            driver: uid,
-            group: uid,
+            driver: "null",
+            driver_location: "null",
             rider: uid,
-            status: "onhold"/"started"/"picked"/"dropped"/"cancelled",
-            location: { x: integer, y: integer }
+            status: "onhold"/"ongoing"/dropped"/"cancelled",
+            location: { 
+                start: { x: integer, y: integer },
+                end: { x: integer, y: integer }
         }
      }
     */
-    func createRide(values: Dictionary<String, Any>) {
-        let riderId = values["rider"] as! String
+    func createRide(eventId: String, values: Dictionary<String, Any>) {
+        // Create ride id
+        let rideId = rides.childByAutoId()
+        rideId.setValue(values)
         
-        let rideRef = rides.childByAutoId()
-        rideRef.setValue(values) { (err, ref) -> Void in
-            if ((err) != nil) {
-                print("ERROR")
-            }
-            
-            let rideKey = rideRef.key
-            self.users.child(riderId).setValue(["ride": rideKey])
-        }
+        // Update user's ride id
+        users.child(values["rider"] as! String).setValue(rideId.key)
+        pushRideQueue(eventId: eventId, rideId: values["rider"] as! String);
     }
     
     /*
-     A queue starts when the first rider in group requests a ride. 
-     After the first rider, we just update the specific
-     queue with a new rider (user.id : true)
-     
-     queues {
-        group.id {
-            user.id : true/false
+        event.id {
+            N: ride.id
         }
-     }
-     
-     True or False depends on user's car request is active or not
     */
-    func createQueue(gid: String, values: Dictionary<String, Any>) {
-        queues.child(gid).setValue(values)
+    func pushRideQueue(eventId: String, rideId: String) {
+        let num = 0 as Int;
+        ridesqueue.child(eventId).child(String(num)).setValue(rideId);
+    }
+    
+    func addDriverRide(rideId: String, driverId: String) {
+        // update driver to ride
+        
+        let driver = ["/rides/\(rideId)/driveId": driverId]
+        rides.updateChildValues(driver)
+    }
+    
+    func getFirstRide(eventId: String) {
+        // get first in queue
+    }
+    
+    func getLastRideNum(eventId: String) {
+        // get last num in queue
+    }
+    
+    func getTotalRides(eventId: String) {
+        // get TotalRides
+    }
+    
+    func getRideQueue(rideId: String) {
+        ridesqueue.child(rideId).observe(.value, with: { (snapshot) -> Void in
+            print(snapshot)
+        });
+    }
+    
+    /*
+        event.id {
+            description: string,
+            group.id: string,
+            name: string,
+            drivers: "null" | users,
+            location: { x: integer, y: integer },
+            users: "null" | users,
+            start_time: integer,
+            end_time: integer
+        }
+    */
+    func createEvent(values: Dictionary<String, Any>) {
+        events.childByAutoId().setValue(values);
+    }
+    
+    func addDriverEvent(eventId: String, driverId: String) {
+        // add a driver to an event
+        var eventDrivers: NSDictionary? = nil;
+        
+        events.child(eventId).observe(.value, with: { (snapshot) -> Void in
+            eventDrivers = snapshot.children.value(forKey: "drivers") as? NSDictionary
+        });
+        
+        print(eventDrivers as Any);
+        // Convert it to array to add a new driver
+        // var driverArr = eventDrivers.
+    }
+    
+    func addUserEvent(eventId: String, userId: String) {
+        // add user to an event
+    }
+    
+    func getEvent(eventId: String) {
+            // get event
+        events.child(eventId).observe(.value, with: { (snapshot) -> Void in
+            print(snapshot)
+        });
+    }
+    
+    func getGroup(groupId: String) {
+        // get group
+        events.child(groupId).observe(.value, with: { (snapshot) -> Void in
+            print(snapshot)
+        });
     }
     
     /*
@@ -133,7 +203,7 @@ class DataService {
             - Once on "picked" or "dropped" you can't cancel
     */
     func updateRide(uid: String, rideEvent: String) {
-        let rideId = users.child(uid).value(forKey: "ride")
+        let rideId = users.child(uid).value(forKey: "ride") as! String
         rides.child("/\(rideId)/status").setValue(rideEvent)
     }
     
@@ -146,26 +216,4 @@ class DataService {
         let riderUpdate = ["/queues/\(gid)/\(uid)/": value]
         ref.updateChildValues(riderUpdate)
     }
-    
-    func getRider(gid: String) {
-        queues.child(gid).observe(.value, with: { (snapshot) -> Void in
-            for child in snapshot.children {
-                // need to work this I want to get the whole list of a queue
-                
-                // first child's value with true value then return
-                // else just continue until you find a first True value for a child.key of userId
-                print(child)
-                
-                // once found then we want to turn the value of the rider to FALSE
-                // and then we create a Ride (create ride logic should be in the controller (business logic)
-                // thus we just update the queue here and return
-            }
-        })
-    }
 }
-
-
-
-
-
-
