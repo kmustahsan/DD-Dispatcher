@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="4he-RR-GHO">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="4he-RR-GHO">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -55,11 +55,11 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kIp-qn-jUJ" id="nqm-ps-5fd">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="62.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="62"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="uvw-BJ-Ga6">
-                                                    <rect key="frame" x="15" y="0.0" width="345" height="62.5"/>
+                                                    <rect key="frame" x="15" y="0.0" width="345" height="62"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -93,7 +93,7 @@
             </objects>
             <point key="canvasLocation" x="204" y="-154.27286356821591"/>
         </scene>
-        <!--Select Driver Table View Controller-->
+        <!--Title-->
         <scene sceneID="WJb-vB-G2A">
             <objects>
                 <tableViewController id="f2g-pA-qTg" customClass="SelectDriverTableViewController" customModule="DDDispatcher" customModuleProvider="target" sceneMemberID="viewController">
@@ -106,7 +106,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="evC-EB-9Hx" id="zhH-gt-5eu">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -116,13 +116,30 @@
                             <outlet property="delegate" destination="f2g-pA-qTg" id="4cJ-SH-4qu"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Title" id="xNp-TN-r1x">
+                        <barButtonItem key="rightBarButtonItem" style="done" id="hJj-1r-jEu">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="0Bt-1L-m0l">
+                                <rect key="frame" x="276" y="7" width="83" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Done">
+                                    <color key="titleColor" red="0.098039217289999994" green="0.098039217289999994" blue="0.098039217289999994" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="doneButtonTapped:" destination="f2g-pA-qTg" eventType="touchUpInside" id="liW-VX-xVO"/>
+                                    <segue destination="clX-Tf-kyr" kind="unwind" identifier="unwindSegueToCreateEventForm" unwindAction="unwindToCreateEventFormViewControllerWithSegue:" id="hzp-hw-Reb"/>
+                                </connections>
+                            </button>
+                            <color key="tintColor" red="0.098039217289999994" green="0.098039217289999994" blue="0.098039217289999994" alpha="1" colorSpace="calibratedRGB"/>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="groupMembersTableView" destination="DNc-Zp-cfP" id="LPz-zl-dQN"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="g9z-vz-w2b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="clX-Tf-kyr" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="940" y="283"/>
+            <point key="canvasLocation" x="1798" y="217"/>
         </scene>
         <!--Fill Out the Form-->
         <scene sceneID="JHJ-D1-101">
@@ -160,7 +177,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                             </textView>
                             <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Start Date:" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5rk-ul-bXK">
-                                <rect key="frame" x="22" y="518" width="331" height="40"/>
+                                <rect key="frame" x="22" y="487" width="331" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="textColor"/>
@@ -168,7 +185,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="End Date:" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="G4W-bc-muf">
-                                <rect key="frame" x="22" y="575" width="331" height="40"/>
+                                <rect key="frame" x="22" y="544" width="331" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="textColor"/>
@@ -176,7 +193,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VcG-jr-Zu4">
-                                <rect key="frame" x="22" y="458" width="331" height="40"/>
+                                <rect key="frame" x="22" y="427" width="331" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <state key="normal" title="Set Start/End Date and Time">
@@ -187,9 +204,13 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nEA-aZ-nYG">
-                                <rect key="frame" x="151" y="623" width="49" height="30"/>
+                                <rect key="frame" x="22" y="607" width="331" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Drivers"/>
+                                <color key="backgroundColor" red="0.0" green="0.25098040700000002" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Select Drivers">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
                                 <connections>
                                     <segue destination="f2g-pA-qTg" kind="show" identifier="selectDriver" id="Ekv-Tk-2j3"/>
                                 </connections>
@@ -218,7 +239,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="krg-FF-Au5" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="Izp-DF-8ck" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="940" y="-404.34782608695656"/>
+            <point key="canvasLocation" x="966" y="-154"/>
         </scene>
         <!--Set Date and Time-->
         <scene sceneID="fYA-HR-cPq">
@@ -274,11 +295,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Set Date and Time" id="rXT-i0-1AF">
-                        <barButtonItem key="leftBarButtonItem" title="Back" id="DrZ-bK-Jzn">
-                            <color key="tintColor" red="0.098039217289999994" green="0.098039217289999994" blue="0.098039217289999994" alpha="1" colorSpace="calibratedRGB"/>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Set Date and Time" id="rXT-i0-1AF"/>
                     <connections>
                         <outlet property="endDatePicker" destination="1hR-7o-4HR" id="FfO-C6-Xq7"/>
                         <outlet property="startDatePicker" destination="oUZ-fd-mnr" id="CXW-zv-1jX"/>
@@ -287,10 +304,10 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HOy-hc-BsL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1708" y="-170"/>
+            <point key="canvasLocation" x="1799" y="-481"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Shn-OD-2hb"/>
+        <segue reference="dpi-hD-I3M"/>
     </inferredMetricsTieBreakers>
 </document>

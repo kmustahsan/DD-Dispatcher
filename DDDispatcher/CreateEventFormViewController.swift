@@ -45,7 +45,7 @@ class CreateEventFormViewController: UIViewController {
             endDate.text! = datePassed[1]
         }
         
-        generateDD(groupID: gid)
+          generateDD(groupID: gid)
     }
     
     func generateDD(groupID: String) {
@@ -131,67 +131,89 @@ class CreateEventFormViewController: UIViewController {
             setDateAndTimeViewController.infoPassed = infoToPass
         } else if segue.identifier == "selectDriver" {
             
-            if eventName.text! == "" || startDate.text! == "" || endDate.text! == "" || startDate.text! == "Start Date:" || endDate.text! == "End Date" {
-                let alertController = UIAlertController(title: "Warning",
-                                                    message: "Please fill out the form completely",
-                                                    preferredStyle: UIAlertControllerStyle.alert)
-            
-                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            
-                present(alertController, animated: true, completion: nil)
-            }
-            
             let selectDriverTableViewController: SelectDriverTableViewController = segue.destination as! SelectDriverTableViewController
             
-            selectDriverTableViewController.eventInformationPassed[0] = infoPassed[0]
-            selectDriverTableViewController.eventInformationPassed[1] = infoPassed[1]
-            selectDriverTableViewController.eventInformationPassed[2] = infoPassed[2]
-            selectDriverTableViewController.eventInformationPassed[3] = datePassed[0]
-            selectDriverTableViewController.eventInformationPassed[4] = datePassed[1]
             selectDriverTableViewController.groupMembersPassed = groupMembersToPass
         }
     }
     
     @IBAction func saveEvent(_ sender: Any) {
-        guard let groupName = groupName.text        else { return }
-        guard let eventName = eventName.text        else { return }
-        guard let eventDesc = eventDescription.text else { return }
-        guard let startDate = startDate.text        else { return }
-        guard let endDate   = endDate.text          else { return }
         
-        
-        var selectedMembersID = [String]()
-        for index in 0..<selectedMembers.count {
-            selectedMembersID.append(groupMembersToPassID[selectedMembers[index]])
+        if eventName.text! == "" || startDate.text! == "" || endDate.text! == "" || startDate.text! == "Start Date:" || endDate.text! == "End Date" {
+            let alertController = UIAlertController(title: "Warning",
+                                                    message: "Please fill out the form completely",
+                                                    preferredStyle: UIAlertControllerStyle.alert)
+            
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            
+            present(alertController, animated: true, completion: nil)
+        } else if selectedMembers.count == 0 {
+            let alertController = UIAlertController(title: "Warning",
+                                                    message: "Please select at least one driver",
+                                                    preferredStyle: UIAlertControllerStyle.alert)
+            
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            
+            present(alertController, animated: true, completion: nil)
         }
-        // This is being sent to cache and Firebase
-        var eventToSave : [String : Any] = [
-            "event"       : eventName,
-            "group"       : groupName,
-            "gid"         : gid,
-            "description" : eventDesc,
-            "start"       : startDate,
-            "end"         : endDate,
-            "drivers"     : selectedMembersID
-        ]
+        else {
+            guard let groupName = groupName.text        else { return }
+            guard let eventName = eventName.text        else { return }
+            guard let eventDesc = eventDescription.text else { return }
+            guard let startDate = startDate.text        else { return }
+            guard let endDate   = endDate.text          else { return }
         
-        let key = DataService.sharedInstance.createFirebaseEvent(values: eventToSave)
+        
+            var selectedMembersID = [String]()
+            for index in 0..<selectedMembers.count {
+                selectedMembersID.append(groupMembersToPassID[selectedMembers[index]])
+            }
+            // This is being sent to cache and Firebase
+            var eventToSave : [String : Any] = [
+                "event"       : eventName,
+                "group"       : groupName,
+                "gid"         : gid,
+                "description" : eventDesc,
+                "start"       : startDate,
+                "end"         : endDate,
+                "drivers"     : selectedMembersID
+            ]
+        
+            let key = DataService.sharedInstance.createFirebaseEvent(values: eventToSave)
     
-        // cache key
+            // cache key
         
-        if (Cache.sharedInstance.keyAlreadyExists(key: "Events")) {
-            var existingData = Cache.sharedInstance.getValueForKey(key: "Events") as! [String : [String: Any]]
-            existingData[key] = eventToSave
-            Cache.sharedInstance.saveValue(value: existingData as AnyObject, forKey: "Events")
-        } else {
-            Cache.sharedInstance.addNewItemWithKey(key: "Events", value: [key: eventToSave]  as AnyObject)
+            if (Cache.sharedInstance.keyAlreadyExists(key: "Events")) {
+                var existingData = Cache.sharedInstance.getValueForKey(key: "Events") as! [String : [String: Any]]
+                existingData[key] = eventToSave
+                Cache.sharedInstance.saveValue(value: existingData as AnyObject, forKey: "Events")
+            } else {
+                Cache.sharedInstance.addNewItemWithKey(key: "Events", value: [key: eventToSave]  as AnyObject)
+            }
+        
+        
+            self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
         }
-        
-        self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
-        
     }
    
+    /*
+     --------------------------------
+     MARK: - Unwind Segue Destination
+     --------------------------------
+     */
     
-    
+    @IBAction func unwindToCreateEventFormViewController(segue: UIStoryboardSegue) {
+        if segue.identifier == "unwindSegueToCreateEventForm" {
+            
+            let controller: SelectDriverTableViewController = segue.source as! SelectDriverTableViewController
+            
+            let memberGotten: [Int] = controller.drivers
 
+            selectedMembers = memberGotten
+            
+            print("members")
+            print(selectedMembers)
+            
+        }
+    }
 }

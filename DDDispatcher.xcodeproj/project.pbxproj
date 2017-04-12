@@ -22,7 +22,6 @@
 		398166DD1E7FD5CD00E87F6E /* CreateEventFormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398166DC1E7FD5CD00E87F6E /* CreateEventFormViewController.swift */; };
 		398166DF1E80823300E87F6E /* SetDateAndTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398166DE1E80823300E87F6E /* SetDateAndTimeViewController.swift */; };
 		398166E11E80D0DA00E87F6E /* SelectDriverTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398166E01E80D0DA00E87F6E /* SelectDriverTableViewController.swift */; };
-		39E171B41E79DD690021E1D7 /* CreateEvent.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39E171B31E79DD690021E1D7 /* CreateEvent.storyboard */; };
 		3F3832D41E563C6D005E1B3D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F3832D31E563C6D005E1B3D /* AppDelegate.swift */; };
 		3F3832D91E563C6D005E1B3D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F3832D71E563C6D005E1B3D /* Main.storyboard */; };
 		3F3832DB1E563C6D005E1B3D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F3832DA1E563C6D005E1B3D /* Assets.xcassets */; };
@@ -32,6 +31,7 @@
 		3F3833031E563E73005E1B3D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3F3833021E563E73005E1B3D /* GoogleService-Info.plist */; };
 		6505CF2F1EF430A87E7DEA39 /* Pods_DDDispatcherTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49BE5BADE2763B6D00B3E1B1 /* Pods_DDDispatcherTests.framework */; };
 		A441736FC7E7BA20607F364F /* Pods_DDDispatcherUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 015394A914135CF84E35DA8E /* Pods_DDDispatcherUITests.framework */; };
+		B73EC9B41E9C5A4100DB4FBB /* CreateEvent.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B73EC9B31E9C5A4100DB4FBB /* CreateEvent.storyboard */; };
 		B81BBC251E673C7000DB7D3B /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81BBC241E673C7000DB7D3B /* Style.swift */; };
 		B820AA1E1E67A187008FBA91 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B820AA1D1E67A187008FBA91 /* DataService.swift */; };
 		B82612D81E77118600A39DFC /* CustomSideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B82612D71E77118600A39DFC /* CustomSideMenuController.swift */; };
@@ -84,7 +84,6 @@
 		398166DC1E7FD5CD00E87F6E /* CreateEventFormViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateEventFormViewController.swift; sourceTree = "<group>"; };
 		398166DE1E80823300E87F6E /* SetDateAndTimeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetDateAndTimeViewController.swift; sourceTree = "<group>"; };
 		398166E01E80D0DA00E87F6E /* SelectDriverTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectDriverTableViewController.swift; sourceTree = "<group>"; };
-		39E171B31E79DD690021E1D7 /* CreateEvent.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CreateEvent.storyboard; sourceTree = "<group>"; };
 		3F3832D01E563C6D005E1B3D /* DDDispatcher.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DDDispatcher.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F3832D31E563C6D005E1B3D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3F3832D81E563C6D005E1B3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -103,6 +102,7 @@
 		5F9467B053EA932CF671E5B6 /* Pods_DDDispatcher.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DDDispatcher.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B4850144023DE1CDE5EEEAE /* Pods-DDDispatcherTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DDDispatcherTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DDDispatcherTests/Pods-DDDispatcherTests.release.xcconfig"; sourceTree = "<group>"; };
 		80E488A980ED7217C4B57765 /* Pods-DDDispatcher.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DDDispatcher.release.xcconfig"; path = "Pods/Target Support Files/Pods-DDDispatcher/Pods-DDDispatcher.release.xcconfig"; sourceTree = "<group>"; };
+		B73EC9B31E9C5A4100DB4FBB /* CreateEvent.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CreateEvent.storyboard; sourceTree = "<group>"; };
 		B81BBC241E673C7000DB7D3B /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		B820AA1D1E67A187008FBA91 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		B82612D71E77118600A39DFC /* CustomSideMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSideMenuController.swift; sourceTree = "<group>"; };
@@ -164,9 +164,9 @@
 				3F3832DC1E563C6D005E1B3D /* LaunchScreen.storyboard */,
 				3F3832D71E563C6D005E1B3D /* Main.storyboard */,
 				B84A43171E76DB1B00A11D07 /* Hub.storyboard */,
+				B73EC9B31E9C5A4100DB4FBB /* CreateEvent.storyboard */,
 				134C1D691E6F89890022A61E /* JoinGroup.storyboard */,
 				130868321E6F92F20011C6F9 /* CreateGroup.storyboard */,
-				39E171B31E79DD690021E1D7 /* CreateEvent.storyboard */,
 				1308683B1E6F9B060011C6F9 /* GroupListAndInfo.storyboard */,
 				3931ADC61E81EB2400EE0F44 /* DriverScreens.storyboard */,
 			);
@@ -439,9 +439,9 @@
 				B8288A261E97F4AA007D1DAD /* Cache.plist in Resources */,
 				1308683C1E6F9B060011C6F9 /* GroupListAndInfo.storyboard in Resources */,
 				3F3832DE1E563C6D005E1B3D /* LaunchScreen.storyboard in Resources */,
+				B73EC9B41E9C5A4100DB4FBB /* CreateEvent.storyboard in Resources */,
 				134C1D6A1E6F89890022A61E /* JoinGroup.storyboard in Resources */,
 				B84A43181E76DB1B00A11D07 /* Hub.storyboard in Resources */,
-				39E171B41E79DD690021E1D7 /* CreateEvent.storyboard in Resources */,
 				3931ADC71E81EB2400EE0F44 /* DriverScreens.storyboard in Resources */,
 				3F3833031E563E73005E1B3D /* GoogleService-Info.plist in Resources */,
 				3F3832DB1E563C6D005E1B3D /* Assets.xcassets in Resources */,

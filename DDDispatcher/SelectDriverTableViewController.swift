@@ -93,8 +93,21 @@ class SelectDriverTableViewController: UITableViewController {
         super.viewWillDisappear(true)
         let vc =  CreateEventFormViewController()
         vc.selectedMembers = drivers
-        
-        
+
     }
     
+    /*
+     ---------------------------------
+     MARK: - Prepare for Segue
+     ---------------------------------
+     */
+    
+    @IBAction func doneButtonTapped(_ sender: UIButton) {
+        print("button tapped")
+
+        //performSegue(withIdentifier: "unwindSegueToCreateEventForm", sender: self)
+
+    }
+    
+  
 }

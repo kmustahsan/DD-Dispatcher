@@ -17,6 +17,13 @@ class JoinGroupViewController: UIViewController {
         super.viewDidLoad()
         Style.setupTextField(textField: groupCodeTextField)
 
+        //Keyboard
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
         // Do any additional setup after loading the view.
     }
 //    @IBAction func submitCode(_ sender: Any) {
@@ -73,7 +80,9 @@ class JoinGroupViewController: UIViewController {
         alert.addAction(OKAction)
         self.present(alert, animated: true, completion: nil)
     }
+
     
+
     //Error 03.002: group not found
     func errorAlert() {
         let alert = UIAlertController(title: "Error", message: "Group Not Found", preferredStyle: .alert)
@@ -99,5 +108,38 @@ class JoinGroupViewController: UIViewController {
         return false
     }
     
+    //*******************************************
+    //MARK: Keyboard
+    //*******************************************
+    func keyboardWillShow(notification: NSNotification) {
+     
+        if self.view.frame.origin.y == 0{
+            self.view.frame.origin.y -= 130
+        }
+    
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+ 
+            if self.view.frame.origin.y != 0{
+                self.view.frame.origin.y += 130
+            }
+    
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        Style.activeTextField(textField: textField)
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == groupCodeTextField {
+            groupCodeTextField.resignFirstResponder()
+        }
+        Style.inactiveTextField(textField: textField)
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
 
 }
