@@ -121,8 +121,17 @@ class DataService {
         }
     */
     func pushRideQueue(eventId: String, rideId: String) {
-        let num = 0 as Int;
-        ridesqueue.child(eventId).child(String(num)).setValue(rideId);
+        let queue = ridesqueue.child(eventId);
+        
+        if queue.isEqual(nil) {
+            let queueArr : NSArray = [];
+            queue.setValue(queueArr.adding(rideId));
+        } else {
+            queue.observe(.value, with: { (snapshot) -> Void in
+                let rideQueue = snapshot.children.allObjects as NSArray;
+                queue.setValue(rideQueue.adding(rideId));
+            })
+        }
     }
     
     func addDriverRide(rideId: String, driverId: String) {
@@ -132,22 +141,29 @@ class DataService {
         rides.updateChildValues(driver)
     }
     
-    func getFirstRide(eventId: String) {
+    func addDriverLocation(rideId: String, locValues: Dictionary<String, Any>) {
+        let driverLoc = ["/rides/\(rideId)/driverLocation": locValues]
+        rides.updateChildValues(driverLoc)
+    }
+    func getFirstRideQueue(eventId: String) -> NSObject {
         // get first in queue
+        // My top posts by number of stars
+        let rideQueue = (rides.child(eventId).queryOrderedByKey().queryLimited(toFirst: 1));
+        return rideQueue;
     }
     
-    func getLastRideNum(eventId: String) {
+    func getLastRideNum(eventId: String) -> NSObject {
         // get last num in queue
+        let rideQueue = (rides.child(eventId).queryOrderedByKey().queryLimited(toLast: 1));
+        return rideQueue;
     }
     
     func getTotalRides(eventId: String) {
         // get TotalRides
     }
     
-    func getRideQueue(rideId: String) {
-        ridesqueue.child(rideId).observe(.value, with: { (snapshot) -> Void in
-            print(snapshot)
-        });
+    func getRideQueue(eventId: String) -> NSObject {
+        return getFirstRideQueue(eventId: eventId);
     }
     
     /*
@@ -166,35 +182,47 @@ class DataService {
         events.childByAutoId().setValue(values);
     }
     
-    func addDriverEvent(eventId: String, driverId: String) {
-        // add a driver to an event
-        var eventDrivers: NSDictionary? = nil;
+    func addDriverEvent(eventId: String, userId: String) {
+        let drivers = rides.child(eventId).child("drivers");
         
-        events.child(eventId).observe(.value, with: { (snapshot) -> Void in
-            eventDrivers = snapshot.children.value(forKey: "drivers") as? NSDictionary
-        });
-        
-        print(eventDrivers as Any);
-        // Convert it to array to add a new driver
-        // var driverArr = eventDrivers.
+        if drivers.isEqual(nil) {
+            let queueArr : NSArray = [];
+            drivers.setValue(queueArr.adding(userId));
+        } else {
+            drivers.observe(.value, with: { (snapshot) -> Void in
+                for child in snapshot.children {
+                    if (child as! String) != userId {
+                        let driversArr = snapshot.children.allObjects as NSArray;
+                        drivers.setValue(driversArr.adding(userId));
+                    }
+                }
+            })
+        }
     }
     
     func addUserEvent(eventId: String, userId: String) {
         // add user to an event
+        // null or array
+        let usersEvent = events.child(eventId);
+        let users = usersEvent.value(forKey: "users");
+        
+        if users as! String == "null" {
+            let usersArr: NSArray = [];
+            
+            let userAdded = ["/events/\(eventId)/users": usersArr.adding(userId)];
+            events.updateChildValues(userAdded);
+        } else {
+            let newUsersArr = ["/events/\(eventId)/users": (users as! NSArray).adding(userId)];
+            events.updateChildValues(newUsersArr);
+        }
     }
     
-    func getEvent(eventId: String) {
-            // get event
-        events.child(eventId).observe(.value, with: { (snapshot) -> Void in
-            print(snapshot)
-        });
+    func getEvent(eventId: String) -> NSObject {
+        return events.child(eventId);
     }
     
-    func getGroup(groupId: String) {
-        // get group
-        events.child(groupId).observe(.value, with: { (snapshot) -> Void in
-            print(snapshot)
-        });
+    func getGroup(groupId: String) -> NSObject {
+        return groups.child(groupId);
     }
     
     /*
@@ -205,15 +233,5 @@ class DataService {
     func updateRide(uid: String, rideEvent: String) {
         let rideId = users.child(uid).value(forKey: "ride") as! String
         rides.child("/\(rideId)/status").setValue(rideEvent)
-    }
-    
-    /*
-     - Update the status of the rider in a queue
-     - Rider is only True when rider requests a ride on RideEvent ("onhold")
-     any other event is False
-     */
-    func updateRider(gid: String, uid: String, value: Bool) {
-        let riderUpdate = ["/queues/\(gid)/\(uid)/": value]
-        ref.updateChildValues(riderUpdate)
     }
 }
