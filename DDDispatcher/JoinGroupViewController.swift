@@ -17,38 +17,58 @@ class JoinGroupViewController: UIViewController {
         super.viewDidLoad()
         Style.setupTextField(textField: groupCodeTextField)
 
+        //Keyboard
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        
         // Do any additional setup after loading the view.
     }
-    @IBAction func submitCode(_ sender: Any) {
-        guard let groupCode = groupCodeTextField.text else { return }
-        DataService.sharedInstance.queryFirebaseGroup(gid: groupCode) { (groupFound) in
-            if groupFound {
-                let ref = DataService.sharedInstance.groups.child(groupCode)
-                ref.observeSingleEvent(of: .value, with: { (snapshot) in
-                    if snapshot.exists() {
-                        var usersArray = (snapshot.value as? NSDictionary)?["users"] as! [String]
-                        if !usersArray.contains((FIRAuth.auth()!.currentUser?.uid)!) {
-                            usersArray.append( (FIRAuth.auth()!.currentUser?.uid)!)
-                            ref.updateChildValues([
-                                "users": usersArray])
-                             //CACHE: DONE update user/group
-                            var dict = cache.sharedCache.getUserInfo();
-                            let arrayGroups = dict["groups"]! as! NSArray
-                            let newArray = arrayGroups.adding(groupCode) as Array
-                            dict["groups"] = newArray;
-                            cache.sharedCache.writeDictionaryCache(name: "user", dict: dict)
-                        }
-                    } //CREATE ERROR ALERT : show error to say user is already in the group
-                })
-                
-                self.confirmationAlert()
-            } else {
-                self.errorAlert()
-            }
-        }
-    }
-    
-
+//    @IBAction func submitCode(_ sender: Any) {
+//        guard let groupCode = groupCodeTextField.text else { return }
+//        
+//        //Error 03.001: group code is not valid
+//        print("wait")
+//        if isValidGroupCode(testStr: groupCode) {
+//            print("checked")
+//            let alert = UIAlertController(title: "Error", message: "Please enter the group code without special character", preferredStyle: .alert)
+//            let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {
+//                (_)in
+//            })
+//            alert.addAction(OKAction)
+//            self.present(alert, animated: true, completion: nil)
+//        }else {
+//            DataService.sharedInstance.queryFirebaseGroup(gid: groupCode) { (groupFound) in
+//                if groupFound {
+//                    let ref = DataService.sharedInstance.groups.child(groupCode)
+//                    ref.observeSingleEvent(of: .value, with: { (snapshot) in
+//                        if snapshot.exists() {
+//                            var usersArray = (snapshot.value as? NSDictionary)?["users"] as! [String]
+//                            if !usersArray.contains((FIRAuth.auth()!.currentUser?.uid)!) {
+//                                usersArray.append( (FIRAuth.auth()!.currentUser?.uid)!)
+//                                ref.updateChildValues([
+//                                    "users": usersArray])
+//                                //CACHE: DONE update user/group
+//                                var dict = cache.sharedCache.getUserInfo();
+//                                let arrayGroups = dict["groups"]! as! NSArray
+//                                let newArray = arrayGroups.adding(groupCode) as Array
+//                                dict["groups"] = newArray;
+//                                cache.sharedCache.writeDictionaryCache(name: "user", dict: dict)
+//                            }
+//                        } //CREATE ERROR ALERT : show error to say user is already in the group
+//                    })
+//                
+//                    self.confirmationAlert()
+//                } else {
+//                    //Error 03.002: group not found
+//                    self.errorAlert()
+//                }
+//            }
+//        }
+//    }
+//    
     
     func confirmationAlert() {
         let alert = UIAlertController(title: "Confirmation", message: "You joined Group!", preferredStyle: .alert)
@@ -60,7 +80,10 @@ class JoinGroupViewController: UIViewController {
         alert.addAction(OKAction)
         self.present(alert, animated: true, completion: nil)
     }
+
     
+
+    //Error 03.002: group not found
     func errorAlert() {
         let alert = UIAlertController(title: "Error", message: "Group Not Found", preferredStyle: .alert)
         let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {
@@ -69,11 +92,54 @@ class JoinGroupViewController: UIViewController {
         alert.addAction(OKAction)
         self.present(alert, animated: true, completion: nil)
     }
+
     
     @IBAction func sendBack(_ sender: Any) {
         self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
     }
     
+    func isValidGroupCode(testStr:String) -> Bool {
+        
+        if testStr.contains("~") || testStr.contains("!") || testStr.contains("@") || testStr.contains("#") || testStr.contains("$") || testStr.contains("%") || testStr.contains("^") || testStr.contains("&") || testStr.contains("*") || testStr.contains("(") || testStr.contains(")") || testStr.contains("{") || testStr.contains("}") || testStr.contains("[") || testStr.contains("]") {
+            return true
+        }else if testStr == "" {
+            return true
+        }
+        return false
+    }
     
+    //*******************************************
+    //MARK: Keyboard
+    //*******************************************
+    func keyboardWillShow(notification: NSNotification) {
+     
+        if self.view.frame.origin.y == 0{
+            self.view.frame.origin.y -= 130
+        }
+    
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+ 
+            if self.view.frame.origin.y != 0{
+                self.view.frame.origin.y += 130
+            }
+    
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        Style.activeTextField(textField: textField)
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == groupCodeTextField {
+            groupCodeTextField.resignFirstResponder()
+        }
+        Style.inactiveTextField(textField: textField)
+    }
+    
+    func dismissKeyboard() {
+        view.endEditing(true)
+    }
 
 }

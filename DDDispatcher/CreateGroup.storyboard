@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ho1-zr-hYb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12118" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Ho1-zr-hYb">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -100,13 +99,10 @@
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="ZNQ-PH-JeO"/>
                                         </constraints>
                                     </view>
-                                    <button opaque="NO" contentMode="scaleAspectFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nyb-ez-O5H">
-                                        <rect key="frame" x="105" y="144" width="164" height="130"/>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GzL-51-3Hv">
+                                        <rect key="frame" x="116" y="134" width="150" height="130"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Image">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.95686274510000002" green="0.95686274510000002" blue="0.96862745100000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -126,8 +122,8 @@
                     </view>
                     <navigationItem key="navigationItem" id="orw-gw-UbN"/>
                     <connections>
-                        <outlet property="avatarButton" destination="Nyb-ez-O5H" id="gyR-ke-kxZ"/>
                         <outlet property="createGroupButton" destination="PZj-54-5V3" id="sL9-dt-cED"/>
+                        <outlet property="groupImageView" destination="GzL-51-3Hv" id="SDN-Bc-d46"/>
                         <outlet property="groupNameTextField" destination="eB6-wZ-hHs" id="rr0-ZO-TD9"/>
                         <outlet property="textView" destination="xJY-2Q-l4L" id="l4m-zU-aop"/>
                         <segue destination="dHJ-xb-Noa" kind="unwind" identifier="unwindMenuSegue" unwindAction="unwindToHubWithSegue:" id="smb-Ae-8sZ"/>
@@ -136,7 +132,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MHe-jl-0Y3" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="dHJ-xb-Noa" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1726" y="42"/>
+            <point key="canvasLocation" x="1725.5999999999999" y="41.829085457271368"/>
         </scene>
     </scenes>
     <resources>

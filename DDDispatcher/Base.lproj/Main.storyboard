@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Home Screen View Controller-->
+        <!--Main View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="HomeScreenViewController" customModule="DDDispatcher" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="DDDispatcher" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -191,16 +191,6 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="20"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" placeholder="Full Name" textAlignment="center" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="PB6-4b-Qb3">
-                                <rect key="frame" x="73" y="226" width="231" height="25"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="25" id="KEh-2W-NDP"/>
-                                </constraints>
-                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zsl-AF-Vwz">
                                 <rect key="frame" x="311" y="599" width="48" height="48"/>
                                 <constraints>
@@ -212,14 +202,28 @@
                                     <action selector="segueToHubScreen:" destination="Fxo-Gf-n4G" eventType="touchUpInside" id="aYB-WY-VnO"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" placeholder="Full Name" textAlignment="center" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="PB6-4b-Qb3">
+                                <rect key="frame" x="72" y="413" width="231" height="25"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="KEh-2W-NDP"/>
+                                </constraints>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Member" highlightedImage="Member" translatesAutoresizingMaskIntoConstraints="NO" id="aqm-mj-8bC">
+                                <rect key="frame" x="112" y="179" width="150" height="150"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Zsl-AF-Vwz" firstAttribute="top" secondItem="Wso-R0-AQO" secondAttribute="top" constant="599" id="1G9-Uf-hQe"/>
-                            <constraint firstItem="PB6-4b-Qb3" firstAttribute="centerX" secondItem="Wso-R0-AQO" secondAttribute="centerX" constant="1" id="9VE-bz-yhX"/>
-                            <constraint firstItem="PB6-4b-Qb3" firstAttribute="leading" secondItem="Wso-R0-AQO" secondAttribute="leading" constant="73" id="9bw-4D-rVI"/>
+                            <constraint firstItem="PB6-4b-Qb3" firstAttribute="centerX" secondItem="Wso-R0-AQO" secondAttribute="centerX" id="9VE-bz-yhX"/>
+                            <constraint firstItem="PB6-4b-Qb3" firstAttribute="leading" secondItem="Wso-R0-AQO" secondAttribute="leading" constant="72" id="9bw-4D-rVI"/>
                             <constraint firstItem="Zsl-AF-Vwz" firstAttribute="leading" secondItem="Wso-R0-AQO" secondAttribute="leading" constant="311" id="CJ0-LX-auk"/>
-                            <constraint firstItem="PB6-4b-Qb3" firstAttribute="top" secondItem="Wso-R0-AQO" secondAttribute="top" constant="226" id="MAo-gr-95p"/>
+                            <constraint firstItem="PB6-4b-Qb3" firstAttribute="top" secondItem="Wso-R0-AQO" secondAttribute="top" constant="413" id="MAo-gr-95p"/>
                             <constraint firstItem="4qw-b4-lca" firstAttribute="top" secondItem="TAD-X2-a1Y" secondAttribute="bottom" constant="30" id="N2T-Gu-b4m"/>
                             <constraint firstAttribute="trailing" secondItem="T2t-3r-A3M" secondAttribute="trailing" id="OvW-6q-KZt"/>
                             <constraint firstItem="T2t-3r-A3M" firstAttribute="centerX" secondItem="4qw-b4-lca" secondAttribute="centerX" id="RyE-4p-mb5"/>
@@ -231,6 +235,7 @@
                     <connections>
                         <outlet property="continueButton" destination="Zsl-AF-Vwz" id="cdT-cY-HfY"/>
                         <outlet property="nameTextField" destination="PB6-4b-Qb3" id="bsX-mc-Wai"/>
+                        <outlet property="profileImageView" destination="aqm-mj-8bC" id="3bW-HZ-peZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VUM-2V-Iuh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -239,6 +244,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Member" width="85" height="85"/>
         <image name="forwardArrow" width="48" height="48"/>
         <image name="logo" width="400" height="300"/>
     </resources>

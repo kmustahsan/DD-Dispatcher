@@ -10,6 +10,7 @@ target 'DDDispatcher' do
 	pod 'FBSDKShareKit'
 	pod 'FBSDKLoginKit'
 	pod 'Firebase/Auth'
+	pod ‘Firebase/Storage’
 	pod 'GoogleSignIn'
 	pod 'Firebase/Database'
 	pod 'SideMenuController'
