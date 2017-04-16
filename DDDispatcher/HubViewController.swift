@@ -39,13 +39,17 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     
     @IBOutlet weak var scrollMenu: UIScrollView!
     @IBOutlet weak var eventDescription: UIView!
+    @IBOutlet weak var noEventsLabel: UILabel!
+    @IBOutlet weak var eventOverViewTextView: UITextView!
+    
     // Dictionary containing active group info.
     var dict_avtiveGroups = [String: AnyObject]()
-    // Array storing active group names.
+    // Array storing active group names.t
     var activeGroupNames = [String]()
+    var activeGroupLogosUrl = [String]()
+    var activeGroupImages = [UIImage]()
     // Array storing event information.
-    var eventInformation = ["group.png" , "ABC Event"]
-    var eventInformation2 = ["Favorite.png", "Go Pikachu"]
+    var eventInformation = [String: String]()
     // Scroll menu properties
     let kScrollMenuHeight: CGFloat = 90.0
     var selectedGroupName = ""
@@ -55,14 +59,58 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        let eventInfo = Cache.sharedInstance.getValueForKey(key: "Events") as! [String : [String: Any]]
-        if eventInfo.count > 0 {
-            for index in 0..<eventInfo.count {
-                let keys = Array(eventInfo.keys)
-                activeGroupNames.append(eventInfo[keys[index]]?["group"] as! String)
+        if (Cache.sharedInstance.keyAlreadyExists(key: "Events")) {
+            noEventsLabel.isHidden = true
+            let eventInfo = Cache.sharedInstance.getValueForKey(key: "Events") as! [String : [String: Any]]
+            let groupInfo = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
+            if eventInfo.count > 0 {
+                for index in 0..<eventInfo.count {
+                    if (eventInfo.count != activeGroupNames.count) {
+                        let keys = Array(eventInfo.keys)
+                        activeGroupNames.append(eventInfo[keys[index]]?["event"] as! String)
+                        let gid = eventInfo[keys[index]]?["gid"] as! String
+                        activeGroupLogosUrl.append(groupInfo[gid]?["avatar"] as! String)
+                        activeGroupImages.append(UIImage(named: "eventHub.png")!)
+                        let eventName = eventInfo[keys[index]]?["event"] as! String
+                        let groupName = eventInfo[keys[index]]?["group"] as! String
+                        let startDate = eventInfo[keys[index]]?["start"] as! String
+                        let endDate = eventInfo[keys[index]]?["end"] as! String
+                        let description = eventInfo[keys[index]]?["description"] as! String
+                        let overview = createOverview(eventName: eventName , groupName: groupName, startDate: startDate,
+                                       endDate: endDate, description: description)
+                        eventInformation[eventName] = overview
+                    }
+                }
+                setupScrollMenu()
+                loadGroupImages()
             }
-            
+        } else {
+            noEventsLabel.isHidden = false
         }
+    }
+    
+    func loadGroupImages() {
+        for index in 0..<activeGroupLogosUrl.count {
+            let url = NSURL(string: activeGroupLogosUrl[index])
+            let task = URLSession.shared.dataTask(with: url as! URL, completionHandler: { (data, response, error) in
+                if error != nil {
+                    print(error ?? "Session error")
+                    return
+                }
+                DispatchQueue.main.async {
+                    self.activeGroupImages[index] = UIImage(data: data!)!
+                    self.setupScrollMenu()
+                }
+            })
+           task.resume()
+        }
+        
+    }
+    
+    func createOverview(eventName: String, groupName: String, startDate: String, endDate: String, description: String) -> String {
+        //var overviewResult = eventName + "\n" + groupName + "\n" + startDate + "\n" + endDate + "\n" + descreiption
+        var overviewResult = "\(eventName) \n Hosted By: \(groupName)  \n Beginning: \(startDate) \n Ending: \(endDate) \n Description: \(description)"
+        return overviewResult
     }
     
     override func viewDidLoad() {
@@ -73,6 +121,19 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = UIColor.clear
+        scrollMenu.layer.masksToBounds = false
+        scrollMenu.layer.shadowColor = UIColor.black.cgColor
+        scrollMenu.layer.shadowOffset = CGSize(width: 0, height: 5)
+        scrollMenu.layer.shadowOpacity = 0.4
+        scrollMenu.layer.shadowRadius = 2
+        eventDescription.layer.masksToBounds = false
+        eventDescription.layer.shadowColor = UIColor.black.cgColor
+        eventDescription.layer.shadowOffset = CGSize(width: 0, height: 5)
+        eventDescription.layer.shadowOpacity = 0.4
+        eventDescription.layer.shadowRadius = 2
+        
+        
+        
         searchContainerView.isHidden = true
         mapView.settings.consumesGesturesInView = false
         mapView.isMyLocationEnabled = true
@@ -82,7 +143,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         let gesture = UITapGestureRecognizer(target: self, action: #selector(segueTo))
         self.searchTrigger.addGestureRecognizer(gesture)
         
-        setupScrollMenu()
+       
         
     }
     
@@ -168,6 +229,16 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             rideConfimationViewController.destinationLocation = destinationPlace
         }
     }
+    
+    
+    @IBAction func requestToEvent(_ sender: Any) {
+    }
+    
+    @IBAction func requestFromEvent(_ sender: Any) {
+        
+    }
+    
+    
 //SCROLL
     func setupScrollMenu() {
         //set background colors
@@ -189,13 +260,13 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             let scrollMenuButton = UIButton(type: UIButtonType.custom)
             
             // Todo: Obtain the group's logo image.
-            var groupLogo = UIImage(named: activeGroupNames[i])
-            groupLogo = resizeImage(image: groupLogo!, newHeight: 30)
+            var groupLogo = (activeGroupImages[i])
+            groupLogo = resizeImage(image: groupLogo, newHeight: 30)!
             
             // Set the button frame at origin at (x, y) = (0, 0) with
             // button width  = auto logo image width + 10 points padding for each side
             // button height = kScrollMenuHeight points
-            scrollMenuButton.frame = CGRect(x: 0.0, y: 0.0, width: groupLogo!.size.width + 20.0, height:kScrollMenuHeight)
+            scrollMenuButton.frame = CGRect(x: 0.0, y: 0.0, width: groupLogo.size.width + 20.0, height:kScrollMenuHeight)
             //scrollMenuButton.layer.cornerRadius = 0.5 * scrollMenuButton.bounds.width
             // Test:
             //crollMenuButton.backgroundColor = UIColor.white
@@ -207,7 +278,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             let buttonTitle = activeGroupNames[i]
             
             // The button width and height in points will depend on its font style and size
-            let buttonTitleFont = UIFont(name: "Helvetica", size: 14.0)
+            let buttonTitleFont = UIFont(name: "Helvetica", size: 12.0)
             
             // Set the font of the button title label text
             scrollMenuButton.titleLabel?.font = buttonTitleFont
@@ -216,7 +287,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             let buttonTitleSize: CGSize = (buttonTitle as NSString).size(attributes: [NSFontAttributeName:buttonTitleFont!])
             
             let titleTextWidth = buttonTitleSize.width
-            let logoImageWidth = groupLogo!.size.width
+            let logoImageWidth = groupLogo.size.width
             
             var buttonWidth: CGFloat = 0.0
             
@@ -237,10 +308,9 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             scrollMenuButton.setTitleColor(UIColor.black, for: UIControlState())
             
             // Set the button title color to red when the button is selected
-            scrollMenuButton.setTitleColor(UIColor.red, for: UIControlState.selected)
             
             // Specify the Inset values for top, left, bottom, and right edges for the title
-            scrollMenuButton.titleEdgeInsets = UIEdgeInsetsMake(0.0, -groupLogo!.size.width, -(groupLogo!.size.height + 5), 0.0)
+            scrollMenuButton.titleEdgeInsets = UIEdgeInsetsMake(0.0, -groupLogo.size.width, -(groupLogo.size.height + 5), 0.0)
             
             // Specify the Inset values for top, left, bottom, and right edges for the auto logo image
             scrollMenuButton.imageEdgeInsets = UIEdgeInsetsMake(-(buttonTitleSize.height + 5), 0.0, 0.0, -buttonTitleSize.width)
@@ -336,8 +406,10 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         
         
         eventDescription.isHidden = false
-        
-        
+        if eventInformation.keys.contains(selectedGroupName) {
+            eventOverViewTextView.text = eventInformation[selectedGroupName]
+        }
+    
         
     }
     
