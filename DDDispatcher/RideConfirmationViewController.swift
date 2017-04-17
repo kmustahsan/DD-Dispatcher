@@ -62,7 +62,9 @@ class RideConfirmationViewController: UIViewController, GMSMapViewDelegate {
         
     }
     
-    
+    @IBAction func submitRideButtonTapped(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "submitRideSegue", sender: self)
+    }
     
     
     

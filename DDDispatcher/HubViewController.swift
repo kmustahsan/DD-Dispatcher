@@ -28,6 +28,15 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     @IBOutlet weak var destinationSearchView: UIView!
     @IBOutlet weak var searchTrigger: UIView!
     @IBOutlet weak var infoView: UIView!
+    
+    @IBOutlet var eventName: UITextField!
+    @IBOutlet var eventDescriptionView: UITextView!
+    @IBOutlet var startTimeAndDate: UITextField!
+    @IBOutlet var endTimeAndDate: UITextField!
+    @IBOutlet var requestRideToEventButton: UIButton!
+    @IBOutlet var requestRideFromEventButton: UIButton!
+    
+    
     var placesClient: GMSPlacesClient!
     var currentPlace: GMSPlace!
     var destinationPlace: GMSPlace!
@@ -44,8 +53,12 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     // Array storing active group names.
     var activeGroupNames = ["group.png", "Favorite.png", "group.png", "group.png", "group.png"]
     // Array storing event information.
-    var eventInformation = ["group.png" , "ABC Event", "Bring your own bear", "Dec 20 20:00", "Dec 20 23:00"]
-    var eventInformation2 = ["Favorite.png", "Go Pikachu", "Let's catch pikachu tonight", "Nov 20 20:00", "Nov 20 22:00"]
+    var eventInformation = ["group.png" , "ABC Event", "Bring your own bear", "Dec 20 20:00", "Dec 20 23:00", "1221 University City Blvd, Blacksburg, VA 24060"]
+    var eventInformation2 = ["Favorite.png", "Go Pikachu", "Let's catch pikachu tonight", "Nov 20 20:00", "Nov 20 22:00", "1228 University City Blvd, Blacksburg, VA 24060"]
+    
+    // String storing clicked event address.
+    var eventAddress: String = ""
+    
     // Scroll menu properties
     let kScrollMenuHeight: CGFloat = 90.0
     var selectedGroupName = ""
@@ -68,7 +81,6 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         mapView.isMyLocationEnabled = true
         mapView.delegate = self
         self.mapView.bringSubview(toFront: infoView)
-        eventDescription.isHidden = true
         let gesture = UITapGestureRecognizer(target: self, action: #selector(segueTo))
         self.searchTrigger.addGestureRecognizer(gesture)
         
@@ -78,6 +90,17 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         ]
         setupScrollMenu()
         
+        //******************************************************************************
+        //* Event Information
+        //*******************************************************************************
+        eventName.isHidden = true
+        eventDescriptionView.isHidden = true
+        startTimeAndDate.isHidden = true
+        endTimeAndDate.isHidden = true
+        requestRideToEventButton.isHidden = true
+        requestRideFromEventButton.isHidden = true
+        eventDescription.isHidden = true
+
     }
     
     func findCurrentPlace() {
@@ -106,6 +129,13 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     }
     
     func segueTo() {
+        eventName.isHidden = true
+        eventDescriptionView.isHidden = true
+        startTimeAndDate.isHidden = true
+        endTimeAndDate.isHidden = true
+        requestRideToEventButton.isHidden = true
+        requestRideFromEventButton.isHidden = true
+        eventDescription.isHidden = true
         infoView.isHidden = true
         searchContainerView.isHidden = false
         self.mapView.bringSubview(toFront: searchContainerView)
@@ -283,6 +313,12 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
          *******************************************************************************/
         
         eventDescription.isHidden = true
+        eventName.isHidden = true
+        eventDescriptionView.isHidden = true
+        startTimeAndDate.isHidden = true
+        endTimeAndDate.isHidden = true
+        requestRideToEventButton.isHidden = true
+        requestRideFromEventButton.isHidden = true
     }
     
     
@@ -330,9 +366,21 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         
         
         eventDescription.isHidden = false
-        
-        
-        
+        eventName.isHidden = false
+        eventDescriptionView.isHidden = false
+        startTimeAndDate.isHidden = false
+        endTimeAndDate.isHidden = false
+        requestRideToEventButton.isHidden = false
+        requestRideFromEventButton.isHidden = false
+            
+        // Todo: create ride request button
+    
+        var eventInfo = dict_avtiveGroups[selectedGroupName] as! [String]
+        eventName.text = eventInfo[1]
+        eventDescriptionView.text = eventInfo[2]
+        startTimeAndDate.text = eventInfo[3]
+        endTimeAndDate.text = eventInfo[4]
+        eventAddress = eventInfo[5]
     }
     
     /*
@@ -348,6 +396,18 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
          */
         delegate?.toggleMenuView!()
     }
+    
+    /*
+     -------------------------------------------
+     MARK: - Request Ride To Event Button Tapped
+     -------------------------------------------
+     */
+    @IBAction func requestRideToEventButtonTapped(_ sender: UIButton) {
+        segueTo()
+        destinationSearchController?.searchBar.text = eventAddress
+
+    }
+    
     
     /*
      -----------------------------------
