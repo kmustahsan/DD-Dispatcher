@@ -11,7 +11,7 @@ import Firebase
 import GoogleMaps
 import GooglePlaces
 
-class CreateEventFormViewController: UIViewController {
+class CreateEventFormViewController: UIViewController, CLLocationManagerDelegate {
 
     //set variables
     var groupNamePassed = ""
@@ -30,6 +30,13 @@ class CreateEventFormViewController: UIViewController {
     @IBOutlet var startDate: UITextField!
     @IBOutlet var endDate: UITextField!
     @IBOutlet var eventDescription: UITextView!
+    @IBOutlet weak var locationView: UIView!
+    var startSearchController: UISearchController?
+    var resultsViewController: GMSAutocompleteResultsViewController?
+    var searchController: UISearchController?
+    var resultView: UITextView?
+    var placesClient: GMSPlacesClient!
+    var currentPlace: GMSPlace!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,14 +53,59 @@ class CreateEventFormViewController: UIViewController {
             startDate.text! = datePassed[0]
             endDate.text! = datePassed[1]
         }
-        
         generateDD(groupID: gid)
+        
+        findCurrentPlace()
+
+        
+        
     }
     
-    @IBAction func autocompleteClicked(_ sender: Any) {
-        let autocompleteController = GMSAutocompleteViewController()
-        autocompleteController.delegate = self
-        present(autocompleteController, animated: true, completion: nil)
+    func findCurrentPlace() {
+        placesClient = GMSPlacesClient.shared()
+        placesClient.currentPlace(callback: { (placeLikelihoodList, error) -> Void in
+            if let error = error {
+                print("Pick Place error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let placeLikelihoodList = placeLikelihoodList {
+                let likelihood = placeLikelihoodList.likelihoods[0]
+                let place = likelihood.place
+                print("Current Place name \(place.name) at likelihood \(likelihood.likelihood)")
+                print("Current Place address \(place.formattedAddress)")
+                print("Current Place attributions \(place.attributions)")
+                print("Current PlaceID \(place.placeID)")
+                self.currentPlace = place
+                self.autocompleteClicked()
+            }
+        })
+    }
+    
+    func autocompleteClicked() {
+        resultsViewController = GMSAutocompleteResultsViewController()
+        resultsViewController?.delegate = self
+        
+        //filter
+        
+        let filter = GMSAutocompleteFilter()
+        filter.type = GMSPlacesAutocompleteTypeFilter.address
+        
+        let northEast = CLLocationCoordinate2DMake(currentPlace.coordinate.latitude + 0.15, currentPlace.coordinate.longitude + 0.15)
+        let southWest = CLLocationCoordinate2DMake(currentPlace.coordinate.latitude - 0.15, currentPlace.coordinate.longitude - 0.15)
+        let userBound = GMSCoordinateBounds(coordinate: northEast, coordinate: southWest)
+        
+        
+        resultsViewController?.autocompleteFilter = filter
+        resultsViewController?.autocompleteBounds = userBound
+        
+        startSearchController = UISearchController(searchResultsController: resultsViewController)
+        
+        startSearchController?.searchBar.text = currentPlace.name
+        
+        locationView.addSubview((startSearchController?.searchBar)!)
+        
+        definesPresentationContext = true
     }
     
     
@@ -201,24 +253,24 @@ class CreateEventFormViewController: UIViewController {
     }
 }
 
-extension CreateEventFormViewController: GMSAutocompleteViewControllerDelegate {
-    
-    // Handle the user's selection.
-    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
+extension CreateEventFormViewController: GMSAutocompleteResultsViewControllerDelegate {
+    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
+                           didAutocompleteWith place: GMSPlace) {
+        
+        if startSearchController?.isActive == true {
+            startSearchController?.searchBar.text = place.name
+        }
+        
+        // Do something with the selected place.
         print("Place name: \(place.name)")
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
-        dismiss(animated: true, completion: nil)
     }
     
-    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
+    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
+                           didFailAutocompleteWithError error: Error){
         // TODO: handle the error.
         print("Error: ", error.localizedDescription)
-    }
-    
-    // User canceled the operation.
-    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
-        dismiss(animated: true, completion: nil)
     }
     
     // Turn the network activity indicator on and off again.
@@ -229,5 +281,4 @@ extension CreateEventFormViewController: GMSAutocompleteViewControllerDelegate {
     func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
-    
 }
