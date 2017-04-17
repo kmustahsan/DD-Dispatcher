@@ -177,6 +177,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     }
     
     func segueTo() {
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         infoView.isHidden = true
         searchContainerView.isHidden = false
         self.mapView.bringSubview(toFront: searchContainerView)
@@ -214,7 +215,6 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     func setupSearchUI(searchController: UISearchController?) {
         searchController?.searchBar.setImage(UIImage(named: "cancelButton.png"), for: UISearchBarIcon.clear, state: .highlighted)
         searchController?.searchBar.setImage(UIImage(named: "cancelButton.png"), for: UISearchBarIcon.clear, state: .normal)
-        
         searchController?.searchBar.setShowsCancelButton(false, animated: true)
         searchController?.searchResultsUpdater = resultsViewController
         searchController?.searchBar.tintColor = .white
@@ -223,6 +223,8 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         searchController?.searchBar.setImage(UIImage(), for: .search, state: .normal)
         searchController?.searchBar.frame = CGRect(x: 0, y: 0, width: destinationSearchView.frame.width, height: destinationSearchView.frame.height)
         searchController?.searchBar.sizeToFit()
+        searchController?.searchBar.clipsToBounds = true
+        
         
     }
     
@@ -493,6 +495,8 @@ extension HubViewController: GMSAutocompleteResultsViewControllerDelegate {
     }
 }
 
+
+//check if this actually works on the device. otherwise fix, Woo
 extension HubViewController: CLLocationManagerDelegate {
     func checkLocationAuthorizationStatus() {
         // MARK: TODO: Need to test if they don't allow authorization
@@ -503,7 +507,6 @@ extension HubViewController: CLLocationManagerDelegate {
             locationManager.startUpdatingLocation()
             findCurrentPlace()
         } else {
-            locationManager.requestWhenInUseAuthorization()
             checkLocationAuthorizationStatus()
             
         }
