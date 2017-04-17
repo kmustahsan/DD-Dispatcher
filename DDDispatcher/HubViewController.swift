@@ -21,7 +21,7 @@ protocol HubViewControllerDelegate {
 }
 
 class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControllerDelegate,
-                        GMSMapViewDelegate, CLLocationManagerDelegate {
+                        GMSMapViewDelegate {
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var searchContainerView: UIView!
     @IBOutlet weak var startSearchView: UIView!
@@ -58,6 +58,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     var delegate: HubViewControllerDelegate?
     
     override func viewWillAppear(_ animated: Bool) {
+        checkLocationAuthorizationStatus()
         super.viewWillAppear(true)
         if (Cache.sharedInstance.keyAlreadyExists(key: "Events")) {
             noEventsLabel.isHidden = true
@@ -162,8 +163,11 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
                 print("Current Place address \(place.formattedAddress)")
                 print("Current Place attributions \(place.attributions)")
                 print("Current PlaceID \(place.placeID)")
-                self.currentPlace = place
-                self.setMap()
+                DispatchQueue.main.async {
+                    self.currentPlace = place
+                    self.setMap()
+                }
+               
             }
         })
     }
@@ -487,8 +491,24 @@ extension HubViewController: GMSAutocompleteResultsViewControllerDelegate {
     func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
-    
-    
+}
+
+extension HubViewController: CLLocationManagerDelegate {
+    func checkLocationAuthorizationStatus() {
+        // MARK: TODO: Need to test if they don't allow authorization
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+            locationManager.delegate = self
+            locationManager.distanceFilter = kCLDistanceFilterNone
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.startUpdatingLocation()
+            findCurrentPlace()
+        } else {
+            locationManager.requestWhenInUseAuthorization()
+            checkLocationAuthorizationStatus()
+            
+        }
+        
+    }
 }
 
 
