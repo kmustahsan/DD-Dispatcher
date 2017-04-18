@@ -11,7 +11,7 @@ import Firebase
 import GoogleMaps
 import GooglePlaces
 
-class CreateEventFormViewController: UIViewController, CLLocationManagerDelegate {
+class CreateEventFormViewController: UIViewController  {
 
     //set variables
     var groupNamePassed = ""
@@ -38,6 +38,30 @@ class CreateEventFormViewController: UIViewController, CLLocationManagerDelegate
     var placesClient: GMSPlacesClient!
     var currentPlace: GMSPlace!
     
+    override func viewWillAppear(_ animated: Bool) {
+        placesClient = GMSPlacesClient.shared()
+        placesClient.currentPlace(callback: { (placeLikelihoodList, error) -> Void in
+            if let error = error {
+                print("Pick Place error: \(error.localizedDescription)")
+                return
+            }
+            
+            if let placeLikelihoodList = placeLikelihoodList {
+                let likelihood = placeLikelihoodList.likelihoods[0]
+                let place = likelihood.place
+                print("Current Place name \(place.name) at likelihood \(likelihood.likelihood)")
+                print("Current Place address \(place.formattedAddress)")
+                print("Current Place attributions \(place.attributions)")
+                print("Current PlaceID \(place.placeID)")
+                DispatchQueue.main.async {
+                    self.currentPlace = place
+                }
+                
+            }
+        })
+
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -54,58 +78,27 @@ class CreateEventFormViewController: UIViewController, CLLocationManagerDelegate
             endDate.text! = datePassed[1]
         }
         generateDD(groupID: gid)
-        
-        findCurrentPlace()
 
-        
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(autocompleteClicked))
+        self.locationView.addGestureRecognizer(gesture)
         
     }
     
-    func findCurrentPlace() {
-        placesClient = GMSPlacesClient.shared()
-        placesClient.currentPlace(callback: { (placeLikelihoodList, error) -> Void in
-            if let error = error {
-                print("Pick Place error: \(error.localizedDescription)")
-                return
-            }
-            
-            if let placeLikelihoodList = placeLikelihoodList {
-                let likelihood = placeLikelihoodList.likelihoods[0]
-                let place = likelihood.place
-                print("Current Place name \(place.name) at likelihood \(likelihood.likelihood)")
-                print("Current Place address \(place.formattedAddress)")
-                print("Current Place attributions \(place.attributions)")
-                print("Current PlaceID \(place.placeID)")
-                self.currentPlace = place
-                self.autocompleteClicked()
-            }
-        })
-    }
-    
+    D
     func autocompleteClicked() {
-        resultsViewController = GMSAutocompleteResultsViewController()
-        resultsViewController?.delegate = self
         
-        //filter
-        
+        let autocompleteController = GMSAutocompleteViewController()
+        autocompleteController.delegate = self
+        present(autocompleteController, animated: true, completion: nil)
         let filter = GMSAutocompleteFilter()
         filter.type = GMSPlacesAutocompleteTypeFilter.address
         
         let northEast = CLLocationCoordinate2DMake(currentPlace.coordinate.latitude + 0.15, currentPlace.coordinate.longitude + 0.15)
         let southWest = CLLocationCoordinate2DMake(currentPlace.coordinate.latitude - 0.15, currentPlace.coordinate.longitude - 0.15)
         let userBound = GMSCoordinateBounds(coordinate: northEast, coordinate: southWest)
-        
-        
         resultsViewController?.autocompleteFilter = filter
         resultsViewController?.autocompleteBounds = userBound
-        
-        startSearchController = UISearchController(searchResultsController: resultsViewController)
-        
-        startSearchController?.searchBar.text = currentPlace.name
-        
-        locationView.addSubview((startSearchController?.searchBar)!)
-        
-        definesPresentationContext = true
+        present(autocompleteController, animated: true, completion: nil)
     }
     
     
@@ -253,24 +246,24 @@ class CreateEventFormViewController: UIViewController, CLLocationManagerDelegate
     }
 }
 
-extension CreateEventFormViewController: GMSAutocompleteResultsViewControllerDelegate {
-    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
-                           didAutocompleteWith place: GMSPlace) {
-        
-        if startSearchController?.isActive == true {
-            startSearchController?.searchBar.text = place.name
-        }
-        
-        // Do something with the selected place.
+extension CreateEventFormViewController: GMSAutocompleteViewControllerDelegate {
+    
+    // Handle the user's selection.
+    func viewController(_ viewController: GMSAutocompleteViewController, didAutocompleteWith place: GMSPlace) {
         print("Place name: \(place.name)")
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
+        dismiss(animated: true, completion: nil)
     }
     
-    func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
-                           didFailAutocompleteWithError error: Error){
+    func viewController(_ viewController: GMSAutocompleteViewController, didFailAutocompleteWithError error: Error) {
         // TODO: handle the error.
         print("Error: ", error.localizedDescription)
+    }
+    
+    // User canceled the operation.
+    func wasCancelled(_ viewController: GMSAutocompleteViewController) {
+        dismiss(animated: true, completion: nil)
     }
     
     // Turn the network activity indicator on and off again.
@@ -281,4 +274,5 @@ extension CreateEventFormViewController: GMSAutocompleteResultsViewControllerDel
     func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
+    
 }
