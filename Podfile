@@ -10,12 +10,12 @@ target 'DDDispatcher' do
 	pod 'FBSDKShareKit'
 	pod 'FBSDKLoginKit'
 	pod 'Firebase/Auth'
-	pod ‘Firebase/Storage’
+	pod 'Firebase/Storage'
 	pod 'GoogleSignIn'
 	pod 'Firebase/Database'
 	pod 'SideMenuController'
-	pod ‘GoogleMaps’
-	pod ‘GooglePlaces’
+	pod 'GoogleMaps'
+	pod 'GooglePlaces'
 
   target 'DDDispatcherTests' do
     inherit! :search_paths
