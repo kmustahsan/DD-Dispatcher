@@ -83,13 +83,21 @@
                             <constraint firstItem="Koi-9X-6zS" firstAttribute="leading" secondItem="fZj-SL-aNq" secondAttribute="leading" id="w3a-LT-1k8"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Who's hosting the Event?" id="hzo-pt-awD"/>
+                    <navigationItem key="navigationItem" title="Who's hosting the Event?" id="hzo-pt-awD">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="whp-E7-4ag">
+                            <connections>
+                                <action selector="sendBack:" destination="hes-Fa-aiR" id="c89-aJ-WMJ"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="groupsTableView" destination="Koi-9X-6zS" id="4gV-zN-apD"/>
                         <segue destination="qOw-OX-vId" kind="show" identifier="FormView" id="Shn-OD-2hb"/>
+                        <segue destination="bzR-eK-dmc" kind="unwind" identifier="unwindMenuSegue" unwindAction="unwindToHubWithSegue:" id="IY9-FT-wX9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="opf-nw-Fqr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="bzR-eK-dmc" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="204" y="-154.27286356821591"/>
         </scene>
@@ -153,7 +161,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Group Name" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gjs-se-rlY">
+                            <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Group Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gjs-se-rlY">
                                 <rect key="frame" x="22" y="83" width="331" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -161,7 +169,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Event Name" borderStyle="line" placeholder="Event Name" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Z9g-u6-P21">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Event Name" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Z9g-u6-P21">
                                 <rect key="frame" x="22" y="137" width="331" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -169,13 +177,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                             </textField>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" keyboardDismissMode="interactive" text="Description: " textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="bJx-OR-JHD">
-                                <rect key="frame" x="22" y="192" width="331" height="207"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
-                            </textView>
                             <textField opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Start Date:" borderStyle="line" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5rk-ul-bXK">
                                 <rect key="frame" x="22" y="487" width="331" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -215,6 +216,21 @@
                                     <segue destination="f2g-pA-qTg" kind="show" identifier="selectDriver" id="Ekv-Tk-2j3"/>
                                 </connections>
                             </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" keyboardDismissMode="interactive" text="Description: " textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="bJx-OR-JHD">
+                                <rect key="frame" x="22" y="266" width="331" height="142"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                            </textView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Event Location" textAlignment="center" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="nkc-h6-oSv">
+                                <rect key="frame" x="22" y="196" width="331" height="40"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -229,6 +245,7 @@
                     <connections>
                         <outlet property="endDate" destination="G4W-bc-muf" id="cqP-we-Lds"/>
                         <outlet property="eventDescription" destination="bJx-OR-JHD" id="vrd-uz-yqf"/>
+                        <outlet property="eventLocation" destination="nkc-h6-oSv" id="9Yq-Rn-EfC"/>
                         <outlet property="eventName" destination="Z9g-u6-P21" id="Odo-iW-plu"/>
                         <outlet property="groupName" destination="gjs-se-rlY" id="Hpv-OH-2My"/>
                         <outlet property="startDate" destination="5rk-ul-bXK" id="qCD-TK-rl4"/>

@@ -34,14 +34,22 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let groupInformation = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
-        keys = Array(groupInformation.keys)
-        for index in 0..<groupInformation.count {
-            groupNames.append(groupInformation[keys[index]]?["name"] as! String)
+        // need to check if event exists first
+        if (Cache.sharedInstance.keyAlreadyExists(key: "Groups")) {
+            let groupInformation = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
+            keys = Array(groupInformation.keys)
+            for index in 0..<groupInformation.count {
+                groupNames.append(groupInformation[keys[index]]?["name"] as! String)
+            }
+            print(groupNames)
+            dict_adminGroups = groupNames
         }
-        print(groupNames)
-        dict_adminGroups = groupNames
     }
+    
+    @IBAction func sendBack(_ sender: Any) {
+        self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
+    }
+    
     
     
     

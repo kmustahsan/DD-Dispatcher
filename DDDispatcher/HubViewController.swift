@@ -21,7 +21,7 @@ protocol HubViewControllerDelegate {
 }
 
 class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControllerDelegate,
-                        GMSMapViewDelegate, CLLocationManagerDelegate {
+                        GMSMapViewDelegate {
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var searchContainerView: UIView!
     @IBOutlet weak var startSearchView: UIView!
@@ -39,13 +39,17 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     
     @IBOutlet weak var scrollMenu: UIScrollView!
     @IBOutlet weak var eventDescription: UIView!
+    @IBOutlet weak var noEventsLabel: UILabel!
+    @IBOutlet weak var eventOverViewTextView: UITextView!
+    
     // Dictionary containing active group info.
     var dict_avtiveGroups = [String: AnyObject]()
-    // Array storing active group names.
-    var activeGroupNames = ["group.png", "Favorite.png", "group.png", "group.png", "group.png"]
+    // Array storing active group names.t
+    var activeGroupNames = [String]()
+    var activeGroupLogosUrl = [String]()
+    var activeGroupImages = [UIImage]()
     // Array storing event information.
-    var eventInformation = ["group.png" , "ABC Event", "Bring your own bear", "Dec 20 20:00", "Dec 20 23:00"]
-    var eventInformation2 = ["Favorite.png", "Go Pikachu", "Let's catch pikachu tonight", "Nov 20 20:00", "Nov 20 22:00"]
+    var eventInformation = [String: String]()
     // Scroll menu properties
     let kScrollMenuHeight: CGFloat = 90.0
     var selectedGroupName = ""
@@ -53,7 +57,62 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     let backgroundColorToUse = UIColor(red: 0.6, green: 0.8, blue: 1.0, alpha: 1.0)
     var delegate: HubViewControllerDelegate?
     
+    override func viewWillAppear(_ animated: Bool) {
+        checkLocationAuthorizationStatus()
+        super.viewWillAppear(true)
+        if (Cache.sharedInstance.keyAlreadyExists(key: "Events")) {
+            noEventsLabel.isHidden = true
+            let eventInfo = Cache.sharedInstance.getValueForKey(key: "Events") as! [String : [String: Any]]
+            let groupInfo = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
+            if eventInfo.count > 0 {
+                for index in 0..<eventInfo.count {
+                    if (eventInfo.count != activeGroupNames.count) {
+                        let keys = Array(eventInfo.keys)
+                        activeGroupNames.append(eventInfo[keys[index]]?["event"] as! String)
+                        let gid = eventInfo[keys[index]]?["gid"] as! String
+                        activeGroupLogosUrl.append(groupInfo[gid]?["avatar"] as! String)
+                        activeGroupImages.append(UIImage(named: "eventHub.png")!)
+                        let eventName = eventInfo[keys[index]]?["event"] as! String
+                        let groupName = eventInfo[keys[index]]?["group"] as! String
+                        let startDate = eventInfo[keys[index]]?["start"] as! String
+                        let endDate = eventInfo[keys[index]]?["end"] as! String
+                        let description = eventInfo[keys[index]]?["description"] as! String
+                        let overview = createOverview(eventName: eventName , groupName: groupName, startDate: startDate,
+                                       endDate: endDate, description: description)
+                        eventInformation[eventName] = overview
+                    }
+                }
+                setupScrollMenu()
+                loadGroupImages()
+            }
+        } else {
+            noEventsLabel.isHidden = false
+        }
+    }
     
+    func loadGroupImages() {
+        for index in 0..<activeGroupLogosUrl.count {
+            let url = NSURL(string: activeGroupLogosUrl[index])
+            let task = URLSession.shared.dataTask(with: url as! URL, completionHandler: { (data, response, error) in
+                if error != nil {
+                    print(error ?? "Session error")
+                    return
+                }
+                DispatchQueue.main.async {
+                    self.activeGroupImages[index] = UIImage(data: data!)!
+                    self.setupScrollMenu()
+                }
+            })
+           task.resume()
+        }
+        
+    }
+    
+    func createOverview(eventName: String, groupName: String, startDate: String, endDate: String, description: String) -> String {
+        //var overviewResult = eventName + "\n" + groupName + "\n" + startDate + "\n" + endDate + "\n" + descreiption
+        var overviewResult = " \(eventName) \n Hosted By: \(groupName)  \n Beginning: \(startDate) \n Ending: \(endDate) \n Description: \(description)"
+        return overviewResult
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +122,19 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = UIColor.clear
+        scrollMenu.layer.masksToBounds = false
+        scrollMenu.layer.shadowColor = UIColor.black.cgColor
+        scrollMenu.layer.shadowOffset = CGSize(width: 0, height: 5)
+        scrollMenu.layer.shadowOpacity = 0.4
+        scrollMenu.layer.shadowRadius = 2
+        eventDescription.layer.masksToBounds = false
+        eventDescription.layer.shadowColor = UIColor.black.cgColor
+        eventDescription.layer.shadowOffset = CGSize(width: 0, height: 5)
+        eventDescription.layer.shadowOpacity = 0.4
+        eventDescription.layer.shadowRadius = 2
+        
+        
+        
         searchContainerView.isHidden = true
         mapView.settings.consumesGesturesInView = false
         mapView.isMyLocationEnabled = true
@@ -72,11 +144,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         let gesture = UITapGestureRecognizer(target: self, action: #selector(segueTo))
         self.searchTrigger.addGestureRecognizer(gesture)
         
-        dict_avtiveGroups = [
-            activeGroupNames[0] : eventInformation as AnyObject,
-            activeGroupNames[1] : eventInformation2 as AnyObject
-        ]
-        setupScrollMenu()
+       
         
     }
     
@@ -95,8 +163,11 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
                 print("Current Place address \(place.formattedAddress)")
                 print("Current Place attributions \(place.attributions)")
                 print("Current PlaceID \(place.placeID)")
-                self.currentPlace = place
-                self.setMap()
+                DispatchQueue.main.async {
+                    self.currentPlace = place
+                    self.setMap()
+                }
+               
             }
         })
     }
@@ -106,6 +177,8 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     }
     
     func segueTo() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(canceltapped))
+        navigationItem.leftBarButtonItem?.tintColor = .white
         infoView.isHidden = true
         searchContainerView.isHidden = false
         self.mapView.bringSubview(toFront: searchContainerView)
@@ -129,13 +202,19 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         startSearchController = UISearchController(searchResultsController: resultsViewController)
         destinationSearchController = UISearchController(searchResultsController: resultsViewController)
         
-        setupSearchUI(searchController: startSearchController)
-        setupSearchUI(searchController: destinationSearchController)
-        startSearchController?.searchBar.text = currentPlace.name
         
+        
+        //startSearchController?.searchBar.text = currentPlace.name
+        
+        setupSearchUI(searchController: startSearchController)
+        startSearchController?.searchBar.frame = CGRect(x: 0, y: 0, width: 289, height: 34)
         startSearchView.addSubview((startSearchController?.searchBar)!)
+        
+
+        setupSearchUI(searchController: destinationSearchController)
+        destinationSearchController?.searchBar.frame = CGRect(x: 0, y: 0, width: 289, height: 34)
         destinationSearchView.addSubview((destinationSearchController?.searchBar)!)
-        destinationSearchController?.searchBar.becomeFirstResponder()
+
         
         definesPresentationContext = true
     }
@@ -143,15 +222,17 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     func setupSearchUI(searchController: UISearchController?) {
         searchController?.searchBar.setImage(UIImage(named: "cancelButton.png"), for: UISearchBarIcon.clear, state: .highlighted)
         searchController?.searchBar.setImage(UIImage(named: "cancelButton.png"), for: UISearchBarIcon.clear, state: .normal)
-        
-        searchController?.searchBar.setShowsCancelButton(false, animated: true)
-        searchController?.searchResultsUpdater = resultsViewController
+        searchController?.searchBar.setShowsCancelButton(false, animated: false)
         searchController?.searchBar.tintColor = .white
         searchController?.searchBar.barTintColor = .white
         searchController?.searchBar.backgroundColor = .white
         searchController?.searchBar.setImage(UIImage(), for: .search, state: .normal)
-        searchController?.searchBar.frame = CGRect(x: 0, y: 0, width: destinationSearchView.frame.width, height: destinationSearchView.frame.height)
+        searchController?.searchResultsUpdater = resultsViewController
         searchController?.searchBar.sizeToFit()
+        searchController?.searchBar.clipsToBounds = true
+        searchController?.extendedLayoutIncludesOpaqueBars = true
+        searchController?.edgesForExtendedLayout = .bottom
+        searchController?.hidesNavigationBarDuringPresentation = false
         
     }
     
@@ -174,6 +255,21 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             rideConfimationViewController.destinationLocation = destinationPlace
         }
     }
+    
+    func canceltapped() {
+        infoView.isHidden = false
+        searchContainerView.isHidden = true
+        self.mapView.bringSubview(toFront: infoView)
+    }
+    
+    @IBAction func requestToEvent(_ sender: Any) {
+    }
+    
+    @IBAction func requestFromEvent(_ sender: Any) {
+        
+    }
+    
+    
 //SCROLL
     func setupScrollMenu() {
         //set background colors
@@ -195,13 +291,13 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             let scrollMenuButton = UIButton(type: UIButtonType.custom)
             
             // Todo: Obtain the group's logo image.
-            var groupLogo = UIImage(named: activeGroupNames[i])
-            groupLogo = resizeImage(image: groupLogo!, newHeight: 30)
+            var groupLogo = (activeGroupImages[i])
+            groupLogo = resizeImage(image: groupLogo, newHeight: 30)!
             
             // Set the button frame at origin at (x, y) = (0, 0) with
             // button width  = auto logo image width + 10 points padding for each side
             // button height = kScrollMenuHeight points
-            scrollMenuButton.frame = CGRect(x: 0.0, y: 0.0, width: groupLogo!.size.width + 20.0, height:kScrollMenuHeight)
+            scrollMenuButton.frame = CGRect(x: 0.0, y: 0.0, width: groupLogo.size.width + 20.0, height:kScrollMenuHeight)
             //scrollMenuButton.layer.cornerRadius = 0.5 * scrollMenuButton.bounds.width
             // Test:
             //crollMenuButton.backgroundColor = UIColor.white
@@ -213,7 +309,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             let buttonTitle = activeGroupNames[i]
             
             // The button width and height in points will depend on its font style and size
-            let buttonTitleFont = UIFont(name: "Helvetica", size: 14.0)
+            let buttonTitleFont = UIFont(name: "Helvetica", size: 12.0)
             
             // Set the font of the button title label text
             scrollMenuButton.titleLabel?.font = buttonTitleFont
@@ -222,7 +318,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             let buttonTitleSize: CGSize = (buttonTitle as NSString).size(attributes: [NSFontAttributeName:buttonTitleFont!])
             
             let titleTextWidth = buttonTitleSize.width
-            let logoImageWidth = groupLogo!.size.width
+            let logoImageWidth = groupLogo.size.width
             
             var buttonWidth: CGFloat = 0.0
             
@@ -243,10 +339,9 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             scrollMenuButton.setTitleColor(UIColor.black, for: UIControlState())
             
             // Set the button title color to red when the button is selected
-            scrollMenuButton.setTitleColor(UIColor.red, for: UIControlState.selected)
             
             // Specify the Inset values for top, left, bottom, and right edges for the title
-            scrollMenuButton.titleEdgeInsets = UIEdgeInsetsMake(0.0, -groupLogo!.size.width, -(groupLogo!.size.height + 5), 0.0)
+            scrollMenuButton.titleEdgeInsets = UIEdgeInsetsMake(0.0, -groupLogo.size.width, -(groupLogo.size.height + 5), 0.0)
             
             // Specify the Inset values for top, left, bottom, and right edges for the auto logo image
             scrollMenuButton.imageEdgeInsets = UIEdgeInsetsMake(-(buttonTitleSize.height + 5), 0.0, 0.0, -buttonTitleSize.width)
@@ -342,8 +437,10 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         
         
         eventDescription.isHidden = false
-        
-        
+        if eventInformation.keys.contains(selectedGroupName) {
+            eventOverViewTextView.text = eventInformation[selectedGroupName]
+        }
+    
         
     }
     
@@ -421,8 +518,25 @@ extension HubViewController: GMSAutocompleteResultsViewControllerDelegate {
     func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
-    
-    
+}
+
+
+//check if this actually works on the device. otherwise fix, Woo
+extension HubViewController: CLLocationManagerDelegate {
+    func checkLocationAuthorizationStatus() {
+        // MARK: TODO: Need to test if they don't allow authorization
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+            locationManager.delegate = self
+            locationManager.distanceFilter = kCLDistanceFilterNone
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.startUpdatingLocation()
+            findCurrentPlace()
+        } else {
+            checkLocationAuthorizationStatus()
+            
+        }
+        
+    }
 }
 
 
