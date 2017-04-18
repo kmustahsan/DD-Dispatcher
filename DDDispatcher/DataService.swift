@@ -25,7 +25,6 @@ class DataService {
     // rides and queues
     private var _rides = FIRDatabase.database().reference().child("rides")
     private var _ridesqueue = FIRDatabase.database().reference().child("ridesqueue")
-    private var _events = FIRDatabase.database().reference().child("events")
 
     
     var ref: FIRDatabaseReference {

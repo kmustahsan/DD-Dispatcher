@@ -162,7 +162,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         let dictionary : [String: Any] = [
             userId  : true
         ]
-        DataService.sharedInstance.createQueue(gid: groupId,values: dictionary)
+        //DataService.sharedInstance.createQueue(gid: groupId,values: dictionary)
         
         // need to segue somewhere else
     }
