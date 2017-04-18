@@ -110,7 +110,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     
     func createOverview(eventName: String, groupName: String, startDate: String, endDate: String, description: String) -> String {
         //var overviewResult = eventName + "\n" + groupName + "\n" + startDate + "\n" + endDate + "\n" + descreiption
-        var overviewResult = "\(eventName) \n Hosted By: \(groupName)  \n Beginning: \(startDate) \n Ending: \(endDate) \n Description: \(description)"
+        var overviewResult = " \(eventName) \n Hosted By: \(groupName)  \n Beginning: \(startDate) \n Ending: \(endDate) \n Description: \(description)"
         return overviewResult
     }
     

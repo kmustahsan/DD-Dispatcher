@@ -99,7 +99,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="kZD-Kc-Ewh" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="2G2-RD-1c1">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2G2-RD-1c1">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -271,13 +271,6 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NaB-0x-FvB">
                                                 <rect key="frame" x="0.0" y="125" width="375" height="160"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="viV-CB-sxh">
-                                                        <rect key="frame" x="0.0" y="120" width="154" height="30"/>
-                                                        <state key="normal" title="Request Ride To Event"/>
-                                                        <connections>
-                                                            <action selector="requestToEvent:" destination="TX1-Ux-cNm" eventType="touchUpInside" id="ZHV-cC-J01"/>
-                                                        </connections>
-                                                    </button>
                                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="3wr-mo-U9G">
                                                         <rect key="frame" x="8" y="0.0" width="359" height="112"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -291,19 +284,26 @@
                                                             <action selector="requestFromEvent:" destination="TX1-Ux-cNm" eventType="touchUpInside" id="q4C-nv-Gsa"/>
                                                         </connections>
                                                     </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="viV-CB-sxh">
+                                                        <rect key="frame" x="8" y="120" width="154" height="30"/>
+                                                        <state key="normal" title="Request Ride To Event"/>
+                                                        <connections>
+                                                            <action selector="requestToEvent:" destination="TX1-Ux-cNm" eventType="touchUpInside" id="ZHV-cC-J01"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="trailing" secondItem="3wr-mo-U9G" secondAttribute="trailing" constant="8" id="0gC-nT-i1a"/>
                                                     <constraint firstItem="3wr-mo-U9G" firstAttribute="leading" secondItem="NaB-0x-FvB" secondAttribute="leading" constant="8" id="2Sh-ys-huk"/>
                                                     <constraint firstAttribute="bottom" secondItem="3wr-mo-U9G" secondAttribute="bottom" constant="48" id="5LJ-Ww-KB7"/>
-                                                    <constraint firstItem="WUd-FR-P0U" firstAttribute="leading" secondItem="viV-CB-sxh" secondAttribute="trailing" constant="29" id="5Xg-9a-hRe"/>
+                                                    <constraint firstItem="WUd-FR-P0U" firstAttribute="leading" secondItem="viV-CB-sxh" secondAttribute="trailing" constant="21" id="5Xg-9a-hRe"/>
                                                     <constraint firstAttribute="bottom" secondItem="viV-CB-sxh" secondAttribute="bottom" constant="10" id="Gq1-rL-say"/>
                                                     <constraint firstAttribute="trailing" secondItem="WUd-FR-P0U" secondAttribute="trailing" constant="8" id="bma-mv-fRN"/>
                                                     <constraint firstAttribute="bottom" secondItem="WUd-FR-P0U" secondAttribute="bottom" constant="10" id="iLe-B2-7b2"/>
                                                     <constraint firstItem="3wr-mo-U9G" firstAttribute="top" secondItem="NaB-0x-FvB" secondAttribute="top" id="ksl-Lq-IHn"/>
                                                     <constraint firstAttribute="height" constant="160" id="nrj-Sk-uwX"/>
-                                                    <constraint firstItem="viV-CB-sxh" firstAttribute="leading" secondItem="NaB-0x-FvB" secondAttribute="leading" id="ydX-iX-cqq"/>
+                                                    <constraint firstItem="viV-CB-sxh" firstAttribute="leading" secondItem="NaB-0x-FvB" secondAttribute="leading" constant="8" id="ydX-iX-cqq"/>
                                                 </constraints>
                                             </view>
                                         </subviews>

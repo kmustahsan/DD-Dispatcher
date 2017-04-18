@@ -16,8 +16,8 @@ class CreateEventFormViewController: UIViewController  {
     //set variables
     var groupNamePassed = ""
     var gid = ""
-    var infoToPass = ["", "", "", ""] //[0] = group name, [1] = event name, [2] = event description
-    var infoPassed = ["", "", "", ""]
+    var infoToPass = ["", "", "", "", "", "", ""] //[0] = group name, [1] = event name, [2] = event description
+    var infoPassed = ["", "", "", "", "", "", ""]
     var doneSetting = 0
     var datePassed = ["", ""]
     var groupMembersToPass = [String]()
@@ -30,13 +30,16 @@ class CreateEventFormViewController: UIViewController  {
     @IBOutlet var startDate: UITextField!
     @IBOutlet var endDate: UITextField!
     @IBOutlet var eventDescription: UITextView!
-    @IBOutlet weak var locationView: UIView!
+    @IBOutlet weak var eventLocation: UITextField!
+    
     var startSearchController: UISearchController?
     var resultsViewController: GMSAutocompleteResultsViewController?
     var searchController: UISearchController?
     var resultView: UITextView?
     var placesClient: GMSPlacesClient!
     var currentPlace: GMSPlace!
+    var eventLatitude = Double()
+    var eventLongitude = Double()
     
     override func viewWillAppear(_ animated: Bool) {
         placesClient = GMSPlacesClient.shared()
@@ -74,30 +77,31 @@ class CreateEventFormViewController: UIViewController  {
             eventName.text! = infoPassed[1]
             eventDescription.text! = infoPassed[2]
             gid = infoPassed[3]
+            eventLatitude = Double(infoPassed[4])!
+            eventLongitude = Double(infoPassed[5])!
+            eventLocation.text = infoPassed[6]
             startDate.text! = datePassed[0]
             endDate.text! = datePassed[1]
         }
         generateDD(groupID: gid)
 
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(autocompleteClicked))
-        self.locationView.addGestureRecognizer(gesture)
+        eventLocation.addTarget(self, action: #selector(autocompleteClicked), for: UIControlEvents.touchDown)
         
     }
     
-    D
+    
     func autocompleteClicked() {
         
         let autocompleteController = GMSAutocompleteViewController()
         autocompleteController.delegate = self
-        present(autocompleteController, animated: true, completion: nil)
         let filter = GMSAutocompleteFilter()
         filter.type = GMSPlacesAutocompleteTypeFilter.address
         
         let northEast = CLLocationCoordinate2DMake(currentPlace.coordinate.latitude + 0.15, currentPlace.coordinate.longitude + 0.15)
         let southWest = CLLocationCoordinate2DMake(currentPlace.coordinate.latitude - 0.15, currentPlace.coordinate.longitude - 0.15)
         let userBound = GMSCoordinateBounds(coordinate: northEast, coordinate: southWest)
-        resultsViewController?.autocompleteFilter = filter
-        resultsViewController?.autocompleteBounds = userBound
+        autocompleteController.autocompleteFilter = filter
+        autocompleteController.autocompleteBounds = userBound
         present(autocompleteController, animated: true, completion: nil)
     }
     
@@ -170,6 +174,9 @@ class CreateEventFormViewController: UIViewController  {
         infoToPass[1] = eventName.text!
         infoToPass[2] = eventDescription.text!
         infoToPass[3] = gid
+        infoToPass[4] = String(eventLatitude)
+        infoToPass[5] = String(eventLongitude)
+        infoToPass[6] = eventLocation.text!
        
         performSegue(withIdentifier: "SetDate", sender: self)
     }
@@ -212,6 +219,7 @@ class CreateEventFormViewController: UIViewController  {
         guard let eventDesc = eventDescription.text else { return }
         guard let startDate = startDate.text        else { return }
         guard let endDate   = endDate.text          else { return }
+        guard let location  = eventLocation.text    else { return }
         
         
         var selectedMembersID = [String]()
@@ -224,6 +232,9 @@ class CreateEventFormViewController: UIViewController  {
             "group"       : groupName,
             "gid"         : gid,
             "description" : eventDesc,
+            "location"    : location,
+            "latitude"    : eventLatitude,
+            "longitude"   : eventLongitude,
             "start"       : startDate,
             "end"         : endDate,
             "drivers"     : selectedMembersID
@@ -253,6 +264,9 @@ extension CreateEventFormViewController: GMSAutocompleteViewControllerDelegate {
         print("Place name: \(place.name)")
         print("Place address: \(place.formattedAddress)")
         print("Place attributions: \(place.attributions)")
+        self.eventLatitude = place.coordinate.latitude
+        self.eventLongitude = place.coordinate.longitude
+        eventLocation.text = place.name
         dismiss(animated: true, completion: nil)
     }
     
