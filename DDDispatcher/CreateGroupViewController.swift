@@ -30,9 +30,7 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate, UIImagePi
         setupUI()
         groupImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectGroupImageView)))
         groupImageView.isUserInteractionEnabled = true
-
-        
-        
+ 
     }
   /*
     override func viewDidLayoutSubviews() {

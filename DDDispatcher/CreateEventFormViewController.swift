@@ -103,6 +103,7 @@ class CreateEventFormViewController: UIViewController  {
         autocompleteController.autocompleteFilter = filter
         autocompleteController.autocompleteBounds = userBound
         present(autocompleteController, animated: true, completion: nil)
+
     }
     
     
@@ -192,23 +193,8 @@ class CreateEventFormViewController: UIViewController  {
             setDateAndTimeViewController.infoPassed = infoToPass
         } else if segue.identifier == "selectDriver" {
             
-            if eventName.text! == "" || startDate.text! == "" || endDate.text! == "" || startDate.text! == "Start Date:" || endDate.text! == "End Date" {
-                let alertController = UIAlertController(title: "Warning",
-                                                    message: "Please fill out the form completely",
-                                                    preferredStyle: UIAlertControllerStyle.alert)
-            
-                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            
-                present(alertController, animated: true, completion: nil)
-            }
-            
             let selectDriverTableViewController: SelectDriverTableViewController = segue.destination as! SelectDriverTableViewController
             
-            selectDriverTableViewController.eventInformationPassed[0] = infoPassed[0]
-            selectDriverTableViewController.eventInformationPassed[1] = infoPassed[1]
-            selectDriverTableViewController.eventInformationPassed[2] = infoPassed[2]
-            selectDriverTableViewController.eventInformationPassed[3] = datePassed[0]
-            selectDriverTableViewController.eventInformationPassed[4] = datePassed[1]
             selectDriverTableViewController.groupMembersPassed = groupMembersToPass
         }
     }
@@ -220,13 +206,31 @@ class CreateEventFormViewController: UIViewController  {
         guard let startDate = startDate.text        else { return }
         guard let endDate   = endDate.text          else { return }
         guard let location  = eventLocation.text    else { return }
+
+//        
+//        if eventName == "" || startDate == "" || endDate == "" || startDate == "Start Date:" || endDate.text "End Date" {
+//            let alertController = UIAlertController(title: "Warning",
+//                                                    message: "Please fill out the form completely",
+//                                                    preferredStyle: UIAlertControllerStyle.alert)
+//            
+//            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//            
+//            present(alertController, animated: true, completion: nil)
+//        } else if selectedMembers.count == 0 {
+//            let alertController = UIAlertController(title: "Warning",
+//                                                    message: "Please select at least one driver",
+//                                                    preferredStyle: UIAlertControllerStyle.alert)
+//            
+//            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//            
+//            present(alertController, animated: true, completion: nil)
+//        }
         
-        
-        var selectedMembersID = [String]()
-        for index in 0..<selectedMembers.count {
-            selectedMembersID.append(groupMembersToPassID[selectedMembers[index]])
-        }
-        // This is being sent to cache and Firebase
+            var selectedMembersID = [String]()
+            for index in 0..<selectedMembers.count {
+                selectedMembersID.append(groupMembersToPassID[selectedMembers[index]])
+            }
+            // This is being sent to cache and Firebase
         var eventToSave : [String : Any] = [
             "event"       : eventName,
             "group"       : groupName,
@@ -239,23 +243,25 @@ class CreateEventFormViewController: UIViewController  {
             "end"         : endDate,
             "drivers"     : selectedMembersID
         ]
+
         
-        let key = DataService.sharedInstance.createFirebaseEvent(values: eventToSave)
+            let key = DataService.sharedInstance.createFirebaseEvent(values: eventToSave)
     
-        // cache key
+            // cache key
         
-        if (Cache.sharedInstance.keyAlreadyExists(key: "Events")) {
-            var existingData = Cache.sharedInstance.getValueForKey(key: "Events") as! [String : [String: Any]]
-            existingData[key] = eventToSave
-            Cache.sharedInstance.saveValue(value: existingData as AnyObject, forKey: "Events")
-        } else {
-            Cache.sharedInstance.addNewItemWithKey(key: "Events", value: [key: eventToSave]  as AnyObject)
+            if (Cache.sharedInstance.keyAlreadyExists(key: "Events")) {
+                var existingData = Cache.sharedInstance.getValueForKey(key: "Events") as! [String : [String: Any]]
+                existingData[key] = eventToSave
+                Cache.sharedInstance.saveValue(value: existingData as AnyObject, forKey: "Events")
+            } else {
+                Cache.sharedInstance.addNewItemWithKey(key: "Events", value: [key: eventToSave]  as AnyObject)
+            }
+        
+        
+            self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
         }
-        
-        self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
-        
     }
-}
+
 
 extension CreateEventFormViewController: GMSAutocompleteViewControllerDelegate {
     
@@ -289,4 +295,25 @@ extension CreateEventFormViewController: GMSAutocompleteViewControllerDelegate {
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
+   
+    /*
+     --------------------------------
+     MARK: - Unwind Segue Destination
+     --------------------------------
+     */
+    
+    @IBAction func unwindToCreateEventFormViewController(segue: UIStoryboardSegue) {
+        if segue.identifier == "unwindSegueToCreateEventForm" {
+            
+            let controller: SelectDriverTableViewController = segue.source as! SelectDriverTableViewController
+            
+            let memberGotten: [Int] = controller.drivers
+
+            selectedMembers = memberGotten
+            
+            print("members")
+            print(selectedMembers)
+            
+        }
+    }
 }
