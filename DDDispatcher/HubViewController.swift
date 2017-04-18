@@ -177,7 +177,8 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     }
     
     func segueTo() {
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(canceltapped))
+        navigationItem.leftBarButtonItem?.tintColor = .white
         infoView.isHidden = true
         searchContainerView.isHidden = false
         self.mapView.bringSubview(toFront: searchContainerView)
@@ -201,13 +202,19 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         startSearchController = UISearchController(searchResultsController: resultsViewController)
         destinationSearchController = UISearchController(searchResultsController: resultsViewController)
         
-        setupSearchUI(searchController: startSearchController)
-        setupSearchUI(searchController: destinationSearchController)
-        startSearchController?.searchBar.text = currentPlace.name
         
+        
+        //startSearchController?.searchBar.text = currentPlace.name
+        
+        setupSearchUI(searchController: startSearchController)
+        startSearchController?.searchBar.frame = CGRect(x: 0, y: 0, width: 289, height: 34)
         startSearchView.addSubview((startSearchController?.searchBar)!)
+        
+
+        setupSearchUI(searchController: destinationSearchController)
+        destinationSearchController?.searchBar.frame = CGRect(x: 0, y: 0, width: 289, height: 34)
         destinationSearchView.addSubview((destinationSearchController?.searchBar)!)
-        destinationSearchController?.searchBar.becomeFirstResponder()
+
         
         definesPresentationContext = true
     }
@@ -215,16 +222,17 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     func setupSearchUI(searchController: UISearchController?) {
         searchController?.searchBar.setImage(UIImage(named: "cancelButton.png"), for: UISearchBarIcon.clear, state: .highlighted)
         searchController?.searchBar.setImage(UIImage(named: "cancelButton.png"), for: UISearchBarIcon.clear, state: .normal)
-        searchController?.searchBar.setShowsCancelButton(false, animated: true)
-        searchController?.searchResultsUpdater = resultsViewController
+        searchController?.searchBar.setShowsCancelButton(false, animated: false)
         searchController?.searchBar.tintColor = .white
         searchController?.searchBar.barTintColor = .white
         searchController?.searchBar.backgroundColor = .white
         searchController?.searchBar.setImage(UIImage(), for: .search, state: .normal)
-        searchController?.searchBar.frame = CGRect(x: 0, y: 0, width: destinationSearchView.frame.width, height: destinationSearchView.frame.height)
+        searchController?.searchResultsUpdater = resultsViewController
         searchController?.searchBar.sizeToFit()
         searchController?.searchBar.clipsToBounds = true
-        
+        searchController?.extendedLayoutIncludesOpaqueBars = true
+        searchController?.edgesForExtendedLayout = .bottom
+        searchController?.hidesNavigationBarDuringPresentation = false
         
     }
     
@@ -236,6 +244,11 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         }
     }
     
+    func canceltapped() {
+        infoView.isHidden = false
+        searchContainerView.isHidden = true
+        self.mapView.bringSubview(toFront: infoView)
+    }
     
     @IBAction func requestToEvent(_ sender: Any) {
     }
