@@ -204,17 +204,17 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         
         
         
-        //startSearchController?.searchBar.text = currentPlace.name
         
         setupSearchUI(searchController: startSearchController)
         startSearchController?.searchBar.frame = CGRect(x: 0, y: 0, width: startSearchView.frame.width, height: startSearchView.frame.height)
-        //startSearchController?.searchBar.text = currentPlace.name
+        startSearchController?.searchBar.text = currentPlace.name
         startSearchView.addSubview((startSearchController?.searchBar)!)
 
         setupSearchUI(searchController: destinationSearchController)
-        destinationSearchController?.searchBar.frame = CGRect(x: startSearchView.frame.minX, y: startSearchView.frame.minY, width: destinationSearchView.frame.width, height: destinationSearchView.frame.height)
+        destinationSearchController?.searchBar.frame = CGRect(x: 0, y: 0, width: destinationSearchView.frame.width, height: destinationSearchView.frame.height)
+        destinationSearchController?.searchBar.becomeFirstResponder()
         destinationSearchView.addSubview((destinationSearchController?.searchBar)!)
-        //destinationSearchView.becomeFirstResponder()
+        
 
         
         definesPresentationContext = true
@@ -227,6 +227,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         searchController?.searchBar.tintColor = .white
         searchController?.searchBar.barTintColor = .white
         searchController?.searchBar.backgroundColor = .white
+        searchController?.searchBar.setImage(UIImage(), for: .search, state: .normal)
         searchController?.searchResultsUpdater = resultsViewController
         searchController?.searchBar.sizeToFit()
         searchController?.searchBar.clipsToBounds = true
