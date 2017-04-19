@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class GroupInfoViewController: UIViewController {
     
@@ -15,26 +16,35 @@ class GroupInfoViewController: UIViewController {
     @IBOutlet var groupDesc: UILabel!
     @IBOutlet var leaveGroupButton: UIButton!
     
-    var groupID : Int = 0;
+    var groupID = String()
+    var groups = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
+    var currentGroup = [String: Any]()
     
-    override func viewWillAppear(_ animated: Bool) {
-        //get the groupInfo from query or cache
-    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        //set button to round
-        leaveGroupButton.layer.cornerRadius = 0.5 * leaveGroupButton.bounds.size.width
-        leaveGroupButton.clipsToBounds = true
+        if groupID == nil { return }
+        currentGroup = groups[groupID]!
+        let currentGroupName = groups[groupID]?["name"] as! String
+        let avatarUrl = currentGroup["avatar"] as! String
+        let url = NSURL(string: avatarUrl)
+        let task = URLSession.shared.dataTask(with: url as! URL, completionHandler: { (data, response, error) in
+            if error != nil {
+                print(error ?? "Session error")
+                return
+            }
+            DispatchQueue.main.async {
+                self.groupImage.image = UIImage(data: data!)
+            }
+        })
+        task.resume()
         
-        //size to fit DESC
-        groupDesc.sizeToFit();
+        self.title = currentGroup["name"] as! String
+        groupName.text = currentGroup["name"] as! String
         
-        //set image, name, decs
+        groupDesc.text = currentGroup["description"] as! String
         
-        //set navigation title to group name
-        self.title = "Group Name"
         
     }
     
@@ -44,9 +54,18 @@ class GroupInfoViewController: UIViewController {
     }
     
     @IBAction func leaveGroupButtonClicked(_ sender: UIButton) {
-        //user leaves group, remove from group on backend
-         //CACHE:  store user info here
-        //DATA: TODO
+        
+        
+        DataService.sharedInstance.removeUserFromGroup(gid: groupID, uid: (FIRAuth.auth()?.currentUser?.uid)!)
+//        groups.removeValue(forKey: groupID)
+//        Cache.sharedInstance.saveValue(value: groups as AnyObject, forKey: "Groups")
+//        var userInfo = Cache.sharedInstance.getValueForKey(key: "User") as! [String : [String: Any]]
+//        var userGroups = userInfo["groups"]
+//        userGroups?.removeValue(forKey: groupID)
+//        userInfo["groups"] = userGroups
+//        Cache.sharedInstance.saveValue(value: userInfo as AnyObject, forKey: "User")
+    
+        print("hi")
     }
     
     /*

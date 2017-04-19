@@ -37,6 +37,7 @@ class GroupListViewController: UIViewController, UITableViewDelegate, UITableVie
         return numberOfGroups;
     }
     
+    //Woo- fix; the label isn't being palced correctly.
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "userGroups") as! GroupNameTableViewCell
         let currentGroupName = groups[keys[indexPath.row]]?["name"] as! String
@@ -76,7 +77,7 @@ class GroupListViewController: UIViewController, UITableViewDelegate, UITableVie
             
             let dvc = segue.destination as! GroupInfoViewController
             //pass on some of the group info if needed... or its cached and can just pass on the id;
-            dvc.groupID = 2 //pass groupID from the cell
+            dvc.groupID = keys[row!] //pass groupID from the cell
         }
     }
     

@@ -34,6 +34,9 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.isHidden = true
+        
+        
         // need to check if event exists first
         if (Cache.sharedInstance.keyAlreadyExists(key: "Groups")) {
             let groupInformation = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
