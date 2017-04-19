@@ -46,6 +46,7 @@ class JoinGroupViewController: UIViewController {
             alert.addAction(OKAction)
             self.present(alert, animated: true, completion: nil)
         } else {
+            var userInfo = Cache.sharedInstance.getValueForKey(key: "User") as!  [String: Any]
             DataService.sharedInstance.queryFirebaseGroup(gid: groupCode) { (snapshot) in
                     var data = (snapshot.value as? NSDictionary)
                     var usersArray = data?["users"] as! [String]
@@ -53,27 +54,44 @@ class JoinGroupViewController: UIViewController {
                         usersArray.append( (FIRAuth.auth()!.currentUser?.uid)!)
                         DataService.sharedInstance.groups.child(groupCode).updateChildValues([
                             "users": usersArray])
-                        //CACHE: DONE update user/group
-                        var userInfo = Cache.sharedInstance.getValueForKey(key: "User") as!  [String: Any]
-                        userInfo["groups"] = usersArray
-                        Cache.sharedInstance.saveValue(value: userInfo as AnyObject, forKey: "User")
+                        let currentUser = DataService.sharedInstance.users.child((FIRAuth.auth()?.currentUser?.uid)!)
                     }
-                var newGroupInfo: [String: Any] = {
-                    "admin"       : data["admin"],
-                    "name"        : data["name"],
-                    "description" : data["description"],
-                    "avatar"      : data["avatar"],
-                    "users"       : usersArray
-                }
-                var existingData = [String : [String: Any]]()
-                if (Cache.sharedInstance.keyAlreadyExists(key: "Groups")) {
-                    existingData = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
-                    existingData[key] = newGroupInfo
-                    Cache.sharedInstance.saveValue(value: existingData as AnyObject, forKey: "Groups")
-                } else {
-                    Cache.sharedInstance.addNewItemWithKey(key: "Groups", value: [key: newGroupInfo]  as AnyObject)
-                }
+                    var newGroupInfo: [String: Any] = [
+                        "admin"       : data!["admin"],
+                        "name"        : data!["name"],
+                        "description" : data!["description"],
+                        "avatar"      : data!["avatar"],
+                        "users"       : usersArray
+                    ]
+                    var existingData = [String : [String: Any]]()
+                    if (Cache.sharedInstance.keyAlreadyExists(key: "Groups")) {
+                        existingData = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
+                        existingData[groupCode] = newGroupInfo
+                        Cache.sharedInstance.saveValue(value: existingData as AnyObject, forKey: "Groups")
+                    } else {
+                        Cache.sharedInstance.addNewItemWithKey(key: "Groups", value: [groupCode: newGroupInfo]  as AnyObject)
+                    }
             }
+            DataService.sharedInstance.queryFirebaseUserByUID(uid: (FIRAuth.auth()?.currentUser?.uid)!, completion: { (snapshot) in
+                var data = (snapshot.value as? NSDictionary)
+                var groupArray = data?["groups"] as! [String]
+                groupArray.append(groupCode)
+                DataService.sharedInstance.users.child((FIRAuth.auth()?.currentUser?.uid)!).updateChildValues(["groups": groupArray])
+                
+                //CACHE: DONE update user/group
+                var usersGroup = userInfo["groups"] as! [String]
+                if (!usersGroup.contains(groupCode)) {
+                    usersGroup.append(groupCode)
+                    userInfo["groups"] = usersGroup
+                    Cache.sharedInstance.saveValue(value: userInfo as AnyObject, forKey: "User")
+                }
+                
+            })
+            
+            
+            
+            
+            
         }
         self.confirmationAlert()
         self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)

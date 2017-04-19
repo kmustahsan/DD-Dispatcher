@@ -127,13 +127,13 @@
                                     <constraint firstAttribute="trailing" secondItem="PZj-54-5V3" secondAttribute="trailing" constant="8" id="2vJ-Ac-GS8"/>
                                     <constraint firstAttribute="trailing" secondItem="v4e-oV-o8C" secondAttribute="trailing" id="68l-3l-CZC"/>
                                     <constraint firstItem="eZS-sB-HGQ" firstAttribute="top" secondItem="qzG-3J-h4N" secondAttribute="bottom" constant="37" id="9VS-j2-p7p"/>
-                                    <constraint firstItem="GzL-51-3Hv" firstAttribute="leading" secondItem="Wlv-OX-9BL" secondAttribute="leading" constant="123" id="Dcm-uk-zcx"/>
                                     <constraint firstItem="qzG-3J-h4N" firstAttribute="leading" secondItem="Wlv-OX-9BL" secondAttribute="leading" id="ET5-Oo-hn7"/>
                                     <constraint firstItem="PZj-54-5V3" firstAttribute="top" secondItem="eZS-sB-HGQ" secondAttribute="bottom" constant="109" id="Jve-JM-fXR"/>
                                     <constraint firstAttribute="trailing" secondItem="qzG-3J-h4N" secondAttribute="trailing" id="NPb-Wc-dej"/>
                                     <constraint firstItem="v4e-oV-o8C" firstAttribute="leading" secondItem="Wlv-OX-9BL" secondAttribute="leading" id="SjF-mM-MNI"/>
                                     <constraint firstItem="qzG-3J-h4N" firstAttribute="top" secondItem="GzL-51-3Hv" secondAttribute="bottom" constant="58" id="aSS-dx-MV1"/>
                                     <constraint firstAttribute="trailing" secondItem="eZS-sB-HGQ" secondAttribute="trailing" id="g8r-Fc-foN"/>
+                                    <constraint firstItem="GzL-51-3Hv" firstAttribute="centerX" secondItem="Wlv-OX-9BL" secondAttribute="centerX" id="i8S-Hl-qDm"/>
                                     <constraint firstItem="v4e-oV-o8C" firstAttribute="top" secondItem="Wlv-OX-9BL" secondAttribute="top" id="kCz-Qq-s9a"/>
                                     <constraint firstItem="eZS-sB-HGQ" firstAttribute="leading" secondItem="qzG-3J-h4N" secondAttribute="leading" id="kdL-qX-1bu"/>
                                     <constraint firstItem="eZS-sB-HGQ" firstAttribute="leading" secondItem="Wlv-OX-9BL" secondAttribute="leading" id="p8H-ej-HjA"/>

@@ -123,11 +123,13 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate, UIImagePi
         if (Cache.sharedInstance.keyAlreadyExists(key: "Groups")) {
             existingData = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
             existingData[key] = groupInformation
+            userInfo["groups"] = existingData
             Cache.sharedInstance.saveValue(value: existingData as AnyObject, forKey: "Groups")
         } else {
             Cache.sharedInstance.addNewItemWithKey(key: "Groups", value: [key: groupInformation]  as AnyObject)
+            userInfo["groups"] = key
         }
-        userInfo["groups"] = existingData
+        
         Cache.sharedInstance.saveValue(value: userInfo as AnyObject, forKey: "User")
 
     }
