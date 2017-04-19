@@ -204,18 +204,16 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         
         
         
-        //startSearchController?.searchBar.text = currentPlace.name
         
         setupSearchUI(searchController: startSearchController)
-        startSearchController?.searchBar.frame = CGRect(x: 0, y: 0, width: 289, height: 34)
+        startSearchController?.searchBar.frame = CGRect(x: 0, y: 0, width: startSearchView.frame.width, height: startSearchView.frame.height)
+        startSearchController?.searchBar.text = currentPlace.name
         startSearchView.addSubview((startSearchController?.searchBar)!)
-        
 
         setupSearchUI(searchController: destinationSearchController)
-        destinationSearchController?.searchBar.frame = CGRect(x: 0, y: 0, width: 289, height: 34)
+        destinationSearchController?.searchBar.frame = CGRect(x: 0, y: 0, width: destinationSearchView.frame.width, height: destinationSearchView.frame.height)
         destinationSearchView.addSubview((destinationSearchController?.searchBar)!)
-
-        
+        destinationSearchController?.searchBar.becomeFirstResponder()
         definesPresentationContext = true
     }
     
@@ -257,9 +255,14 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     }
     
     func canceltapped() {
-        infoView.isHidden = false
+        navigationItem.leftBarButtonItem = nil
+        destinationSearchController?.searchBar.resignFirstResponder()
+        destinationSearchController?.searchBar.isHidden = true
+        destinationSearchView.isHidden = true
         searchContainerView.isHidden = true
+        infoView.isHidden = false
         self.mapView.bringSubview(toFront: infoView)
+        infoView.becomeFirstResponder()
     }
     
     @IBAction func requestToEvent(_ sender: Any) {
@@ -489,8 +492,10 @@ extension HubViewController: GMSAutocompleteResultsViewControllerDelegate {
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
                            didAutocompleteWith place: GMSPlace) {
         // Do something with the selected place.
+         navigationItem.leftBarButtonItem = nil
         if destinationSearchController?.isActive == true {
-            
+            navigationItem.leftBarButtonItem?.isEnabled = false
+            navigationItem.leftBarButtonItem = nil
             destinationPlace = place
             //send place.formattedAddress
             performSegue(withIdentifier: "confirmationSegue", sender: nil)
@@ -507,15 +512,18 @@ extension HubViewController: GMSAutocompleteResultsViewControllerDelegate {
     func resultsController(_ resultsController: GMSAutocompleteResultsViewController,
                            didFailAutocompleteWithError error: Error){
         // TODO: handle the error.
+        navigationItem.leftBarButtonItem = nil
         print("Error: ", error.localizedDescription)
     }
     
     // Turn the network activity indicator on and off again.
     func didRequestAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        navigationItem.leftBarButtonItem = nil
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
     }
     
     func didUpdateAutocompletePredictions(_ viewController: GMSAutocompleteViewController) {
+        navigationItem.leftBarButtonItem = nil
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
 }
