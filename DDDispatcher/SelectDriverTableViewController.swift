@@ -21,6 +21,7 @@ class SelectDriverTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.title = "Select Drivers"
         self.navigationItem.leftBarButtonItem?.title = "Back"
         self.navigationItem.leftBarButtonItem?.tintColor = .black
