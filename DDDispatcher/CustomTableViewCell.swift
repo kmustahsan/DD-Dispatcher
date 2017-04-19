@@ -15,9 +15,24 @@ class CustomTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        self.backgroundColor = .black
+        let url = NSURL(string: userInfo["avatar"] as! String)
+        let task = URLSession.shared.dataTask(with: url as! URL, completionHandler: { (data, response, error) in
+            if error != nil {
+                print(error ?? "Session error")
+                return
+            }
+            DispatchQueue.main.async {
+                self.profileAvatar.image = UIImage(data: data!)
+                self.profileAvatar.layer.cornerRadius = self.profileAvatar.frame.size.width / 2;
+                self.profileAvatar.clipsToBounds = true;
+            }
+        })
+        task.resume()
+        
         if let userName = userInfo["name"]  {
             username.text! = userName as! String
+            username.textColor = .white
         } else {
             username.text! = "None"
         }
@@ -28,5 +43,7 @@ class CustomTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    
 
 }

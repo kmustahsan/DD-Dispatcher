@@ -12,11 +12,18 @@ class GroupListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     @IBOutlet var groupInfoTabelView: UITableView!
     
+    
+    var groups = [String : [String: Any]]()
+    var keys = [String]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Do any additional setup after loading the view.
-        //set table view delegate, and dataSource
+        if Cache.sharedInstance.keyAlreadyExists(key: "Groups") {
+            groups = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
+            keys = Array(groups.keys)
+        }
+        
         groupInfoTabelView.delegate = self
         groupInfoTabelView.dataSource = self
     }
@@ -25,24 +32,32 @@ class GroupListViewController: UIViewController, UITableViewDelegate, UITableVie
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    /*
-     // MARK: - TableViewDataSource
-     // Methods
-     */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let numberOfGroups: Int = 0 //userGroupsArray.length
-        
+        let numberOfGroups = groups.count
         return numberOfGroups;
     }
     
+    //Woo- fix; the label isn't being palced correctly.
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "userGroups") as! GroupNameTableViewCell
-        //set Image and Name of cell
+        let currentGroupName = groups[keys[indexPath.row]]?["name"] as! String
+        let avatarUrl = groups[keys[indexPath.row]]?["avatar"] as! String
+        let url = NSURL(string: avatarUrl)
+        let task = URLSession.shared.dataTask(with: url as! URL, completionHandler: { (data, response, error) in
+            if error != nil {
+                print(error ?? "Session error")
+                return
+            }
+            DispatchQueue.main.async {
+                cell.groupImage.image = UIImage(data: data!)
+                cell.groupImage.layer.cornerRadius = cell.groupImage.frame.size.width / 2;
+                cell.groupImage.clipsToBounds = true;
+            }
+        })
+        task.resume()
+
+        cell.groupName.text = currentGroupName
         
-        //cell.groupImage =
-        cell.groupName.text = "Testing Group"
-        //CACHE: retrieve group info
         
         
         return cell;
@@ -62,7 +77,7 @@ class GroupListViewController: UIViewController, UITableViewDelegate, UITableVie
             
             let dvc = segue.destination as! GroupInfoViewController
             //pass on some of the group info if needed... or its cached and can just pass on the id;
-            dvc.groupID = 2 //pass groupID from the cell
+            dvc.groupID = keys[row!] //pass groupID from the cell
         }
     }
     

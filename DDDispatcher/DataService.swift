@@ -149,6 +149,39 @@ class DataService {
         
     }
     
+    //Removals
+    func removeUserFromGroup(gid: String, uid: String) {
+        
+        let userRef = self.users.child(uid)
+        var notCalled = true
+        self.queryFirebaseUserByUID(uid: uid) { (snapshot) in
+            if snapshot.exists() && notCalled {
+                var groupArray = (snapshot.value as? NSDictionary)?["groups"] as! [String]
+                if let index = groupArray.index(of: gid) {
+                    groupArray.remove(at: index)
+                }
+                if groupArray.count == 0 {
+                    groupArray.append("null")
+                }
+                userRef.updateChildValues(["groups" : groupArray])
+                notCalled = false
+            }
+        }
+        
+//        let groupRef = self.groups.child(gid)
+//        self.queryFirebaseGroup(gid: gid) { (snapshot) in
+//            if snapshot.exists() {
+//                var usersArray = (snapshot.value as? NSDictionary)?["users"] as! [String]
+//                if let index = usersArray.index(of: uid) {
+//                    usersArray.remove(at: index)
+//                }
+//                groupRef.updateChildValues(["users" : usersArray])
+//            }
+//        }
+        
+    }
+
+//Ride Request
     // Assign a user to be a driver or not
     func userIsDriver(uid: String, value: Bool) {
         let user = ["/users/\(uid)/driver": value]

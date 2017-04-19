@@ -9,6 +9,7 @@
 import UIKit
 
 class MenuViewController: UITableViewController {
+
     
     let options = ["nil", "Groups", "Create Group", "Create Event", "Join Group", "Settings", "Driver Mode"]
     let numberOfRowsAtSection: [Int] = [0, 7]

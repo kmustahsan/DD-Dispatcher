@@ -105,7 +105,7 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate, UIImagePi
 
     func createGroupOnFirebase(groupInformation: [String: Any]) {
         let key = DataService.sharedInstance.createFirebaseGroup(values: groupInformation)
-        let userInfo = Cache.sharedInstance.getValueForKey(key: "User") as! [String: Any]
+        var userInfo = Cache.sharedInstance.getValueForKey(key: "User") as! [String: Any]
         guard let uid = userInfo["uid"] as? String else { return }
         
         DataService.sharedInstance.queryFirebaseUserByUID(uid: uid) { (snapshot) in
@@ -119,14 +119,18 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate, UIImagePi
                 DataService.sharedInstance.users.child(uid).updateChildValues(["groups" : groupArray])
             }
         }
-        
+        var existingData = [String : [String: Any]]()
         if (Cache.sharedInstance.keyAlreadyExists(key: "Groups")) {
-            var existingData = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
+            existingData = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
             existingData[key] = groupInformation
+            userInfo["groups"] = existingData
             Cache.sharedInstance.saveValue(value: existingData as AnyObject, forKey: "Groups")
         } else {
             Cache.sharedInstance.addNewItemWithKey(key: "Groups", value: [key: groupInformation]  as AnyObject)
+            userInfo["groups"] = key
         }
+        
+        Cache.sharedInstance.saveValue(value: userInfo as AnyObject, forKey: "User")
 
     }
     

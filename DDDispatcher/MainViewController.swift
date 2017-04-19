@@ -162,7 +162,7 @@ class MainViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelega
                         "email"      : user.profile.email,
                         "avatar"     : profileAvatarUrl,
                         "groups"     : ["null"],
-                        "provider"   : "Facebook"
+                        "provider"   : "Google"
                     ]
                     self.registerUserIntoFirebase(credentials: credentials, userInformation: userInformation)
                 }
