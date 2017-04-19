@@ -75,9 +75,10 @@ class JoinGroupViewController: UIViewController {
             DataService.sharedInstance.queryFirebaseUserByUID(uid: (FIRAuth.auth()?.currentUser?.uid)!, completion: { (snapshot) in
                 var data = (snapshot.value as? NSDictionary)
                 var groupArray = data?["groups"] as! [String]
-                groupArray.append(groupCode)
-                DataService.sharedInstance.users.child((FIRAuth.auth()?.currentUser?.uid)!).updateChildValues(["groups": groupArray])
-                
+                if (!groupArray.contains(groupCode)) {
+                    groupArray.append(groupCode)
+                    DataService.sharedInstance.users.child((FIRAuth.auth()?.currentUser?.uid)!).updateChildValues(["groups": groupArray])
+                }
                 //CACHE: DONE update user/group
                 var usersGroup = userInfo["groups"] as! [String]
                 if (!usersGroup.contains(groupCode)) {
