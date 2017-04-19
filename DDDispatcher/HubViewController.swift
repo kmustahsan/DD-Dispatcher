@@ -208,12 +208,13 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         
         setupSearchUI(searchController: startSearchController)
         startSearchController?.searchBar.frame = CGRect(x: 0, y: 0, width: startSearchView.frame.width, height: startSearchView.frame.height)
+        //startSearchController?.searchBar.text = currentPlace.name
         startSearchView.addSubview((startSearchController?.searchBar)!)
-        
 
         setupSearchUI(searchController: destinationSearchController)
         destinationSearchController?.searchBar.frame = CGRect(x: startSearchView.frame.minX, y: startSearchView.frame.minY, width: destinationSearchView.frame.width, height: destinationSearchView.frame.height)
         destinationSearchView.addSubview((destinationSearchController?.searchBar)!)
+        //destinationSearchView.becomeFirstResponder()
 
         
         definesPresentationContext = true
