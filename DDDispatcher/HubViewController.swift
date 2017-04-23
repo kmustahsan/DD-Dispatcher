@@ -266,10 +266,74 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     }
     
     @IBAction func requestToEvent(_ sender: Any) {
+        let events = Cache.sharedInstance.getValueForKey(key: "Events") as! [String : [String: Any]]
+        var keys = Array(events.keys)
+        var currentEvent = [String: Any]()
+        for index in 0..<events.count {
+            var targetEventName = events[keys[index]]?["event"] as! String
+            if targetEventName == selectedGroupName {
+                currentEvent = events[keys[index]]!
+            }
+        }
+        print (currentEvent)
+        var startDate = currentEvent["start"] as! String
+        var endDate = currentEvent["end"] as! String
+        
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yy, hh:mm a"
+        let startDateFormatted = dateFormatter.date(from: startDate)!
+        let endDateFormatted = dateFormatter.date(from: endDate)!
+        
+        let currentDate = Date()
+        let currentDateString = String(describing: currentDate)
+        let result = dateFormatter.string(from: currentDate)
+        let currentDateFormatted = dateFormatter.date(from: result)!
+
+        if startDateFormatted > currentDateFormatted || endDateFormatted < currentDateFormatted {
+            let alertController = UIAlertController(title: "Oops!",
+                                                    message: "The Event is not live!",
+                                                    preferredStyle: UIAlertControllerStyle.alert)
+            
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alertController, animated: true, completion: nil)
+        }
     }
     
     @IBAction func requestFromEvent(_ sender: Any) {
+        let events = Cache.sharedInstance.getValueForKey(key: "Events") as! [String : [String: Any]]
+        var keys = Array(events.keys)
+        var currentEvent = [String: Any]()
+        for index in 0..<events.count {
+            var targetEventName = events[keys[index]]?["event"] as! String
+            if targetEventName == selectedGroupName {
+                currentEvent = events[keys[index]]!
+            }
+        }
+        print (currentEvent)
+        var startDate = currentEvent["start"] as! String
+        var endDate = currentEvent["end"] as! String
         
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yy, hh:mm a"
+        let startDateFormatted = dateFormatter.date(from: startDate)!
+        let endDateFormatted = dateFormatter.date(from: endDate)!
+        
+        let currentDate = Date()
+        let currentDateString = String(describing: currentDate)
+        let result = dateFormatter.string(from: currentDate)
+        let currentDateFormatted = dateFormatter.date(from: result)!
+        
+        if startDateFormatted > currentDateFormatted || endDateFormatted < currentDateFormatted {
+            let alertController = UIAlertController(title: "Oops!",
+                                                    message: "The Event is not live!",
+                                                    preferredStyle: UIAlertControllerStyle.alert)
+            
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alertController, animated: true, completion: nil)
+        }
+
     }
     
     

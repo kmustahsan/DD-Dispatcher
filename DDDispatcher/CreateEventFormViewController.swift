@@ -207,24 +207,24 @@ class CreateEventFormViewController: UIViewController  {
         guard let endDate   = endDate.text          else { return }
         guard let location  = eventLocation.text    else { return }
 
-//        
-//        if eventName == "" || startDate == "" || endDate == "" || startDate == "Start Date:" || endDate.text "End Date" {
-//            let alertController = UIAlertController(title: "Warning",
-//                                                    message: "Please fill out the form completely",
-//                                                    preferredStyle: UIAlertControllerStyle.alert)
-//            
-//            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//            
-//            present(alertController, animated: true, completion: nil)
-//        } else if selectedMembers.count == 0 {
-//            let alertController = UIAlertController(title: "Warning",
-//                                                    message: "Please select at least one driver",
-//                                                    preferredStyle: UIAlertControllerStyle.alert)
-//            
-//            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//            
-//            present(alertController, animated: true, completion: nil)
-//        }
+      
+        if eventName == "" || startDate == "" || endDate == "" || startDate == "Start Date:" || endDate == "End Date" {
+            let alertController = UIAlertController(title: "Warning",
+                                                    message: "Please fill out the form completely",
+                                                    preferredStyle: UIAlertControllerStyle.alert)
+            
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            
+            present(alertController, animated: true, completion: nil)
+        } else if selectedMembers.count < 3 {
+            let alertController = UIAlertController(title: "Warning",
+                                                    message: "Please select at least two drivers",
+                                                    preferredStyle: UIAlertControllerStyle.alert)
+            
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            
+            present(alertController, animated: true, completion: nil)
+        }
         
             var selectedMembersID = [String]()
             for index in 0..<selectedMembers.count {
