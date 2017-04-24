@@ -41,6 +41,7 @@ class RideConfirmationViewController: UIViewController, GMSMapViewDelegate {
             "origin=\(startingLocation.coordinate.latitude),\(startingLocation.coordinate.longitude)&destination=\(destinationLocation.coordinate.latitude),\(destinationLocation.coordinate.longitude)&" +
         "key=AIzaSyBjG03DdY9T6r9E9Fr7qNHREIGrB69BnFs"
         
+
         Alamofire.request(directionURL).responseJSON
             { response in
                 
@@ -56,9 +57,10 @@ class RideConfirmationViewController: UIViewController, GMSMapViewDelegate {
                     let polypoints = (overviewPolyline["points"] as? String) ?? ""
                     let line  = polypoints
                     self.addPolyLine(encodedString: line)
-
                 }
         }
+        let camera = GMSCameraPosition.camera(withLatitude: (startingLocation.coordinate.latitude), longitude:(startingLocation.coordinate.longitude), zoom:14)
+        mapView.animate(to: camera)
     }
     
     func addPolyLine(encodedString: String) {
@@ -77,18 +79,4 @@ class RideConfirmationViewController: UIViewController, GMSMapViewDelegate {
     @IBAction func submitRideClick(_ sender: Any) {
         
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-  
-
-
-
 }
