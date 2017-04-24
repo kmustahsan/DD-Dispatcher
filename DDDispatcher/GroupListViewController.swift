@@ -43,7 +43,7 @@ class GroupListViewController: UIViewController, UITableViewDelegate, UITableVie
         let currentGroupName = groups[keys[indexPath.row]]?["name"] as! String
         let avatarUrl = groups[keys[indexPath.row]]?["avatar"] as! String
         let url = NSURL(string: avatarUrl)
-        let task = URLSession.shared.dataTask(with: url as! URL, completionHandler: { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: url! as URL, completionHandler: { (data, response, error) in
             if error != nil {
                 print(error ?? "Session error")
                 return
@@ -62,6 +62,7 @@ class GroupListViewController: UIViewController, UITableViewDelegate, UITableVie
         
         return cell;
     }
+    
     /*
      // MARK: - Navigation
      
@@ -84,8 +85,5 @@ class GroupListViewController: UIViewController, UITableViewDelegate, UITableVie
     @IBAction func sendBack(_ sender: Any) {
         self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
     }
-    
-    
-    
 }
 

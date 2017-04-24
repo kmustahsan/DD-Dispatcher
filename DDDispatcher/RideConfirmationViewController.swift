@@ -8,6 +8,7 @@
 import UIKit
 import GoogleMaps
 import GooglePlaces
+import Alamofire
 
 class RideConfirmationViewController: UIViewController, GMSMapViewDelegate {
     @IBOutlet weak var mapView: GMSMapView!
@@ -36,35 +37,46 @@ class RideConfirmationViewController: UIViewController, GMSMapViewDelegate {
     
     
     func createPath() {
-        let camera = GMSCameraPosition.camera(withLatitude: (startingLocation.coordinate.latitude), longitude:(startingLocation.coordinate.longitude), zoom:15)
-        mapView.animate(to: camera)
+        let directionURL = "https://maps.googleapis.com/maps/api/directions/json?" +
+            "origin=\(startingLocation.coordinate.latitude),\(startingLocation.coordinate.longitude)&destination=\(destinationLocation.coordinate.latitude),\(destinationLocation.coordinate.longitude)&" +
+        "key=AIzaSyBjG03DdY9T6r9E9Fr7qNHREIGrB69BnFs"
         
-        let startingMarker = GMSMarker()
-        startingMarker.position = CLLocationCoordinate2DMake(startingLocation.coordinate.latitude, startingLocation.coordinate.longitude)
-        startingMarker.map = mapView
-        
-        let destinationMarker = GMSMarker()
-        destinationMarker.position = CLLocationCoordinate2DMake(destinationLocation.coordinate.latitude, destinationLocation.coordinate.longitude)
-        destinationMarker.map = mapView
-        
-        let path = GMSMutablePath()
-        path.add(CLLocationCoordinate2DMake(startingLocation.coordinate.latitude, startingLocation.coordinate.longitude))
-        path.add(CLLocationCoordinate2DMake(destinationLocation.coordinate.latitude, destinationLocation.coordinate.longitude))
-        
-        let rectangle = GMSPolyline(path: path)
-        rectangle.strokeWidth = 2.0
-        rectangle.map = mapView
+        Alamofire.request(directionURL).responseJSON
+            { response in
+                
+                if let JSON = response.result.value {
+                    
+                    let mapResponse: [String: AnyObject] = JSON as! [String : AnyObject]
+                    
+                    let routesArray = (mapResponse["routes"] as? Array) ?? []
+                    
+                    let routes = (routesArray.first as? Dictionary<String, AnyObject>) ?? [:]
+                    
+                    let overviewPolyline = (routes["overview_polyline"] as? Dictionary<String,AnyObject>) ?? [:]
+                    let polypoints = (overviewPolyline["points"] as? String) ?? ""
+                    let line  = polypoints
+                    self.addPolyLine(encodedString: line)
 
+                }
+        }
+    }
+    
+    func addPolyLine(encodedString: String) {
+        let path = GMSMutablePath(fromEncodedPath: encodedString)
+        let polyline = GMSPolyline(path: path)
+        polyline.strokeWidth = 5
+        polyline.strokeColor = .blue
+        polyline.map = mapView
     }
     
     @IBAction func sendBack(_ sender: Any) {
         self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
-        
     }
     
     
-    
-    
+    @IBAction func submitRideClick(_ sender: Any) {
+        
+    }
     
     
     
