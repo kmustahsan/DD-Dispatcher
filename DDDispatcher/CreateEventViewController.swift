@@ -35,6 +35,10 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //change navigation bar style
+        UINavigationBar.appearance().barTintColor = UIColor.black
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        
         
         // need to check if event exists first
         if (Cache.sharedInstance.keyAlreadyExists(key: "Groups")) {
@@ -51,24 +55,7 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
     @IBAction func sendBack(_ sender: Any) {
         self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     /*
      --------------------------------------
      MARK: - Table View Data Source Methods
@@ -149,7 +136,5 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
             
         } 
     }
-    
-    
     
 }

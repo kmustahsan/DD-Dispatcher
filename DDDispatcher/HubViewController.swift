@@ -438,8 +438,13 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
          * show event information
          *******************************************************************/
         
+        if eventDescription.isHidden {
+            eventDescription.isHidden = false
+        }
+        else {
+            eventDescription.isHidden = true
+        }
         
-        eventDescription.isHidden = false
         if eventInformation.keys.contains(selectedGroupName) {
             eventOverViewTextView.text = eventInformation[selectedGroupName]
         }

@@ -11,7 +11,7 @@ import Firebase
 import GoogleMaps
 import GooglePlaces
 
-class CreateEventFormViewController: UIViewController  {
+class CreateEventFormViewController: UIViewController, UITextViewDelegate  {
 
     //set variables
     var groupNamePassed = ""
@@ -68,9 +68,9 @@ class CreateEventFormViewController: UIViewController  {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        eventDescription.delegate = self
+        
         groupName.text! = groupNamePassed
-        print(gid)
-        print(doneSetting)
         
         if doneSetting == 1 {
             groupName.text! = infoPassed[0]
@@ -87,8 +87,55 @@ class CreateEventFormViewController: UIViewController  {
 
         eventLocation.addTarget(self, action: #selector(autocompleteClicked), for: UIControlEvents.touchDown)
         
+        //Setup UI
+        setupUI()
     }
     
+    func setupUI() {
+        setupTextView()
+    }
+    
+    func setupTextView() {
+
+        eventDescription.text = "Describe the event"
+        eventDescription.textColor = UIColor.lightGray
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tap)
+        
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        textView.text = ""
+        textView.textColor = UIColor.black
+        textView.becomeFirstResponder()
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text == "" {
+            textView.text = "Describe the event"
+            textView.textColor = UIColor.lightGray
+        }
+        textView.resignFirstResponder()
+        
+    }
+    
+    // eventDescription Text View dismisses keyboard on return button clicked
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if(text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
+    
+    @IBAction func textfieldPrimaryActionTriggered(_ sender: UITextField) {
+        dismissKeyboard()
+    }
+    
+    func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
     
     func autocompleteClicked() {
         

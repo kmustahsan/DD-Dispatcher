@@ -15,6 +15,7 @@ class GroupInfoViewController: UIViewController {
     @IBOutlet var groupName: UILabel!
     @IBOutlet var groupDesc: UILabel!
     @IBOutlet var leaveGroupButton: UIButton!
+    @IBOutlet var groupCode: UILabel!
     
     var groupID = String()
     var groups = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
@@ -24,6 +25,8 @@ class GroupInfoViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         if groupID == nil { return }
         currentGroup = groups[groupID]!
         let currentGroupName = groups[groupID]?["name"] as! String
@@ -42,7 +45,6 @@ class GroupInfoViewController: UIViewController {
         
         self.title = currentGroup["name"] as! String
         groupName.text = currentGroup["name"] as! String
-        
         groupDesc.text = currentGroup["description"] as! String
         
         
@@ -68,15 +70,21 @@ class GroupInfoViewController: UIViewController {
         print("hi")
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
+    @IBAction func CopytotheClipboard(_ sender: Any) {
+        
+        UIPasteboard.general.string = groupCode.text
+        
+        let alertController = UIAlertController(title: "Message",
+                                                message: "Copied text to the clipboard",
+                                                preferredStyle: UIAlertControllerStyle.alert)
+            
+        // Create a UIAlertAction object
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            
+        // Present the alert controller
+        present(alertController, animated: true, completion: nil)
+        
+    }
     
 }
 

@@ -30,7 +30,8 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate, UIImagePi
         setupUI()
         groupImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectGroupImageView)))
         groupImageView.isUserInteractionEnabled = true
- 
+        
+        
     }
   /*
     override func viewDidLayoutSubviews() {
@@ -185,6 +186,62 @@ class CreateGroupViewController: UIViewController, UITextViewDelegate, UIImagePi
         }
     }
     
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            textView.resignFirstResponder()
+            //CACHE: DONE Ref user
+            let userInfo = Cache.sharedInstance.getValueForKey(key: "User") as! [String: Any]
+            guard let uid = userInfo["uid"] as? String else { return false}
+            //End
+            guard let groupName = groupNameTextField.text else { return false}
+            guard let groupDesctiption = textView.text else { return false}
+            
+            let groupImage = groupImageView.image
+            let uploadData = UIImageJPEGRepresentation(groupImage!, 0.1)
+            DataService.sharedInstance.addGroupImageToStorage(image: uploadData!) { (groupAvatarUrl) in
+                
+                let dictionary : [String: Any] = [
+                    "admin"       : uid,
+                    "name"        : groupName,
+                    "description" : groupDesctiption,
+                    "avatar"      : groupAvatarUrl,
+                    "users"       : [uid]
+                ]
+                
+                self.createGroupOnFirebase(groupInformation: dictionary)
+                
+            }
+            
+            
+            //
+            //        //CACHE: New group was created
+            
+            //Error 04.001: When a user did not enter group name
+            if groupName == "" {
+                let alert = UIAlertController(title: "Error", message: "Please enter your group name", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+                //Error 04.002: When a user did not enter group description
+            else if groupDesctiption == "What does this group? Who is it for?" {
+                let alert = UIAlertController(title: "Error", message: "Please enter your group description", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+            else {
+                
+                //TODO: This needs to segue to the group info page
+                let destinationStoryboard = UIStoryboard(name: "Hub", bundle: nil)
+                if let destinationViewController = destinationStoryboard.instantiateInitialViewController() {
+                    self.present(destinationViewController, animated: true)
+                    
+                }
+            }
+            return false
+        }
+        return true
+    }
 
     @IBAction func sendBack(_ sender: Any) {
         self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
