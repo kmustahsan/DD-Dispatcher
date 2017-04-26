@@ -77,6 +77,9 @@ class JoinGroupViewController: UIViewController {
                 var groupArray = data?["groups"] as! [String]
                 if (!groupArray.contains(groupCode)) {
                     groupArray.append(groupCode)
+                    if let index = groupArray.index(of: "null") {
+                        groupArray.remove(at: index)
+                    }
                     DataService.sharedInstance.users.child((FIRAuth.auth()?.currentUser?.uid)!).updateChildValues(["groups": groupArray])
                 }
                 //CACHE: DONE update user/group
@@ -88,11 +91,6 @@ class JoinGroupViewController: UIViewController {
                 }
                 
             })
-            
-            
-            
-            
-            
         }
         self.confirmationAlert()
         self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)

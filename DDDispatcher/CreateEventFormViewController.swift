@@ -216,7 +216,8 @@ class CreateEventFormViewController: UIViewController  {
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             
             present(alertController, animated: true, completion: nil)
-        } else if selectedMembers.count > 1 {
+        }
+        if selectedMembers.count <= 2 {
             let alertController = UIAlertController(title: "Warning",
                                                     message: "Please select at least two drivers",
                                                     preferredStyle: UIAlertControllerStyle.alert)
@@ -224,7 +225,8 @@ class CreateEventFormViewController: UIViewController  {
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             
             present(alertController, animated: true, completion: nil)
-        } else {
+        }
+        else {
             var selectedMembersID = [String]()
             for index in 0..<selectedMembers.count {
                 selectedMembersID.append(groupMembersToPassID[selectedMembers[index]])

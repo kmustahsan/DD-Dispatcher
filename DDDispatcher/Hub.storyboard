@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="xUy-FW-TFe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="xUy-FW-TFe">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -103,7 +103,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="kZD-Kc-Ewh" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="2G2-RD-1c1">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="2G2-RD-1c1">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -240,32 +240,22 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ekc-3X-6bZ">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="172"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="145"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PTS-Dx-sd9">
-                                                <rect key="frame" x="43" y="119" width="289" height="34"/>
+                                                <rect key="frame" x="43" y="69" width="289" height="34"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="34" id="IZo-HN-tHm"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0nl-Uh-0Qd">
-                                                <rect key="frame" x="43" y="62" width="289" height="34"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="34" id="D3S-Hl-L08"/>
-                                                </constraints>
-                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstItem="0nl-Uh-0Qd" firstAttribute="leading" secondItem="Ekc-3X-6bZ" secondAttribute="leading" constant="43" id="5Iu-4i-V7s"/>
-                                            <constraint firstAttribute="bottom" secondItem="PTS-Dx-sd9" secondAttribute="bottom" constant="19" id="OFf-do-i4t"/>
+                                            <constraint firstAttribute="bottom" secondItem="PTS-Dx-sd9" secondAttribute="bottom" constant="42" id="OFf-do-i4t"/>
                                             <constraint firstItem="PTS-Dx-sd9" firstAttribute="leading" secondItem="Ekc-3X-6bZ" secondAttribute="leading" constant="43" id="cgT-rU-GoG"/>
-                                            <constraint firstAttribute="height" constant="172" id="eCS-95-fUe"/>
-                                            <constraint firstItem="0nl-Uh-0Qd" firstAttribute="top" secondItem="Ekc-3X-6bZ" secondAttribute="top" constant="62" id="fwY-2Z-8ZI"/>
+                                            <constraint firstAttribute="height" constant="145" id="eCS-95-fUe"/>
                                             <constraint firstAttribute="trailing" secondItem="PTS-Dx-sd9" secondAttribute="trailing" constant="43" id="iDI-Ee-0k2"/>
-                                            <constraint firstAttribute="trailing" secondItem="0nl-Uh-0Qd" secondAttribute="trailing" constant="43" id="wVh-DH-SHW"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -302,7 +292,6 @@
                         <outlet property="searchContainerView" destination="Ekc-3X-6bZ" id="gHK-Xh-bLU"/>
                         <outlet property="searchDisplayController" destination="hmT-mc-JPd" id="Spv-Co-w1v"/>
                         <outlet property="searchTrigger" destination="pId-LB-gp2" id="3tH-uk-ddA"/>
-                        <outlet property="startSearchView" destination="0nl-Uh-0Qd" id="AWU-me-Hbj"/>
                         <segue destination="4gj-Eo-Yey" kind="show" identifier="confirmationSegue" id="oPu-OO-eMr"/>
                     </connections>
                 </viewController>
@@ -367,6 +356,7 @@
                         <outlet property="mapView" destination="UfY-Ls-0LK" id="Ze4-Rg-4Ta"/>
                         <outlet property="submitRide" destination="HcE-E4-Muk" id="QEa-RI-28d"/>
                         <segue destination="EeK-Iz-Gbl" kind="unwind" identifier="unwindMenuSegue" unwindAction="unwindToHubWithSegue:" id="g0H-Ec-wuD"/>
+                        <segue destination="EeK-Iz-Gbl" kind="unwind" unwindAction="unwindToHubWithSegue:" id="R7N-Ql-FPr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Me5-3R-qeW" userLabel="First Responder" sceneMemberID="firstResponder"/>

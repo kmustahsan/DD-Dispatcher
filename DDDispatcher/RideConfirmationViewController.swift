@@ -20,14 +20,22 @@ class RideConfirmationViewController: UIViewController, GMSMapViewDelegate {
     
     
     override func viewDidLoad() {
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(),
+                                                                    for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
         super.viewDidLoad()
         Style.pillButton(button: submitRide)
-        self.navigationController?.navigationBar.backgroundColor = .black
-        self.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.navigationBar.isHidden = false
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(canceltapped))
+        self.navigationItem.leftBarButtonItem?.tintColor = .black
         setupMap()
         createPath()
     }
-
+    
+    func canceltapped() {
+        self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
+    }
     
     func setupMap() {
         mapView.settings.consumesGesturesInView = false

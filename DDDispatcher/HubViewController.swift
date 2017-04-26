@@ -143,8 +143,6 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         mapView.delegate = self
         self.mapView.bringSubview(toFront: infoView)
         eventDescription.isHidden = true
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(segueTo))
-        self.searchTrigger.addGestureRecognizer(gesture)
         
        
         
@@ -193,24 +191,15 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         let filter = GMSAutocompleteFilter()
         filter.type = GMSPlacesAutocompleteTypeFilter.address
         
-        let northEast = CLLocationCoordinate2DMake(currentPlace.coordinate.latitude + 0.15, currentPlace.coordinate.longitude + 0.15)
-        let southWest = CLLocationCoordinate2DMake(currentPlace.coordinate.latitude - 0.15, currentPlace.coordinate.longitude - 0.15)
+        let northEast = CLLocationCoordinate2DMake(startinglocation.latitude + 0.15, startinglocation.longitude + 0.15)
+        let southWest = CLLocationCoordinate2DMake(startinglocation.latitude - 0.15, startinglocation.longitude - 0.15)
         let userBound = GMSCoordinateBounds(coordinate: northEast, coordinate: southWest)
         
         
         resultsViewController?.autocompleteFilter = filter
         resultsViewController?.autocompleteBounds = userBound
         
-        startSearchController = UISearchController(searchResultsController: resultsViewController)
         destinationSearchController = UISearchController(searchResultsController: resultsViewController)
-        
-        
-        
-        
-        setupSearchUI(searchController: startSearchController)
-        startSearchController?.searchBar.frame = CGRect(x: 0, y: 0, width: startSearchView.frame.width, height: startSearchView.frame.height)
-        startSearchController?.searchBar.text = currentPlace.name
-        startSearchView.addSubview((startSearchController?.searchBar)!)
 
         setupSearchUI(searchController: destinationSearchController)
         destinationSearchController?.searchBar.frame = CGRect(x: 0, y: 0, width: destinationSearchView.frame.width, height: destinationSearchView.frame.height)
@@ -287,17 +276,19 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             present(alertController, animated: true, completion: nil)
+        } else {
+            var latitude = currentEvent["latitude"] as! Double
+            var longitude = currentEvent["longitude"] as! Double
+            
+            startinglocation.latitude = currentPlace.coordinate.latitude
+            startinglocation.longitude = currentPlace.coordinate.longitude
+            destinationLocation.latitude = latitude
+            destinationLocation.longitude = longitude
+            
+            performSegue(withIdentifier: "confirmationSegue", sender: nil)
+
         }
         
-        var latitude = currentEvent["latitude"] as! Double
-        var longitude = currentEvent["longitude"] as! Double
-        
-        startinglocation.latitude = currentPlace.coordinate.latitude
-        startinglocation.longitude = currentPlace.coordinate.longitude
-        destinationLocation.latitude = latitude
-        destinationLocation.longitude = longitude
-        
-        performSegue(withIdentifier: "confirmationSegue", sender: nil)
     }
     
     @IBAction func requestFromEvent(_ sender: Any) {
@@ -325,24 +316,24 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         let result = dateFormatter.string(from: currentDate)
         let currentDateFormatted = dateFormatter.date(from: result)!
         
-        if startDateFormatted > currentDateFormatted || endDateFormatted < currentDateFormatted {
-            let alertController = UIAlertController(title: "Oops!",
-                                                    message: "The Event is not live!",
-                                                    preferredStyle: UIAlertControllerStyle.alert)
+//        if startDateFormatted > currentDateFormatted || endDateFormatted < currentDateFormatted {
+//            let alertController = UIAlertController(title: "Oops!",
+//                                                    message: "The Event is not live!",
+//                                                    preferredStyle: UIAlertControllerStyle.alert)
+//            
+//            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//            present(alertController, animated: true, completion: nil)
+//        } else {
+            var latitude = currentEvent["latitude"] as! Double
+            var longitude = currentEvent["longitude"] as! Double
             
-            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            present(alertController, animated: true, completion: nil)
-        }
+            startinglocation.latitude = latitude
+            startinglocation.longitude = longitude
+            
+            self.segueTo()
+        //}
         
-        var latitude = currentEvent["latitude"] as! Double
-        var longitude = currentEvent["longitude"] as! Double
-        
-        startinglocation.latitude = latitude
-        startinglocation.longitude = longitude
-        destinationLocation.latitude = currentPlace.coordinate.latitude
-        destinationLocation.longitude = currentPlace.coordinate.longitude
-        
-        performSegue(withIdentifier: "confirmationSegue", sender: nil)
+       
     }
     
     
@@ -570,6 +561,8 @@ extension HubViewController: GMSAutocompleteResultsViewControllerDelegate {
             navigationItem.leftBarButtonItem?.isEnabled = false
             navigationItem.leftBarButtonItem = nil
             destinationPlace = place
+            destinationLocation.latitude = place.coordinate.latitude
+            destinationLocation.longitude = place.coordinate.longitude
             //send place.formattedAddress
             performSegue(withIdentifier: "confirmationSegue", sender: nil)
         }
