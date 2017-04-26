@@ -277,6 +277,7 @@ class CreateEventFormViewController: UIViewController, UITextViewDelegate  {
                 selectedMembersID.append(groupMembersToPassID[selectedMembers[index]])
             }
             // This is being sent to cache and Firebase
+ 
             var eventToSave : [String : Any] = [
                 "event"       : eventName,
                 "group"       : groupName,
@@ -289,7 +290,6 @@ class CreateEventFormViewController: UIViewController, UITextViewDelegate  {
                 "end"         : endDate,
                 "drivers"     : selectedMembersID
             ]
-
         
             let key = DataService.sharedInstance.createFirebaseEvent(values: eventToSave)
     

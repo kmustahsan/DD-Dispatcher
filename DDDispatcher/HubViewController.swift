@@ -102,6 +102,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
                 }
                 DispatchQueue.main.async {
                     self.activeGroupImages[index] = UIImage(data: data!)!
+                    
                     self.setupScrollMenu()
                 }
             })
@@ -374,12 +375,10 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             // button width  = auto logo image width + 10 points padding for each side
             // button height = kScrollMenuHeight points
             scrollMenuButton.frame = CGRect(x: 0.0, y: 0.0, width: groupLogo.size.width + 20.0, height:kScrollMenuHeight)
-            //scrollMenuButton.layer.cornerRadius = 0.5 * scrollMenuButton.bounds.width
-            // Test:
-            //crollMenuButton.backgroundColor = UIColor.white
-            
+        
             // Set the button image to be the group's logo
             scrollMenuButton.setImage(groupLogo, for: UIControlState())
+            scrollMenuButton.imageView?.layer.cornerRadius = 0.5 * (scrollMenuButton.imageView?.bounds.size.width)!
             
             // Obtain the title (i.e., auto manufacturer name) to be displayed on the button
             let buttonTitle = activeGroupNames[i]
@@ -414,8 +413,6 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             // Set the button title color to black when the button is not selected
             scrollMenuButton.setTitleColor(UIColor.black, for: UIControlState())
             
-            // Set the button title color to red when the button is selected
-            
             // Specify the Inset values for top, left, bottom, and right edges for the title
             scrollMenuButton.titleEdgeInsets = UIEdgeInsetsMake(0.0, -groupLogo.size.width, -(groupLogo.size.height + 5), 0.0)
             
@@ -444,11 +441,17 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
             // Set the button's frame to buttonRect
             var buttonRect: CGRect = button.frame
             
+      
+            
             // Set the buttonRect's x coordinate value to sumOfButtonWidths
             buttonRect.origin.x = sumOfButtonWidths
             
             // Set the button's frame to the newly specified buttonRect
             button.frame = buttonRect
+            
+            //make the button circular
+           // button.layer.cornerRadius = 0.5 * button.bounds.size.width
+           // button.clipsToBounds = true
             
             // Add the button to the horizontally scrollable menu
             scrollMenu.addSubview(button)
@@ -474,6 +477,7 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
         
         let scale = newHeight / image.size.height
         let newWidth = image.size.width * scale
+        
         UIGraphicsBeginImageContext(CGSize(width: newWidth, height: newHeight))
         image.draw(in: CGRect(x: 0, y: 0, width: newWidth, height: newHeight))
         

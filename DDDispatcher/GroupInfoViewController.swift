@@ -46,6 +46,7 @@ class GroupInfoViewController: UIViewController {
         self.title = currentGroup["name"] as! String
         groupName.text = currentGroup["name"] as! String
         groupDesc.text = currentGroup["description"] as! String
+        groupCode.text = groupID
     }
     
     override func didReceiveMemoryWarning() {

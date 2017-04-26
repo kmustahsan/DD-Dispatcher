@@ -49,17 +49,6 @@
                                     <constraint firstItem="hvH-kS-O59" firstAttribute="centerY" secondItem="O3c-za-Eck" secondAttribute="centerY" id="v6v-Fa-MmS"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7IJ-af-1ZY">
-                                <rect key="frame" x="311" y="420" width="48" height="48"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="SXR-4s-cWr"/>
-                                    <constraint firstAttribute="width" constant="48" id="To7-m7-CQU"/>
-                                </constraints>
-                                <state key="normal" image="forwardArrow"/>
-                                <connections>
-                                    <action selector="submitCode:" destination="hKo-0o-8UB" eventType="touchUpInside" id="a01-Pn-VxS"/>
-                                </connections>
-                            </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" placeholder="#AR78E65" textAlignment="center" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="CnQ-E1-gNr">
                                 <rect key="frame" x="97" y="179" width="180" height="25"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -80,17 +69,14 @@
                             <constraint firstItem="CnQ-E1-gNr" firstAttribute="centerX" secondItem="B9f-mN-Jal" secondAttribute="centerX" id="1Au-Ba-mZ7"/>
                             <constraint firstItem="AF3-9m-r24" firstAttribute="top" secondItem="B9f-mN-Jal" secondAttribute="top" id="8jh-3J-FKP"/>
                             <constraint firstAttribute="trailing" secondItem="AF3-9m-r24" secondAttribute="trailing" id="Dh9-Nh-m44"/>
-                            <constraint firstItem="7nx-wH-QZm" firstAttribute="top" secondItem="7IJ-af-1ZY" secondAttribute="bottom" constant="199" id="J1X-st-CW7"/>
                             <constraint firstItem="CnQ-E1-gNr" firstAttribute="centerX" secondItem="B9f-mN-Jal" secondAttribute="centerX" id="NSz-TO-nfr"/>
                             <constraint firstItem="CnQ-E1-gNr" firstAttribute="top" secondItem="B9f-mN-Jal" secondAttribute="top" constant="179" id="Ntd-Ie-VKu"/>
-                            <constraint firstItem="7IJ-af-1ZY" firstAttribute="trailing" secondItem="B9f-mN-Jal" secondAttribute="trailingMargin" id="P58-wA-Yvz"/>
                             <constraint firstItem="AF3-9m-r24" firstAttribute="leading" secondItem="B9f-mN-Jal" secondAttribute="leading" id="ayz-Zj-llW"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qaI-kj-5CL"/>
                     <connections>
                         <outlet property="groupCodeTextField" destination="CnQ-E1-gNr" id="0hv-Ih-hB1"/>
-                        <outlet property="joinGroup" destination="7IJ-af-1ZY" id="tQq-Ua-FxP"/>
                         <segue destination="pMb-hF-Eig" kind="unwind" identifier="unwindMenuSegue" unwindAction="unwindToHubWithSegue:" id="gzs-P7-PWQ"/>
                     </connections>
                 </viewController>
@@ -102,6 +88,5 @@
     </scenes>
     <resources>
         <image name="backArrow" width="48" height="48"/>
-        <image name="forwardArrow" width="48" height="48"/>
     </resources>
 </document>
