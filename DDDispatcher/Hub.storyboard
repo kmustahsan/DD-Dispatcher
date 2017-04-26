@@ -333,15 +333,19 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UfY-Ls-0LK" customClass="GMSMapView">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HcE-E4-Muk">
-                                        <rect key="frame" x="260" y="612" width="100" height="30"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HcE-E4-Muk">
+                                        <rect key="frame" x="230" y="612" width="130" height="30"/>
                                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="1cD-VD-8B3"/>
+                                            <constraint firstAttribute="width" constant="130" id="C75-GK-gz6"/>
                                         </constraints>
                                         <state key="normal" title="Request Ride">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="submitRideClick:" destination="4gj-Eo-Yey" eventType="touchUpInside" id="1Ig-wr-F9a"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -368,7 +372,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Me5-3R-qeW" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="EeK-Iz-Gbl" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="2897" y="18"/>
+            <point key="canvasLocation" x="2896.8000000000002" y="17.541229385307346"/>
         </scene>
     </scenes>
     <resources>

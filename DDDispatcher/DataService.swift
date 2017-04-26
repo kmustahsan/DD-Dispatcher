@@ -144,9 +144,7 @@ class DataService {
             } else {
                 completion("error")
             }
-            
         })
-        
     }
     
     //Removals

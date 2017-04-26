@@ -32,7 +32,7 @@ class GroupInfoViewController: UIViewController {
         let currentGroupName = groups[groupID]?["name"] as! String
         let avatarUrl = currentGroup["avatar"] as! String
         let url = NSURL(string: avatarUrl)
-        let task = URLSession.shared.dataTask(with: url as! URL, completionHandler: { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: url! as URL, completionHandler: { (data, response, error) in
             if error != nil {
                 print(error ?? "Session error")
                 return
@@ -46,8 +46,6 @@ class GroupInfoViewController: UIViewController {
         self.title = currentGroup["name"] as! String
         groupName.text = currentGroup["name"] as! String
         groupDesc.text = currentGroup["description"] as! String
-        
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -87,6 +85,3 @@ class GroupInfoViewController: UIViewController {
     }
     
 }
-
-
-
