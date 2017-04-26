@@ -13,8 +13,8 @@ class RideConfirmationViewController: UIViewController, GMSMapViewDelegate {
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var submitRide: UIButton!
    
-    var startingLocation: GMSPlace!
-    var destinationLocation: GMSPlace!
+    var startingLocation: CLLocationCoordinate2D!
+    var destinationLocation: CLLocationCoordinate2D!
     
     
     
@@ -36,20 +36,20 @@ class RideConfirmationViewController: UIViewController, GMSMapViewDelegate {
     
     
     func createPath() {
-        let camera = GMSCameraPosition.camera(withLatitude: (startingLocation.coordinate.latitude), longitude:(startingLocation.coordinate.longitude), zoom:15)
+        let camera = GMSCameraPosition.camera(withLatitude: (startingLocation.latitude), longitude:(startingLocation.longitude), zoom:15)
         mapView.animate(to: camera)
         
         let startingMarker = GMSMarker()
-        startingMarker.position = CLLocationCoordinate2DMake(startingLocation.coordinate.latitude, startingLocation.coordinate.longitude)
+        startingMarker.position = CLLocationCoordinate2DMake(startingLocation.latitude, startingLocation.longitude)
         startingMarker.map = mapView
         
         let destinationMarker = GMSMarker()
-        destinationMarker.position = CLLocationCoordinate2DMake(destinationLocation.coordinate.latitude, destinationLocation.coordinate.longitude)
+        destinationMarker.position = CLLocationCoordinate2DMake(destinationLocation.latitude, destinationLocation.longitude)
         destinationMarker.map = mapView
         
         let path = GMSMutablePath()
-        path.add(CLLocationCoordinate2DMake(startingLocation.coordinate.latitude, startingLocation.coordinate.longitude))
-        path.add(CLLocationCoordinate2DMake(destinationLocation.coordinate.latitude, destinationLocation.coordinate.longitude))
+        path.add(CLLocationCoordinate2DMake(startingLocation.latitude, startingLocation.longitude))
+        path.add(CLLocationCoordinate2DMake(destinationLocation.latitude, destinationLocation.longitude))
         
         let rectangle = GMSPolyline(path: path)
         rectangle.strokeWidth = 2.0
