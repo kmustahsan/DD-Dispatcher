@@ -14,13 +14,14 @@ class RideConfirmationViewController: UIViewController, GMSMapViewDelegate {
     @IBOutlet weak var mapView: GMSMapView!
     @IBOutlet weak var submitRide: UIButton!
    
-    var startingLocation: GMSPlace!
-    var destinationLocation: GMSPlace!
+    var startingLocation: CLLocationCoordinate2D!
+    var destinationLocation: CLLocationCoordinate2D!
     
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        Style.pillButton(button: submitRide)
         self.navigationController?.navigationBar.backgroundColor = .black
         self.navigationController?.navigationBar.isHidden = true
         setupMap()
@@ -38,7 +39,7 @@ class RideConfirmationViewController: UIViewController, GMSMapViewDelegate {
     
     func createPath() {
         let directionURL = "https://maps.googleapis.com/maps/api/directions/json?" +
-            "origin=\(startingLocation.coordinate.latitude),\(startingLocation.coordinate.longitude)&destination=\(destinationLocation.coordinate.latitude),\(destinationLocation.coordinate.longitude)&" +
+            "origin=\(startingLocation.latitude),\(startingLocation.longitude)&destination=\(destinationLocation.latitude),\(destinationLocation.longitude)&" +
         "key=AIzaSyBjG03DdY9T6r9E9Fr7qNHREIGrB69BnFs"
         
 
@@ -59,7 +60,7 @@ class RideConfirmationViewController: UIViewController, GMSMapViewDelegate {
                     self.addPolyLine(encodedString: line)
                 }
         }
-        let camera = GMSCameraPosition.camera(withLatitude: (startingLocation.coordinate.latitude), longitude:(startingLocation.coordinate.longitude), zoom:14)
+        let camera = GMSCameraPosition.camera(withLatitude: (startingLocation.latitude), longitude:(startingLocation.longitude), zoom:14)
         mapView.animate(to: camera)
     }
     
@@ -77,6 +78,11 @@ class RideConfirmationViewController: UIViewController, GMSMapViewDelegate {
     
     
     @IBAction func submitRideClick(_ sender: Any) {
+        let alertController = UIAlertController(title: "Error",
+                                                message: "No Drivers are active at the moment",
+                                                preferredStyle: UIAlertControllerStyle.alert)
         
+        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alertController, animated: true, completion: nil)
     }
 }

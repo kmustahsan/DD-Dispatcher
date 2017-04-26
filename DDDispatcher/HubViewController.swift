@@ -56,6 +56,8 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     var previousButton = UIButton(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
     let backgroundColorToUse = UIColor(red: 0.6, green: 0.8, blue: 1.0, alpha: 1.0)
     var delegate: HubViewControllerDelegate?
+    var startinglocation = CLLocationCoordinate2D()
+    var destinationLocation = CLLocationCoordinate2D()
     
     override func viewWillAppear(_ animated: Bool) {
         checkLocationAuthorizationStatus()
@@ -237,8 +239,8 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "confirmationSegue" {
             let rideConfimationViewController = segue.destination as! RideConfirmationViewController
-            rideConfimationViewController.startingLocation = currentPlace
-            rideConfimationViewController.destinationLocation = destinationPlace
+            rideConfimationViewController.startingLocation = startinglocation
+            rideConfimationViewController.destinationLocation = destinationLocation
         }
     }
     
@@ -254,10 +256,93 @@ class HubViewController: UIViewController, UIScrollViewDelegate, SideMenuControl
     }
     
     @IBAction func requestToEvent(_ sender: Any) {
+        let events = Cache.sharedInstance.getValueForKey(key: "Events") as! [String : [String: Any]]
+        var keys = Array(events.keys)
+        var currentEvent = [String: Any]()
+        for index in 0..<events.count {
+            var targetEventName = events[keys[index]]?["event"] as! String
+            if targetEventName == selectedGroupName {
+                currentEvent = events[keys[index]]!
+            }
+        }
+        print (currentEvent)
+        var startDate = currentEvent["start"] as! String
+        var endDate = currentEvent["end"] as! String
+        
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yy, hh:mm a"
+        let startDateFormatted = dateFormatter.date(from: startDate)!
+        let endDateFormatted = dateFormatter.date(from: endDate)!
+        
+        let currentDate = Date()
+        let currentDateString = String(describing: currentDate)
+        let result = dateFormatter.string(from: currentDate)
+        let currentDateFormatted = dateFormatter.date(from: result)!
+
+        if startDateFormatted > currentDateFormatted || endDateFormatted < currentDateFormatted {
+            let alertController = UIAlertController(title: "Oops!",
+                                                    message: "The Event is not live!",
+                                                    preferredStyle: UIAlertControllerStyle.alert)
+            
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alertController, animated: true, completion: nil)
+        }
+        
+        var latitude = currentEvent["latitude"] as! Double
+        var longitude = currentEvent["longitude"] as! Double
+        
+        startinglocation.latitude = currentPlace.coordinate.latitude
+        startinglocation.longitude = currentPlace.coordinate.longitude
+        destinationLocation.latitude = latitude
+        destinationLocation.longitude = longitude
+        
+        performSegue(withIdentifier: "confirmationSegue", sender: nil)
     }
     
     @IBAction func requestFromEvent(_ sender: Any) {
+        let events = Cache.sharedInstance.getValueForKey(key: "Events") as! [String : [String: Any]]
+        var keys = Array(events.keys)
+        var currentEvent = [String: Any]()
+        for index in 0..<events.count {
+            var targetEventName = events[keys[index]]?["event"] as! String
+            if targetEventName == selectedGroupName {
+                currentEvent = events[keys[index]]!
+            }
+        }
+        print (currentEvent)
+        var startDate = currentEvent["start"] as! String
+        var endDate = currentEvent["end"] as! String
         
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yy, hh:mm a"
+        let startDateFormatted = dateFormatter.date(from: startDate)!
+        let endDateFormatted = dateFormatter.date(from: endDate)!
+        
+        let currentDate = Date()
+        let currentDateString = String(describing: currentDate)
+        let result = dateFormatter.string(from: currentDate)
+        let currentDateFormatted = dateFormatter.date(from: result)!
+        
+        if startDateFormatted > currentDateFormatted || endDateFormatted < currentDateFormatted {
+            let alertController = UIAlertController(title: "Oops!",
+                                                    message: "The Event is not live!",
+                                                    preferredStyle: UIAlertControllerStyle.alert)
+            
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alertController, animated: true, completion: nil)
+        }
+        
+        var latitude = currentEvent["latitude"] as! Double
+        var longitude = currentEvent["longitude"] as! Double
+        
+        startinglocation.latitude = latitude
+        startinglocation.longitude = longitude
+        destinationLocation.latitude = currentPlace.coordinate.latitude
+        destinationLocation.longitude = currentPlace.coordinate.longitude
+        
+        performSegue(withIdentifier: "confirmationSegue", sender: nil)
     }
     
     
