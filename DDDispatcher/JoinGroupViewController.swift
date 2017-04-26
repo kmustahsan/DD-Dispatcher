@@ -31,8 +31,10 @@ class JoinGroupViewController: UIViewController {
         return false
     }
     
+    /*
     
     @IBAction func submitCode(_ sender: Any) {
+        /*
         guard let groupCode = groupCodeTextField.text else { return }
         
         //Error 03.001: group code is not valid
@@ -95,8 +97,8 @@ class JoinGroupViewController: UIViewController {
             
         }
         self.confirmationAlert()
-        self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
-    }
+        self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)*/
+    }*/
     
     
     func confirmationAlert() {
@@ -222,7 +224,7 @@ class JoinGroupViewController: UIViewController {
             
 
         }
-        //self.confirmationAlert()
+        self.confirmationAlert()
         self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
     }
     
