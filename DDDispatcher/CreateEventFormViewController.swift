@@ -216,7 +216,7 @@ class CreateEventFormViewController: UIViewController  {
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             
             present(alertController, animated: true, completion: nil)
-        } else if selectedMembers.count < 3 {
+        } else if selectedMembers.count > 1 {
             let alertController = UIAlertController(title: "Warning",
                                                     message: "Please select at least two drivers",
                                                     preferredStyle: UIAlertControllerStyle.alert)
@@ -224,25 +224,24 @@ class CreateEventFormViewController: UIViewController  {
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             
             present(alertController, animated: true, completion: nil)
-        }
-        
+        } else {
             var selectedMembersID = [String]()
             for index in 0..<selectedMembers.count {
                 selectedMembersID.append(groupMembersToPassID[selectedMembers[index]])
             }
             // This is being sent to cache and Firebase
-        var eventToSave : [String : Any] = [
-            "event"       : eventName,
-            "group"       : groupName,
-            "gid"         : gid,
-            "description" : eventDesc,
-            "location"    : location,
-            "latitude"    : eventLatitude,
-            "longitude"   : eventLongitude,
-            "start"       : startDate,
-            "end"         : endDate,
-            "drivers"     : selectedMembersID
-        ]
+            var eventToSave : [String : Any] = [
+                "event"       : eventName,
+                "group"       : groupName,
+                "gid"         : gid,
+                "description" : eventDesc,
+                "location"    : location,
+                "latitude"    : eventLatitude,
+                "longitude"   : eventLongitude,
+                "start"       : startDate,
+                "end"         : endDate,
+                "drivers"     : selectedMembersID
+            ]
 
         
             let key = DataService.sharedInstance.createFirebaseEvent(values: eventToSave)
@@ -261,7 +260,7 @@ class CreateEventFormViewController: UIViewController  {
             self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
         }
     }
-
+}
 
 extension CreateEventFormViewController: GMSAutocompleteViewControllerDelegate {
     

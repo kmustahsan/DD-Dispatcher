@@ -6,16 +6,17 @@ target 'DDDispatcher' do
   use_frameworks!
 
   # Pods for DDDispatcher
-	pod 'FBSDKCoreKit'
-	pod 'FBSDKShareKit'
-	pod 'FBSDKLoginKit'
-	pod 'Firebase/Auth'
-	pod ‘Firebase/Storage’
-	pod 'GoogleSignIn'
-	pod 'Firebase/Database'
-	pod 'SideMenuController'
-	pod ‘GoogleMaps’
-	pod ‘GooglePlaces’
+  pod 'FBSDKCoreKit'
+  pod 'FBSDKShareKit'
+  pod 'FBSDKLoginKit'
+  pod 'Firebase/Auth'
+  pod ‘Firebase/Storage’
+  pod 'GoogleSignIn'
+  pod 'Firebase/Database'
+  pod 'SideMenuController'
+  pod ‘GoogleMaps’
+  pod ‘GooglePlaces’
+  pod 'Alamofire', '~> 4.4'
 
   target 'DDDispatcherTests' do
     inherit! :search_paths
