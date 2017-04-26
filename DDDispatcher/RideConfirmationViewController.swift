@@ -78,11 +78,19 @@ class RideConfirmationViewController: UIViewController, GMSMapViewDelegate {
     
     
     @IBAction func submitRideClick(_ sender: Any) {
-        let alertController = UIAlertController(title: "Error",
-                                                message: "No Drivers are active at the moment",
-                                                preferredStyle: UIAlertControllerStyle.alert)
-        
-        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alertController, animated: true, completion: nil)
+//        let alertController = UIAlertController(title: "Error",
+//                                                message: "No Drivers are active at the moment",
+//                                                preferredStyle: UIAlertControllerStyle.alert)
+//        
+//        alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//        present(alertController, animated: true, completion: nil)
+        self.segueToStoryboard(storyboard: "viewRide")
+    }
+    func segueToStoryboard(storyboard: String) {
+        let destinationStoryboard = UIStoryboard(name: storyboard, bundle: nil)
+        if let destinationViewController = destinationStoryboard.instantiateInitialViewController() {
+            self.present(destinationViewController, animated: true)
+            
+        }
     }
 }

@@ -15,6 +15,8 @@
 		1308683C1E6F9B060011C6F9 /* GroupListAndInfo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1308683B1E6F9B060011C6F9 /* GroupListAndInfo.storyboard */; };
 		134C1D681E6F89500022A61E /* JoinGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 134C1D671E6F89500022A61E /* JoinGroupViewController.swift */; };
 		134C1D6A1E6F89890022A61E /* JoinGroup.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 134C1D691E6F89890022A61E /* JoinGroup.storyboard */; };
+		311F96C01EB11E2500C8C7CD /* viewRide.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 311F96BF1EB11E2500C8C7CD /* viewRide.storyboard */; };
+		311F96C21EB11E2B00C8C7CD /* viewStatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 311F96C11EB11E2B00C8C7CD /* viewStatusViewController.swift */; };
 		31C5FDC91E82BC500021B003 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C5FDC81E82BC500021B003 /* LocationService.swift */; };
 		3931ADC71E81EB2400EE0F44 /* DriverScreens.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3931ADC61E81EB2400EE0F44 /* DriverScreens.storyboard */; };
 		3953D9141E81F33D0023372E /* RiderInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3953D9131E81F33D0023372E /* RiderInfoViewController.swift */; };
@@ -77,6 +79,8 @@
 		134C1D671E6F89500022A61E /* JoinGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinGroupViewController.swift; sourceTree = "<group>"; };
 		134C1D691E6F89890022A61E /* JoinGroup.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JoinGroup.storyboard; sourceTree = "<group>"; };
 		1F094A9A3A6880D5B608836E /* Pods-DDDispatcherUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DDDispatcherUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DDDispatcherUITests/Pods-DDDispatcherUITests.release.xcconfig"; sourceTree = "<group>"; };
+		311F96BF1EB11E2500C8C7CD /* viewRide.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = viewRide.storyboard; sourceTree = "<group>"; };
+		311F96C11EB11E2B00C8C7CD /* viewStatusViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = viewStatusViewController.swift; sourceTree = "<group>"; };
 		31C5FDC81E82BC500021B003 /* LocationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		3931ADC61E81EB2400EE0F44 /* DriverScreens.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = DriverScreens.storyboard; sourceTree = "<group>"; };
 		3953D9131E81F33D0023372E /* RiderInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RiderInfoViewController.swift; sourceTree = "<group>"; };
@@ -161,6 +165,7 @@
 		134C1D6B1E6F8AE40022A61E /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				311F96BF1EB11E2500C8C7CD /* viewRide.storyboard */,
 				3F3832DC1E563C6D005E1B3D /* LaunchScreen.storyboard */,
 				3F3832D71E563C6D005E1B3D /* Main.storyboard */,
 				B84A43171E76DB1B00A11D07 /* Hub.storyboard */,
@@ -187,6 +192,7 @@
 		31580A6F1E5B600B00851FDD /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				311F96C11EB11E2B00C8C7CD /* viewStatusViewController.swift */,
 				B8CFE6FD1E58BE2200F2E10F /* MainViewController.swift */,
 				B8CFE7011E590BB700F2E10F /* ExtraInfoViewController.swift */,
 				134C1D671E6F89500022A61E /* JoinGroupViewController.swift */,
@@ -394,7 +400,7 @@
 				TargetAttributes = {
 					3F3832CF1E563C6D005E1B3D = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = U3465V32BF;
+						DevelopmentTeam = YGQE633MDX;
 						ProvisioningStyle = Automatic;
 					};
 					3F3832E31E563C6E005E1B3D = {
@@ -436,6 +442,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				130868331E6F92F20011C6F9 /* CreateGroup.storyboard in Resources */,
+				311F96C01EB11E2500C8C7CD /* viewRide.storyboard in Resources */,
 				B8288A261E97F4AA007D1DAD /* Cache.plist in Resources */,
 				1308683C1E6F9B060011C6F9 /* GroupListAndInfo.storyboard in Resources */,
 				3F3832DE1E563C6D005E1B3D /* LaunchScreen.storyboard in Resources */,
@@ -629,6 +636,7 @@
 				3F3832D41E563C6D005E1B3D /* AppDelegate.swift in Sources */,
 				398166DD1E7FD5CD00E87F6E /* CreateEventFormViewController.swift in Sources */,
 				134C1D681E6F89500022A61E /* JoinGroupViewController.swift in Sources */,
+				311F96C21EB11E2B00C8C7CD /* viewStatusViewController.swift in Sources */,
 				B81BBC251E673C7000DB7D3B /* Style.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -782,7 +790,7 @@
 			baseConfigurationReference = E137003D8862DF865A8AE3F9 /* Pods-DDDispatcher.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = U3465V32BF;
+				DEVELOPMENT_TEAM = YGQE633MDX;
 				INFOPLIST_FILE = DDDispatcher/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -797,7 +805,7 @@
 			baseConfigurationReference = 80E488A980ED7217C4B57765 /* Pods-DDDispatcher.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = U3465V32BF;
+				DEVELOPMENT_TEAM = YGQE633MDX;
 				INFOPLIST_FILE = DDDispatcher/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

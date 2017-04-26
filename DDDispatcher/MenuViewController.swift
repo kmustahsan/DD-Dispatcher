@@ -11,8 +11,8 @@ import UIKit
 class MenuViewController: UITableViewController {
 
     
-    let options = ["nil", "Groups", "Create Group", "Create Event", "Join Group", "Settings", "Driver Mode"]
-    let numberOfRowsAtSection: [Int] = [0, 7]
+    let options = ["nil", "Groups", "Create Group", "Create Event", "Join Group", "Settings", "Driver Mode", "View Ride"]
+    let numberOfRowsAtSection: [Int] = [0, 8]
     private var previousIndex: NSIndexPath?
     
     override func viewDidLoad() {
@@ -79,6 +79,10 @@ class MenuViewController: UITableViewController {
             
             segueToStoryboard(storyboard: "DriverScreens")
         }
+        else if indexPath.row == 7 {
+            segueToStoryboard(storyboard: "viewRide")
+        }
+        
         previousIndex = indexPath as NSIndexPath?
     }
     
