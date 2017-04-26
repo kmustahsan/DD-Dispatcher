@@ -17,31 +17,29 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
     // store group names (keys of dictionary)
     //let dict = cache.sharedCache.getUserInfo()
     var groupNames = [String]()
-    var groupName = ""
+    var currentGroupName = ""
     var gid = ""
     var keys = [String]()
-    
-    //value of dict_adminGroups
-    var groupLogos = ["logo.png", "logo.png", "logo.png"]
+    var groups = [String : [String: Any]]()
     
     //set outletsc
     @IBOutlet var groupsTableView: UITableView!
     
     
-    // value of dict_adminGroups
-    // [0] = group name, [1] = event title, [2] = description, [3]=start date, [4] = end date
-    //var eventInformation = ["group.png", "ABC event", "bring your own bear", "Dec 20 20:00", "Dec 20 22:00"]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //change navigation bar style
+        UINavigationBar.appearance().barTintColor = UIColor.black
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         
         
         // need to check if event exists first
         if (Cache.sharedInstance.keyAlreadyExists(key: "Groups")) {
-            let groupInformation = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
-            keys = Array(groupInformation.keys)
-            for index in 0..<groupInformation.count {
-                groupNames.append(groupInformation[keys[index]]?["name"] as! String)
+            groups = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
+            keys = Array(groups.keys)
+            for index in 0..<groups.count {
+                groupNames.append(groups[keys[index]]?["name"] as! String)
             }
             print(groupNames)
             dict_adminGroups = groupNames
@@ -51,24 +49,7 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
     @IBAction func sendBack(_ sender: Any) {
         self.performSegue(withIdentifier: "unwindMenuSegue", sender: self)
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     /*
      --------------------------------------
      MARK: - Table View Data Source Methods
@@ -86,16 +67,29 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
         // Identify the row number
         let rowNumber = (indexPath as NSIndexPath).row
         
-        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "GroupNameAndImage") as UITableViewCell!
+        let cell = tableView.dequeueReusableCell(withIdentifier: "GroupNameAndImage") as! GroupNameTableViewCell
         
-        groupName = groupNames[rowNumber]
+        currentGroupName = groupNames[rowNumber]
         gid = keys[rowNumber]
         
         //add the name of groups
-        cell.textLabel!.text = groupName
+        cell.groupName.text = currentGroupName
         
         // Add the group logo
-        cell.imageView!.image = UIImage(named: groupLogos[rowNumber])
+        let avatarUrl = groups[keys[indexPath.row]]?["avatar"] as! String
+        let url = NSURL(string: avatarUrl)
+        let task = URLSession.shared.dataTask(with: url as! URL, completionHandler: { (data, response, error) in
+            if error != nil {
+                print(error ?? "Session error")
+                return
+            }
+            DispatchQueue.main.async {
+                cell.groupImage.image = UIImage(data: data!)
+                cell.groupImage.layer.cornerRadius = cell.groupImage!.frame.size.width / 2;
+                cell.groupImage.clipsToBounds = true;
+            }
+        })
+        task.resume()
         
         return cell
     }
@@ -114,7 +108,7 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
         
         tableView.deselectRow(at: indexPath, animated: true)
         
-        groupName = groupNames[rowNumber]
+        currentGroupName = groupNames[rowNumber]
         gid = keys[rowNumber]
         
         
@@ -128,14 +122,14 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
      -------------------------
      */
     
-    
+    /*
     @IBAction func NotaGroupEventButtonClicked(_ sender: Any) {
         
         groupName = "Not a Group Event"
         performSegue(withIdentifier: "FormView", sender: self)
         
-        
-    }
+ 
+    }*/
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "FormView" {
@@ -144,12 +138,10 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
             let createEventFormViewController: CreateEventFormViewController = segue.destination as! CreateEventFormViewController
             
             //Pass the data object to the destination view controller object
-            createEventFormViewController.groupNamePassed = groupName
+            createEventFormViewController.groupNamePassed = currentGroupName
             createEventFormViewController.gid = gid
             
         } 
     }
-    
-    
     
 }

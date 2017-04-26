@@ -31,6 +31,7 @@
 		3F3833031E563E73005E1B3D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3F3833021E563E73005E1B3D /* GoogleService-Info.plist */; };
 		6505CF2F1EF430A87E7DEA39 /* Pods_DDDispatcherTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49BE5BADE2763B6D00B3E1B1 /* Pods_DDDispatcherTests.framework */; };
 		A441736FC7E7BA20607F364F /* Pods_DDDispatcherUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 015394A914135CF84E35DA8E /* Pods_DDDispatcherUITests.framework */; };
+		B706F2801EAC936E0026DCB0 /* DriverScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B706F27F1EAC936E0026DCB0 /* DriverScreenViewController.swift */; };
 		B73EC9B41E9C5A4100DB4FBB /* CreateEvent.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B73EC9B31E9C5A4100DB4FBB /* CreateEvent.storyboard */; };
 		B81BBC251E673C7000DB7D3B /* Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81BBC241E673C7000DB7D3B /* Style.swift */; };
 		B820AA1E1E67A187008FBA91 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B820AA1D1E67A187008FBA91 /* DataService.swift */; };
@@ -102,6 +103,7 @@
 		5F9467B053EA932CF671E5B6 /* Pods_DDDispatcher.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DDDispatcher.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B4850144023DE1CDE5EEEAE /* Pods-DDDispatcherTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DDDispatcherTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-DDDispatcherTests/Pods-DDDispatcherTests.release.xcconfig"; sourceTree = "<group>"; };
 		80E488A980ED7217C4B57765 /* Pods-DDDispatcher.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DDDispatcher.release.xcconfig"; path = "Pods/Target Support Files/Pods-DDDispatcher/Pods-DDDispatcher.release.xcconfig"; sourceTree = "<group>"; };
+		B706F27F1EAC936E0026DCB0 /* DriverScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DriverScreenViewController.swift; sourceTree = "<group>"; };
 		B73EC9B31E9C5A4100DB4FBB /* CreateEvent.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = CreateEvent.storyboard; sourceTree = "<group>"; };
 		B81BBC241E673C7000DB7D3B /* Style.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Style.swift; sourceTree = "<group>"; };
 		B820AA1D1E67A187008FBA91 /* DataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				3953D9131E81F33D0023372E /* RiderInfoViewController.swift */,
+				B706F27F1EAC936E0026DCB0 /* DriverScreenViewController.swift */,
 			);
 			name = DriverScreensControllers;
 			sourceTree = "<group>";
@@ -613,6 +616,7 @@
 				B8CFE7021E590BB700F2E10F /* ExtraInfoViewController.swift in Sources */,
 				130868371E6F97390011C6F9 /* GroupInfoViewController.swift in Sources */,
 				398166E11E80D0DA00E87F6E /* SelectDriverTableViewController.swift in Sources */,
+				B706F2801EAC936E0026DCB0 /* DriverScreenViewController.swift in Sources */,
 				B82612D81E77118600A39DFC /* CustomSideMenuController.swift in Sources */,
 				B829EA331E7F67B8007213D5 /* RideConfirmationViewController.swift in Sources */,
 				130868391E6F97A00011C6F9 /* GroupNameTableViewCell.swift in Sources */,

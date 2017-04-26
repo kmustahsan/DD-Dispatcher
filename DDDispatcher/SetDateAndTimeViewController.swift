@@ -23,7 +23,6 @@ class SetDateAndTimeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         //set start date
         let dateFormatter = DateFormatter()
         

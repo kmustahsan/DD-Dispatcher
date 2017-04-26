@@ -29,18 +29,18 @@ The following **features**  are implemented:
 * [X] Google Places autocompletion 
 * [X] Marking pickup and destination location on Google Maps
 * [X] Cache for user's information
+* [x] Creating events 
+* [x] Adding a member to group
+* [x] Assigning Drivers for event 
+* [x] Quick invites (inviting all members of a group to an event)
+* [x] Editing Group Info
+* [x] Editing Event Info
+* [x] Deleting members from a group
+* [x] Deleting Group
 
 The following **features**  will implemented:
-* [ ] Creating events 
-* [ ] Adding a member to group
-* [ ] Assigning Drivers for event 
-* [ ] Quick invites (inviting all members of a group to an event)
-* [ ] Editing Group Info
-* [ ] Editing Event Info
-* [ ] Deleting members from a group
-* [ ] Deleting Group
 * [ ] Restricting Ride distance 
-* [ ] Confirmation of new group member
+* [ ]  Confirmation of new group member
 * [ ] Selecting the number of seats required for a ride
 * [ ] Displaying ETA for Driver pickup
 * [ ] Google Directions integration
@@ -55,7 +55,7 @@ Installing Cocoapods
 
 > Wait for this to finish, don't touch your terminal.  It might take a couple minutes
 
-- Enter command: `pod install`
+- Enter command: `pod install & pod update`
 
 To view the application, login using your Google, Facebook credentials. 
 

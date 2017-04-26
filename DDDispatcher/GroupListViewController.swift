@@ -12,12 +12,18 @@ class GroupListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     @IBOutlet var groupInfoTabelView: UITableView!
     
-    
+
     var groups = [String : [String: Any]]()
     var keys = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //change navigation bar style
+        UINavigationBar.appearance().barTintColor = UIColor.black
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+
+ 
         
         if Cache.sharedInstance.keyAlreadyExists(key: "Groups") {
             groups = Cache.sharedInstance.getValueForKey(key: "Groups") as! [String : [String: Any]]
@@ -39,6 +45,7 @@ class GroupListViewController: UIViewController, UITableViewDelegate, UITableVie
     
     //Woo- fix; the label isn't being palced correctly.
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "userGroups") as! GroupNameTableViewCell
         let currentGroupName = groups[keys[indexPath.row]]?["name"] as! String
         let avatarUrl = groups[keys[indexPath.row]]?["avatar"] as! String
@@ -57,9 +64,7 @@ class GroupListViewController: UIViewController, UITableViewDelegate, UITableVie
         task.resume()
 
         cell.groupName.text = currentGroupName
-        
-        
-        
+
         return cell;
     }
     
@@ -73,6 +78,7 @@ class GroupListViewController: UIViewController, UITableViewDelegate, UITableVie
         {
             let sender = sender as! GroupNameTableViewCell
             let index = groupInfoTabelView.indexPath(for: sender)
+
             let row = index?.row;
             //use row to get groupID in the dataSource...
             
