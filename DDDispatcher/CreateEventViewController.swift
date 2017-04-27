@@ -32,6 +32,7 @@ class CreateEventViewController: UIViewController, UITableViewDelegate, UITableV
         //change navigation bar style
         UINavigationBar.appearance().barTintColor = UIColor.black
         navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+     
         
         
         // need to check if event exists first
